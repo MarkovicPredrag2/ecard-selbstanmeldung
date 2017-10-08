@@ -1,0 +1,13 @@
+h1, label, input {
+	font-family: ubuntu;
+}
+input {
+	font-size: 20px;
+}
+label {
+	font-size: 20px;
+}
+
+h1 {
+	font-size: 48px;
+}

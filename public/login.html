@@ -1,0 +1,61 @@
+<html>
+	<head>
+		<title>Warteliste Login</title>
+		<link rel="stylesheet" href="/resources/styles/font.css">
+		<link rel="stylesheet" href="/resources/styles/login.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script>
+			$(document).ready(function() {
+				$("form div div input[type=password]").focus(function() {
+				    $("form div div input[type=password]").css("background-color", "#fff399");
+				});
+				$("form div div input[type=password]").focusout(function() {
+				    $("form div div input[type=password]").css("background-color", "white");
+				});
+				$("form div div input[type=text]").focus(function() {
+				    $("form div div input[type=text]").css("background-color", "#fff399");
+				});
+				$("form div div input[type=text]").focusout(function() {
+				    $("form div div input[type=text]").css("background-color", "white");
+				});
+				$("form div div input[type=submit]").mouseover(function() {
+				    $("form div div input[type=submit]").css("background-color", "#fff399");
+				    $("form div div input[type=submit]").css("border", "3px solid #fff399");
+				});
+				$("form div div input[type=submit]").mouseout(function() {
+				    $("form div div input[type=submit]").css("background-color", "#4286f4");
+				    $("form div div input[type=submit]").css("border", "3px solid #4286f4");
+				});
+			});
+		</script>
+	</head>
+
+	<body>
+		<table style="width: 100%; height: 100%">
+			<tr>
+				<td id="centering">
+					<div class="login-bar">
+						<h1 class="title">Login</h1>
+						<form action="/login" method="post">
+							<div class="flex-container">
+								<div class="flex-item">
+									<label for="login_username">Username</label>
+									<br>
+									<input type="text" id="login_username" required/>
+								</div>
+								<div class="flex-item">
+									<label for="login_password">Passwort</label>
+									<br>
+									<input type="password" id="login_password" value="Log in" required/>
+								</div>
+								<div style="width: 60%" class="flex-item">
+									<input style="float: left" type="Submit" value="Anmelden"/>
+									<!--<span style="float: right"><input type="checkbox" name="remember" value="me"/>Angemeldet bleiben</span>-->
+								</div>
+						</form>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
