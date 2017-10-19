@@ -31,4 +31,23 @@ DB:
 	password: v2tJ)Jjt=NS!F<%
 	256bit AES Key: x0M9ErVpTVi98cWffCs1NRjQ9QixVq9X
 
-Service-Access-Key: 
+Important CLI commands:
+=======================
+sudo systemctl start mysql >>	Starts the DB
+sudo systemctl restart mysql.service >>	Restarts the DB
+sudo systemctl stop mysql.service >>	Stops the DB
+sudo mysql_secure_installation >>	For DB configurations
+systemctl status mysql.service >>	Checking the DB status
+mysql -u root -p	>>	Enter the mysql DBMS with password
+mysqldump -u YourUser -p YourDatabaseName > wantedsqlfile.sql	>>	Exporting a DB from mysql into a .sql file
+mysql -u username -p [DB_NAME] < file.sql	>>	Importing a DB into mysql
+mysql -u {username} -p{password} -h {remote server ip} {DB name}	>>	Remote control access to a db
+mysql -u root -p'v2tJ)Jjt=NS!F<%' -h https://acc5448c.ngrok.io lokalePatientenDB
+
+Important SQL Statements:
+=========================
+SHOW DATABASES;	>>	Shows the available DBs in the DBMS
+CREATE DATABASE database name;	>>	Creates a DB with the given name
+DROP DATABASE database name;
+USE [DB_NAME];
+SHOW tables; 
