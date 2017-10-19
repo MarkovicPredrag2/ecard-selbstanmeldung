@@ -36,17 +36,17 @@
 				<td id="centering">
 					<div class="login-bar">
 						<h1 class="title">Login</h1>
-						<form action="/login" method="post">
+						<form method="post">
 							<div class="flex-container">
 								<div class="flex-item">
 									<label for="login_username">Username</label>
 									<br>
-									<input type="text" id="login_username" required/>
+									<input type="text" id="login_username" name="username" required/>
 								</div>
 								<div class="flex-item">
 									<label for="login_password">Passwort</label>
 									<br>
-									<input type="password" id="login_password" value="Log in" required/>
+									<input type="password" id="login_password" value="Log in" name="password" required/>
 								</div>
 								<div style="width: 60%" class="flex-item">
 									<input style="float: left" type="Submit" value="Anmelden"/>
