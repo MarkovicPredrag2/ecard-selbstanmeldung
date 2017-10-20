@@ -17,37 +17,37 @@ app.use(bodyParser.json())
 
 app.get('/ansicht/arztansicht', (req, res) => {
 	console.log('Received GET request at /ansicht/arztansicht');
-	//	TODO: 
+	//	TODO:
 	//	If valid Cookie, grant access
 	//	If not, redirect to /login
-	//	res.redirect('/login'); 
+	//	res.redirect('/login');
 	webclientModule.validateCookie(DB, req.cookies)
 		.then((valid, unvalid) => {
-			if (valid) 
+			if (valid)
 				webclientModule.sendHtmlFile(res, './public/ansicht/arztansicht.html');
 			else
 				res.redirect('/login');
 		})
 		.catch((error) => {
-			//	Respond with error message 
+			//	Respond with error message
 			console.error(error);
 		});
 });
 
 app.get('/ansicht/warteliste', (req, res) => {
 	console.log('Received GET request at /ansicht/warteliste');
-	//	TODO: 
+	//	TODO:
 	//	If valid Cookie, then grant access
 	//	If not, redirect to /login
 	webclientModule.validateCookie(DB, req.cookies)
 		.then((valid, unvalid) => {
-			if (valid) 
+			if (valid)
 				webclientModule.sendHtmlFile(res, './public/ansicht/arztansicht.html');
 			else
 				res.redirect('/login');
 		})
 		.catch((error) => {
-			//	Respond with error message 
+			//	Respond with error message
 			console.error(error);
 		});
 });
@@ -83,7 +83,6 @@ app.post('/login', (req, res) => {
 							console.error(error);
 						});
 				}
-			
 				else {
 					//	Send back wrong credentials
 					//	message to the user
@@ -109,9 +108,9 @@ app.get('/sse', function(req, res) {
         'Connection': 'keep-alive'
     });
     res.write('\n');
-    
+
 		console.log("Message header sent ...");
-		
+
     // push this res object to our global variable
     //openConnections.push(res);
 
@@ -121,7 +120,7 @@ app.get('/sse', function(req, res) {
     req.on('close', function() {
         /*DB.SQLCommandFeeder(['delete from sessions where session_id =' + req.cookie.])
         	.then((resolve) => {
-        		
+
         	})
         	.catch((error) => console.error(error));*/
     });

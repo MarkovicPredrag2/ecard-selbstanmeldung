@@ -1,0 +1,25 @@
+{
+  "name": "diplomproject",
+  "version": "1.0.0",
+  "description": "The diplomproject for the five4u team-members.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarkovicPredrag2/ecard-selbstanmeldung.git"
+  },
+  "author": "Five4U",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MarkovicPredrag2/ecard-selbstanmeldung/issues"
+  },
+  "homepage": "https://github.com/MarkovicPredrag2/ecard-selbstanmeldung#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.2",
+    "mysql": "^2.15.0"
+  }
+}
