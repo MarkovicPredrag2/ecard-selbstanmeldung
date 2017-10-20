@@ -1,53 +1,48 @@
 # ecard-selbstanmeldung
-Repo of the fiveforu diplomproject team. This repository contains files for the Ecard-Selbstanmeldungs software.
+Repo of the five4u diplomproject team. This repository contains files for the Ecard-Selbstanmeldungs software and it's iPad App.
 
-## Usage description
+## Database
 
-### Database
+### User roles
+Users for testing purposes along with their pw's and roles.
+	
+| Username      	| Password		| Role		|
+| ---------------------	| --------------------- | ------------- |
+| drmuncan  		| fliegeimohr  		| arzt		|
+| haustanteraphael 	| 1raphaelhatrecht	| nutzer	|
 
-#### Read and write operations
+### 256bit AES Key
+Key for the password encryption and decryption in the database.
 
-Note: The URL at the end of the commands might vary, so you eventually have to specify a different url on which the server runs.
-You also have to change the payload in the DM command.
-In order to test a simple DM and DQ operation, paste the following commands into your common CLI:
-**To get all users:** curl -d '{"key":"p*mlm@o=@B{>ff*|{z8.[$NUt6k>"}' -H "Content-Type: application/json" -X GET http://localhost:8080
+```
+x0M9ErVpTVi98cWffCs1NRjQ9QixVq9X
+```
 
-**To add an user (change the payload before):** curl -d '{"key":"p*mlm@o=@B{>ff*|{z8.[$NUt6k>", "payload":{"svnr":"5043030698", "vorname":"Dawid", "nachname":"Muncan", "alter":"3", "addresse":"Zentrum der Welt", "hn":"503", "stiege":"3", "plz":"1020", "ort":"Wien"}}' -H "Content-Type: application/json" -X POST http://localhost:8080/
+## Important CLI commands
+Remarkable CLI commands when working with the native CLI.
 
-#### User roles
+| Command       | Description	|
+| ------------- | ------------- |
+| sudo systemctl start mysql  | Starts Mysql  |
+| sudo systemctl restart mysql.service  | Restarts the Mysql  |
+| sudo systemctl stop mysql.service  | Stops Mysql  |
+| sudo mysql_secure_installation  | For Mysql configurations  |
+| systemctl status mysql.service  | Checking the Mysql status  |
+| mysql -u **YourUser** -p  | Login into Mysql with username and password (User **root** recommended) |
+| mysqldump -u **YourUser** -p **YourDatabaseName** > **WantedSQLFile.sql**  | Exporting a DB from mysql into a .sql file  |
+| mysql -u **YourUser** -p **YourDatabaseName** < **WantedSQLFile.sql**  | Importing a DB into mysql  |
+| mysql -u **YourUser** -p -h **RemoteServerIP** **DatabaseName**  | Remote control access to a Mysql on a server  |
 
-Here are the test users along with their usernames, passwords and roles:
-Ärzte:
-	drmuncan fliegeimohr arzt
-Nutzer:
-	haustanteraphael 1raphaelhatrecht nutzer
+## Important SQL Statements
+Useful commands within the mysql shell.
 
-### Keys
-
-Important keys and users:
-
-DB:
-	username: root
-	password: v2tJ)Jjt=NS!F<%
-	256bit AES Key: x0M9ErVpTVi98cWffCs1NRjQ9QixVq9X
-
-Important CLI commands:
-=======================
-sudo systemctl start mysql >>	Starts the DB
-sudo systemctl restart mysql.service >>	Restarts the DB
-sudo systemctl stop mysql.service >>	Stops the DB
-sudo mysql_secure_installation >>	For DB configurations
-systemctl status mysql.service >>	Checking the DB status
-mysql -u root -p	>>	Enter the mysql DBMS with password
-mysqldump -u YourUser -p YourDatabaseName > wantedsqlfile.sql	>>	Exporting a DB from mysql into a .sql file
-mysql -u username -p [DB_NAME] < file.sql	>>	Importing a DB into mysql
-mysql -u {username} -p{password} -h {remote server ip} {DB name}	>>	Remote control access to a db
-mysql -u root -p'v2tJ)Jjt=NS!F<%' -h https://acc5448c.ngrok.io lokalePatientenDB
-
-Important SQL Statements:
-=========================
-SHOW DATABASES;	>>	Shows the available DBs in the DBMS
-CREATE DATABASE database name;	>>	Creates a DB with the given name
-DROP DATABASE database name;
-USE [DB_NAME];
-SHOW tables; 
+| Command       | Description	|
+| ------------- | ------------- |
+| \q  | Leave Mysql  |
+| \h  | Display help  |
+| SHOW DATABASES;  | Shows the available DBs in the DBMS  |
+| CREATE DATABASE **DatabaseName**;  | Creates a DB with the given name  |
+| DROP DATABASE **DatabaseName**;  | Deletes the database  |
+| USE **DatabaseName**;  | Uses the database  |
+| SHOW tables;  | Displays all tables in the database  |
+| DESC **TABLENAME**; | Displays the columns of the database |
