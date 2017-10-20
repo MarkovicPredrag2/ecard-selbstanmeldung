@@ -1,6 +1,13 @@
 # ecard-selbstanmeldung
 Repo of the five4u diplomproject team. This repository contains files for the Ecard-Selbstanmeldungs software and it's iPad App.
 
+## Setup
+In order to work, you need to have a few programs installed on your device.
+
+**npm and Node**: https://nodejs.org/en/download/
+
+
+
 ## Database
 
 ### User roles
