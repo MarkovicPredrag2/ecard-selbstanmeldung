@@ -1,6 +1,13 @@
 # ecard-selbstanmeldung
 Repo of the five4u diplomproject team. This repository contains files for the Ecard-Selbstanmeldungs software and it's iPad App.
 
+## Setup
+In order to work, you need to have a few programs installed on your device.
+
+**npm and Node**: https://nodejs.org/en/download/
+
+
+
 ## Database
 
 ### User roles
@@ -19,7 +26,9 @@ x0M9ErVpTVi98cWffCs1NRjQ9QixVq9X
 ```
 
 ## Important CLI commands
-Remarkable CLI commands when working with the native CLI.
+Noteworthy CLI commands when working with the native CLI.
+
+### MySQL Commands
 
 | Command       | Description	|
 | ------------- | ------------- |
@@ -32,6 +41,19 @@ Remarkable CLI commands when working with the native CLI.
 | mysqldump -u **YourUser** -p **YourDatabaseName** > **WantedSQLFile.sql**  | Exporting a DB from mysql into a .sql file  |
 | mysql -u **YourUser** -p **YourDatabaseName** < **WantedSQLFile.sql**  | Importing a DB into mysql  |
 | mysql -u **YourUser** -p -h **RemoteServerIP** **DatabaseName**  | Remote control access to a Mysql on a server  |
+
+### Node/Npm Commands
+
+| Command       | Description	|
+| ------------- | ------------- |
+| npm install | Install all dependencies required to start the server (from package.json) |
+| node server.js | Command to start the server |
+
+### Git Basic Commands
+
+| Command       | Description	|
+| ------------- | ------------- |
+| git init | Initializes local git repo in the current folder |
 
 ## Important SQL Statements
 Useful commands within the mysql shell.
