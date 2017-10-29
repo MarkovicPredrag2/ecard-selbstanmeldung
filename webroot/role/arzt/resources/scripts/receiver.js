@@ -3,7 +3,7 @@
 //	Browsern unterstützt (exklusive Explorer und Edge)
 if(typeof(EventSource) !== "undefined") {
 	//	Definiert die URI als Ressource
-	var source = new EventSource("/sse");
+	var source = new EventSource("/role/arzt/sse");
 	source.onmessage = function(event) {
 	//	Wird ausgeführt, sobald eine Nachricht angekommen ist
 	//	Dieser Block updated die Tabelle (DOM-Manipulation über JavaScript)

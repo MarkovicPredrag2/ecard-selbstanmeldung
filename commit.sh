@@ -5,6 +5,7 @@ read committext
 echo "Branch: "
 read branch
 git pull $(git remote) master
+git checkout $branch
 git add .
 git commit -m "$committext"
 git push -u $(git remote) $branch

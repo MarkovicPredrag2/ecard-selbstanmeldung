@@ -1,8 +1,8 @@
 <html>
 	<head>
 		<title>Warteliste Login</title>
-		<link rel="stylesheet" href="/resources/styles/font.css">
-		<link rel="stylesheet" href="/resources/styles/login.css">
+		<link rel="stylesheet" href="/public/resources/styles/font.css">
+		<link rel="stylesheet" href="/public/resources/styles/login.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script>
 			$(document).ready(function() {
@@ -36,7 +36,7 @@
 				<td id="centering">
 					<div class="login-bar">
 						<h1 class="title">Login</h1>
-						<form method="post">
+						<form action="/public/login" method="post">
 							<div class="flex-container">
 								<div class="flex-item">
 									<label for="login_username">Username</label>

@@ -1,79 +1,49 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const unixTime = require('unix-time');
+//-----------	Imports	-----------
 
-const DB = require('./lib/dbaccess.js')('localhost', 'root', 'v2tJ)Jjt=NS!F<%', 'lokalePatientenDB');
-DB.connect();
-const webclientModule = require('./lib/webclientprocedures.js')(DB);
+const express 			= require('express');
+const bodyParser 		= require('body-parser');
+const cookieParser 	= require('cookie-parser');
+const unixTime 			= require('unix-time');
 
-var app = express();
-app.use('/resources', express.static('public/resources'));
-app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+//-----------	App settings	-----------
 
-app.get('/', (req, res) => res.redirect('/login'));
+//	Initialise app instances
+//	The intendation symbolises the
+//	order in the inhertiance tree
+const server 		= express(),
+				public 			= express(),
+				role			 	= express(),
+					arzt 				= express(),
+					benutzer		= express();
 
-app.get('/ansicht/arztansicht', (req, res) => {
-	console.log('Received GET request at /ansicht/arztansicht');
-	//	Check, if the user already has a (valid) cookie (for forwarding).
-	//	If not, send the login page
-	if(typeof req.cookies['AnsichtSessionCookie'] !== 'undefined')	//	For performance reasons
-		webclientModule.checkIfCookieisValid(req.cookies)
-			.then((user) => {
-				//	If cookie is valid, send
-				//	the corresponding page
-				if(Object.keys(user).length > 0) webclientModule.sendPage(res, './public/ansicht/arztansicht.html');
-				//	If not,
-				//	redirect to /login
-				else res.redirect('/login');
-			})
-			.catch((error) => {
-				//	Respond with error message
-				console.error(error);
-			});
-	else res.redirect('/login');
-});
+//	Global variables
+server.locals.cookieName = 'AnsichtSessionCookie';
 
-app.get('/ansicht/warteliste', (req, res) => {
-	console.log('Received GET request at /ansicht/warteliste');
-	//	Check, if the user already has a (valid) cookie (for forwarding).
-	//	If not, send the login page
-	if(typeof req.cookies['AnsichtSessionCookie'] !== 'undefined')	//	For performance reasons
-		webclientModule.checkIfCookieisValid(req.cookies)
-			.then((user) => {
-				//	If cookie is valid, send
-				//	the corresponding page
-				if(Object.keys(user).length > 0) webclientModule.sendPage(res, './public/ansicht/arztansicht.html');
-				//	If not,
-				//	redirect to /login
-				else res.redirect('/login');
-			})
-			.catch((error) => {
-				//	Respond with error message
-				res.redirect('/login');
-				console.error(error);
-			});
-	else res.redirect('/login');
-});
+//	Set the middleware (will be inherited)
+server.use(bodyParser.urlencoded({ extended: false }));
+server.use(bodyParser.json());
+//	Set children apps
+server.use('/public', public);
+server.use('/role', role);
 
-app.get('/login', (req, res) => {
-	console.log('Received GET request at /login');
-	//	Check, if the user already has a (valid) cookie (for forwarding).
-	//	If not, send the login page
-	if(typeof req.cookies['AnsichtSessionCookie'] !== 'undefined')	//	For performance reasons
-		webclientModule.checkIfCookieisValid(req.cookies)
-			.then((user) => {
-				//	If cookie is valid, redirect
-				//	user to corresponding page
-				if(Object.keys(user).length > 0) webclientModule.redirectUserToPage(user, res);
+//	Set the middleware (will be inherited)
+role.use(cookieParser());
+//	Authentication function
+//	Every app within the restricted route will use this function
+role.use(function checkAuthentication(req, res, next) {
+	if (typeof req.cookies[server.locals.cookieName] !== 'undefined')	//	For performance reasons
+		webclientModule.checkIfCookieisValid(req.cookies, server.locals.cookieName)
+			.then((session) => {
+				//	If cookie is valid,
+				//	invoke next middleware-function
+				if (Object.keys(session).length > 0) next();
 				//	If not,
 				//	send the login page
 				else {
 					//	Delete cookie, since its already overdue
-					res.clearCookie('AnsichtSessionCookie');
-					webclientModule.sendPage(res, './public/login.html');
+					res.clearCookie(server.locals.cookieName);
+					//	and redirect user to the login
+					res.redirect('/');
 				}
 			})
 			.catch((error) => {
@@ -81,11 +51,32 @@ app.get('/login', (req, res) => {
 				res.end(error);
 				console.error(error);
 			});
-	else webclientModule.sendPage(res, './public/login.html');
+	else res.redirect('/');
 });
+//	Set children apps
+role.use('/arzt', arzt);
+role.use('/benutzer', benutzer);
 
-app.post('/login', (req, res) => {
-	console.log('Received POST request at /login');
+//-----------	DB connection	-----------
+
+//	TODO:
+//	Assignment through hidden config file
+//	Including: host, user, dbms-password, DB, port, 256bit AES Key
+var webclientModule;
+const DB = require('./lib/dbaccess.js')('localhost', 'root', 'v2tJ)Jjt=NS!F<%', 'lokalePatientenDB');
+DB.connect()
+	.then((result) => {
+		//	After the DB connection has been established,
+		webclientModule = require('./lib/webclientprocedures.js')(DB);
+		//	listen on the given port
+		server.listen(8080, () => console.log('Listen on port 8080 ...'));
+	})
+	.catch((error) => console.error(error));
+	
+//-----------	public routes	-----------
+
+public.post('/login', (req, res) => {
+	console.log('Received POST request at /');
 	
 	webclientModule.lookupUser(req.body)
 		.then((user) => {
@@ -93,7 +84,7 @@ app.post('/login', (req, res) => {
 			webclientModule.createUserSession(user)
 				.then((sessionUID) => {
 					//	Send cookie with session UID back
-					res.cookie('AnsichtSessionCookie', sessionUID);
+					res.cookie(server.locals.cookieName, sessionUID);
 					//	Redirect the user to
 					//	the correct page
 					webclientModule.redirectUserToPage(user, res);
@@ -102,49 +93,52 @@ app.post('/login', (req, res) => {
 					//	Send back wrong credentials
 					//	message to the client
 					console.error(error);
-					res.end('Scheisse, da war scheisse.');
+					res.end('Scheisse, da war Scheisse.');
 				});
-		});
+		})
+		.catch((error) => console.error(error));
 });
 
-app.get('/sse', (req, res) => {
+//-----------	restricted routes	-----------
+
+//-----------	arzt routes	-----------
+
+arzt.get('/sse', (req, res) => {
 	console.log('Received GET request at /sse');
 	
-	if(typeof req.cookies['AnsichtSessionCookie'] !== 'undefined')	//	For performance reasons
-		webclientModule.checkIfCookieisValid(req.cookies)
-			.then((user) => {
-				//	If cookie is valid, send
-				//	allow streaming
-				if(Object.keys(user).length > 0) {
-					// 	Set timeout as high as possible
-					req.setTimeout(Number.MAX_VALUE);
-					//	Send headers for event-stream connection
-					//	according to the html5 sse specs
-					res.writeHead(200, {
-							'Content-Type': 'text/event-stream',
-							'Cache-Control': 'no-cache',
-							'Connection': 'keep-alive'
-					});
-					res.write('\n');
-				
-					console.log("Message header sent ...");
-		
-					req.on('close', () => {
-					 //	Set 5 minute timestamp for request
-					 //	whose connection broke up
-					 webclientModule.setTimeStamp(req.cookies['AnsichtSessionCookie'], (unixTime(new Date()) + 300));
-					});
-				}
-				//	If not,
-				//	redirect to /login
-				else res.redirect('/login');
-			})
-			.catch((error) => {
-				//	Respond with error message
-				res.redirect('/login');
-				console.error(error);
-			});
-	else res.redirect('/login');
+	// 	Set timeout as high as possible
+	req.setTimeout(Number.MAX_VALUE);
+	//	Send headers for event-stream connection
+	//	according to the html5 sse specs
+	res.writeHead(200, {
+		'Content-Type': 'text/event-stream',
+		'Cache-Control': 'no-cache',
+		'Connection': 'keep-alive'
+	});
+	res.write('\n');
+	
+	req.on('close', () => {
+		//	Set 5 minute timestamp for request
+		//	whose connection broke up
+		webclientModule.setTimeStamp(req.cookies[server.locals.cookieName], (unixTime(new Date()) + 300));
+	});
+});
+
+//-----------	benutzer routes	-----------
+
+//	TODO:
+//	Implement /sse-feed for benutzer
+
+//-----------	static file service	-----------
+
+//	Serves all files from the webroot directory
+server.use('/', express.static('./webroot', {index: '/public/login.html', fallthrough: false}));
+
+//	If not found, return '404 not found' file
+server.use(function notFoundError(err, req, res, next) {
+	//	ToDo:
+	//	Send 404 File
+	res.status(404).send('Nix gefunden').end();
 });
 
 /*setInterval(function() {
@@ -156,5 +150,3 @@ app.get('/sse', (req, res) => {
     });
 
 }, 1000);*/
-
-app.listen(8080, () => console.log('Listen on port 8080 ...'));
