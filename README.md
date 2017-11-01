@@ -4,9 +4,17 @@ Repo of the five4u diplomproject team. This repository contains files for the Ec
 ## Setup
 In order to work, you need to have a few programs installed on your device.
 
+**Git (mostly already preinstalled)**: https://git-scm.com/download
 **npm and Node**: https://nodejs.org/en/download/
+**MySQL**
 
-
+**Run the commands below in the following order to install the project on your device (this even includes git setup if not done already):**
+```
+git config --global user.name "Your Name Here"
+git config --global user.email "your_email@youremail.com"
+git remote add diplproj https://github.com/MarkovicPredrag2/ecard-selbstanmeldung.git
+git push -u diplproj master
+```
 
 ## Database
 
