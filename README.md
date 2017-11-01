@@ -51,9 +51,64 @@ Noteworthy CLI commands when working with the native CLI.
 
 ### Git Basic Commands
 
-| Command       | Description	|
-| ------------- | ------------- |
-| git init | Initializes local git repo in the current folder |
+```
+git config --global user.name "Your Name Here"
+git config --global user.email "your_email@youremail.com"
+
+git init
+git status
+git add FILENAME
+git commit -m “COMMIT-NAME”
+git remote add origin ONLINE REPO URL
+git remote -v
+git pull origin BRANCHNAME
+git push
+
+//The new boston tutorial:
+git --version	-> Displays the git version
+Config account with email and password:
+	git config --global user.name "Markovic Predrag" -> Name configuration
+	git config --global user.email "markovic.predrag.gs@gmail.com" -> Email configuration
+git config --list	-> Displays the content of the git config file
+git config [option]	-> Displays the value of the given key-value entry (e.g: git config user.name)
+git --help		-> Displays the most used commands in git + short desciription of these
+git help [command]	-> Displays a profound description of the given command (e.g: git help commit)
+git init		-> Creates a .git hidden folder in the actual folder which initializes the repository
+git add .		-> Adds all the files and folders to the scope of git. (It adds it to the so called "staging" area)
+git commit -m "This is my commit description"		-> Makes a commit (snapshot) of the actual state of the concluded files of in the repsitory.
+
+git log			-> Display the commit history stack of the actual project
+git log --author="NAME"		-> Filters the commits according to the author
+git status		-> Displays the actual stage of the staging mode. (Always recommended before commiting anything)
+git diff		-> Compares all the files in the working space with the repository files.
+get diff --staged		-> Compares all the files in the staging area with the repository.
+git rm third.txt	-> Removes the file from the working directory.
+git mv second.txt pudding.txt		-> Renames a file from "second.txt" to "pudding.txt"
+git mv [FILE] [FOLDER]			-> Moves the file to another location
+git commit -am "TEXT"			-> Force-moves every file in the working directory into a repository-commit with skipping the staging. (should be only used if simple corrections were made in files, not when files got removed)
+git checkout -- [FILE]			-> Replaces the specified file with a file from the latest commit. Used for restoring the state.
+git reset HEAD [FILE] 			-> Removes the given file off the staging area back to the working area
+git checkout [COMMIT-GUID] -- [FILE]	-> Replaces the given file with the file of the given commit
+git remote add [ALIAS] [HTTP-REPO-LINK]	-> Connects the local .git repo with the online repo. From now on it is possible to use the alias instead of the url to push files to the online repo.
+
+git remote				-> Displays the alias for the online-repo-url
+
+GitHub vocs:
+push : Commiting to the online repo (GitHub)
+fetch: Downloading from the online repo (GitHub)
+fork: Copys the project and adds it to the repo-list. Its possible to participate from now on.
+pull-request: Request for merging a branch to the master.
+clone: Copys the actual state of the project in the branch to the local system.
+star: This option bookmarks a project.
+watch: Watching a project adds it to your notification stack.
+
+git push -u [REPOALIAS] master		-> Pushes the latest local commit to the master
+git pull origin [BRANCH]		-> Fetches the latest version of the specified branch
+git clone -b <branch> <remote_repo>	-> Clones the specified branch.
+git branch				-> Lists all the available branches
+git checkout [BRANCH]			-> Switch the branch
+git checkout -b [BRANCH]		-> Create a new branch
+```
 
 ## Important SQL Statements
 Useful commands within the mysql shell.
