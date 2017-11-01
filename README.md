@@ -13,7 +13,7 @@ In order to work, you need to have a few programs installed on your device.
 git config --global user.name "Your Name Here"
 git config --global user.email "your_email@youremail.com"
 git remote add diplproj https://github.com/MarkovicPredrag2/ecard-selbstanmeldung.git
-git push -u diplproj master
+git pull -u diplproj master
 ```
 
 ## Database
