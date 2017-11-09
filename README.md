@@ -26,13 +26,6 @@ Users for testing purposes along with their pw's and roles.
 | drmuncan  		| fliegeimohr  		| arzt		|
 | haustanteraphael 	| 1raphaelhatrecht	| nutzer	|
 
-### 256bit AES Key
-Key for the password encryption and decryption in the database.
-
-```
-x0M9ErVpTVi98cWffCs1NRjQ9QixVq9X
-```
-
 ## Important CLI commands
 Noteworthy CLI commands when working with the native CLI.
 
