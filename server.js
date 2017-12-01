@@ -8,7 +8,7 @@ const unixTime 			= require('unix-time');
 //-----------	App settings	-----------
 
 //	Initialise app instances
-//	The intendation symbolises the
+//	The intendation corresponds to the
 //	order in the inhertiance tree
 const server 		= express(),
 				public 			= express(),
@@ -22,21 +22,24 @@ server.locals.cookieName = 'AnsichtSessionCookie';
 //	Set the middleware (will be inherited)
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(bodyParser.json());
+server.use(cookieParser());
 //	Set children apps
 server.use('/public', public);
 server.use('/role', role);
 
-//	Set the middleware (will be inherited)
-role.use(cookieParser());
 //	Authentication function
 //	Every app within the restricted route will use this function
-role.use(function checkAuthentication(req, res, next) {
+role.use((req, res, next) => {
+	console.log('Permission lookup ...');
 	if (typeof req.cookies[server.locals.cookieName] !== 'undefined')	//	For performance reasons
 		webclientModule.checkIfCookieisValid(req.cookies, server.locals.cookieName)
 			.then((session) => {
 				//	If cookie is valid,
 				//	invoke next middleware-function
-				if (Object.keys(session).length > 0) next();
+				if (Object.keys(session).length > 0) {
+					res.locals.role = session.rolle;
+					next();
+				}
 				//	If not,
 				//	send the login page
 				else {
@@ -57,6 +60,21 @@ role.use(function checkAuthentication(req, res, next) {
 role.use('/arzt', arzt);
 role.use('/benutzer', benutzer);
 
+//	Check, if the user is
+//	permitted to request
+//	the resources
+arzt.use((req, res, next) => {
+	console.log('Entered arzt realm');
+	if(res.locals.role === 'arzt') next();
+	else res.end('Access denied.');
+});
+
+benutzer.use((req, res, next) => {
+	console.log('Entered benutzer realm');
+	if(res.locals.role === 'nutzer') next();
+	else res.end('Access denied.');
+});
+
 //-----------	DB connection	-----------
 
 //	TODO:
@@ -76,18 +94,18 @@ DB.connect()
 //-----------	public routes	-----------
 
 public.post('/login', (req, res) => {
-	console.log('Received POST request at /');
+	console.log('Received POST request at /login');
 	
 	webclientModule.lookupUser(req.body)
 		.then((user) => {
 			//	Create unique session id
 			webclientModule.createUserSession(user)
 				.then((sessionUID) => {
-					//	Send cookie with session UID back
+					//	Create and send cookie with session UID back
 					res.cookie(server.locals.cookieName, sessionUID);
 					//	Redirect the user to
 					//	the correct page
-					webclientModule.redirectUserToPage(user, res);
+					webclientModule.redirectUserToPage(user.rolle, res);
 				})
 				.catch((error) => {
 					//	Send back wrong credentials
@@ -96,7 +114,11 @@ public.post('/login', (req, res) => {
 					res.end('Scheisse, da war Scheisse.');
 				});
 		})
-		.catch((error) => console.error(error));
+		.catch((error) => {
+			//	Send back wrong credentials
+			//	message to the client
+			console.error(error); 
+		});
 });
 
 //-----------	restricted routes	-----------
@@ -129,13 +151,41 @@ arzt.get('/sse', (req, res) => {
 //	TODO:
 //	Implement /sse-feed for benutzer
 
-//-----------	static file service	-----------
+//-----------	server routes	-----------
 
-//	Serves all files from the webroot directory
+//	If the user already had a recent session
+//	but tabbed out and re-requested /
+//	then redirect him back to his page
+server.get('/', (req, res, next) => {
+	console.log('Root lookup ...');
+	if (typeof req.cookies[server.locals.cookieName] !== 'undefined')	//	For performance reasons
+		webclientModule.checkIfCookieisValid(req.cookies, server.locals.cookieName)
+			.then((session) => {
+				//	If cookie is valid,
+				//	invoke next middleware-function
+				if (Object.keys(session).length > 0)
+					webclientModule.redirectUserToPage(session.rolle, res);
+				//	If not,
+				//  invoke next middleware
+				else {
+					//	Delete cookie, since its already overdue
+					res.clearCookie(server.locals.cookieName);
+					next();
+				}
+			})
+			.catch((error) => {
+				//	Send error message back
+				res.end(error);
+				console.error(error);
+			});
+	else next();
+});
+
+//	Serves all files from the webroot directory statically
 server.use('/', express.static('./webroot', {index: '/public/login.html', fallthrough: false}));
 
 //	If not found, return '404 not found' file
-server.use(function notFoundError(err, req, res, next) {
+server.use((err, req, res, next) => {
 	//	ToDo:
 	//	Send 404 File
 	res.status(404).send('Nix gefunden').end();
