@@ -6,8 +6,22 @@ const cookieParser 	= require('cookie-parser');
 const unixTime 			= require('unix-time');
 const DB 						= require('./lib/dbaccess.js')('localhost', 'root', 'v2tJ)Jjt=NS!F<%', 'lokalePatientenDB');
 const ginaListener	= require('./lib/ginaBaseService.js');
+const fs 						= require('fs');
+const https2 				= require('http2');
 
 //-----------	App settings	-----------
+/*
+	Keys for a secure https connection.
+	===================================
+	
+	key: Path to the private key.
+	crt: Path to the certificate.
+	ca: Path to the chaining file.
+*/
+const keys = {
+	key: fs.readFileSync('/home/ecard/ssl-cert/five4u_spengergasse_at.key'), 
+  cert: fs.readFileSync('/home/ecard/ssl-cert/five4u_spengergasse_at_2246905/five4u_spengergasse_at.crt')
+};
 
 /*
 	Initialise app instances.
@@ -100,8 +114,12 @@ DB.connect()
 	.then((result) => {
 		//	After the DB connection has been established,
 		webclientModule = require('./lib/webclientprocedures.js')(DB);
-		//	listen on the given port
-		server.listen(8080, () => console.log('Listen on port 8080 ...'));
+		/*
+			Https2 listens on both http ports, so there is no
+			way of using http.
+		*/
+		https2.createSecureServer(keys, server).listen(8080);
+		https2.createSecureServer(keys, server).listen(8081);
 	})
 	.catch((error) => console.error(error));
 	
@@ -208,16 +226,18 @@ server.use((err, req, res, next) => {
 
 /*
 	Establish the gina connection.
-	Note: There are 3 different event
-	emitters for this function.
+	Note: There are 3 different events 
+	for this function.
 	==================================
 	
 	data: Gets emitted when a patient plugged
 		an e-card.
 	==========================================
+	
 	error: Gets emitted when errors from 
 		the ecard occur.
 	==========================================
+	
 	procerror: Gets emitted when errors from 
 		the process itself occur.
 	==========================================
