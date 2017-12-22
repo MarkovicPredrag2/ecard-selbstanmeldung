@@ -23,5 +23,16 @@
     "mysql": "^2.15.0",
     "unix-time": "^1.0.1",
     "winston": "^2.4.0"
-  }
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "Diplomproject",
+    "of",
+    "the",
+    "five4u",
+    "team."
+  ]
 }

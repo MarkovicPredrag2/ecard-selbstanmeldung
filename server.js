@@ -4,12 +4,14 @@ const express 			= require('express');
 const bodyParser 		= require('body-parser');
 const cookieParser 	= require('cookie-parser');
 const unixTime 			= require('unix-time');
+const DB 						= require('./lib/dbaccess.js')('localhost', 'root', 'v2tJ)Jjt=NS!F<%', 'lokalePatientenDB');
+const ginaListener	= require('./lib/ginaBaseService.js');
 
 //-----------	App settings	-----------
 
-//	Initialise app instances
+//	Initialise app instances.
 //	The intendation corresponds to the
-//	order in the inhertiance tree
+//	order in the inhertiance tree.
 const server 		= express(),
 				public 			= express(),
 				role			 	= express(),
@@ -23,11 +25,12 @@ server.locals.cookieName = 'AnsichtSessionCookie';
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(bodyParser.json());
 server.use(cookieParser());
+
 //	Set children apps
 server.use('/public', public);
 server.use('/role', role);
 
-//	Authentication function
+//	Authentication function:
 //	Every app within the restricted route will use this function
 role.use((req, res, next) => {
 	console.log('Permission lookup ...');
@@ -39,11 +42,9 @@ role.use((req, res, next) => {
 				if (Object.keys(session).length > 0) {
 					res.locals.role = session.rolle;
 					next();
-				}
-				//	If not,
-				//	send the login page
-				else {
-					//	Delete cookie, since its already overdue
+				} else {
+					//	If not, send the login page.
+					//	Delete cookie, since its already overdue.
 					res.clearCookie(server.locals.cookieName);
 					//	and redirect user to the login
 					res.redirect('/');
@@ -56,23 +57,33 @@ role.use((req, res, next) => {
 			});
 	else res.redirect('/');
 });
+
 //	Set children apps
 role.use('/arzt', arzt);
 role.use('/benutzer', benutzer);
 
 //	Check, if the user is
 //	permitted to request
-//	the resources
+//	the arzt resources.
 arzt.use((req, res, next) => {
 	console.log('Entered arzt realm');
-	if(res.locals.role === 'arzt') next();
-	else res.end('Access denied.');
+	if (res.locals.role === 'arzt') {
+		next();
+	} else {
+		res.end('Access denied.');
+	}
 });
 
+//	Check, if the user is
+//	permitted to request
+//	the benutzer resources.
 benutzer.use((req, res, next) => {
 	console.log('Entered benutzer realm');
-	if(res.locals.role === 'nutzer') next();
-	else res.end('Access denied.');
+	if (res.locals.role === 'nutzer') {
+		next();
+	} else {
+		res.end('Access denied.');
+	}
 });
 
 //-----------	DB connection	-----------
@@ -81,7 +92,6 @@ benutzer.use((req, res, next) => {
 //	Assignment through hidden config file
 //	Including: host, user, dbms-password, DB, port, 256bit AES Key
 var webclientModule;
-const DB = require('./lib/dbaccess.js')('localhost', 'root', 'v2tJ)Jjt=NS!F<%', 'lokalePatientenDB');
 DB.connect()
 	.then((result) => {
 		//	After the DB connection has been established,
@@ -95,13 +105,13 @@ DB.connect()
 
 public.post('/login', (req, res) => {
 	console.log('Received POST request at /login');
-	
+	//	Does the user actually exist?
 	webclientModule.lookupUser(req.body)
 		.then((user) => {
-			//	Create unique session id
+			//	Create unique session id.
 			webclientModule.createUserSession(user)
 				.then((sessionUID) => {
-					//	Create and send cookie with session UID back
+					//	Create and send cookie with session UID back.
 					res.cookie(server.locals.cookieName, sessionUID);
 					//	Redirect the user to
 					//	the correct page
@@ -109,14 +119,14 @@ public.post('/login', (req, res) => {
 				})
 				.catch((error) => {
 					//	Send back wrong credentials
-					//	message to the client
+					//	message to the client.
 					console.error(error);
 					res.end('Scheisse, da war Scheisse.');
 				});
 		})
 		.catch((error) => {
 			//	Send back wrong credentials
-			//	message to the client
+			//	message to the client.
 			console.error(error); 
 		});
 });
@@ -130,6 +140,7 @@ arzt.get('/sse', (req, res) => {
 	
 	// 	Set timeout as high as possible
 	req.setTimeout(Number.MAX_VALUE);
+	
 	//	Send headers for event-stream connection
 	//	according to the html5 sse specs
 	res.writeHead(200, {
@@ -186,9 +197,17 @@ server.use('/', express.static('./webroot', {index: '/public/login.html', fallth
 
 //	If not found, return '404 not found' file
 server.use((err, req, res, next) => {
-	//	ToDo:
+	//	TODO:
 	//	Send 404 File
 	res.status(404).send('Nix gefunden').end();
+});
+
+ginaListener.listen('10.196.2.18', 'Test-03 (02:94:93)', (patient, error) => {
+	if (error) {
+		console.error(error);
+	} else {
+		console.log(patient);
+	}
 });
 
 /*setInterval(function() {
