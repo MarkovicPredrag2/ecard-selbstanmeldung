@@ -9,9 +9,11 @@ const ginaListener	= require('./lib/ginaBaseService.js');
 
 //-----------	App settings	-----------
 
-//	Initialise app instances.
-//	The intendation corresponds to the
-//	order in the inhertiance tree.
+/*
+	Initialise app instances.
+	The intendation corresponds to the
+	order in the inhertiance tree.
+*/
 const server 		= express(),
 				public 			= express(),
 				role			 	= express(),
@@ -30,8 +32,10 @@ server.use(cookieParser());
 server.use('/public', public);
 server.use('/role', role);
 
-//	Authentication function:
-//	Every app within the restricted route will use this function
+/*
+	Authentication function:
+	Every app within the restricted route will use this function.
+*/
 role.use((req, res, next) => {
 	console.log('Permission lookup ...');
 	if (typeof req.cookies[server.locals.cookieName] !== 'undefined')	//	For performance reasons
@@ -202,20 +206,32 @@ server.use((err, req, res, next) => {
 	res.status(404).send('Nix gefunden').end();
 });
 
-ginaListener.listen('10.196.2.18', 'Test-03 (02:94:93)', (patient, error) => {
-	if (error) {
-		console.error(error);
-	} else {
-		console.log(patient);
-	}
+/*
+	Establish the gina connection.
+	Note: There are 3 different event
+	emitters for this function.
+	==================================
+	
+	data: Gets emitted when a patient plugged
+		an e-card.
+	==========================================
+	error: Gets emitted when errors from 
+		the ecard occur.
+	==========================================
+	procerror: Gets emitted when errors from 
+		the process itself occur.
+	==========================================
+*/
+const ginaInformation = ginaListener.listen('10.196.2.18', 'Test-03 (02:94:93)', 400, true);
+
+ginaInformation.on('data', (patient) => {
+	console.log(patient);
 });
 
-/*setInterval(function() {
-    // we walk through each connection
-    openConnections.forEach(function(resp) {
-        var d = new Date();
-        resp.write('id: ' + d.getMilliseconds() + '\n');
-        resp.write('data:' + createMsg() +   '\n\n'); // Note the extra newlines
-    });
+ginaInformation.on('error', (error) => {
+	console.error(error);
+});
 
-}, 1000);*/
+ginaInformation.on('procerror', (error) => {
+	console.error(error);
+});
