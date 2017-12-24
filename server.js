@@ -4,7 +4,7 @@ const express 			= require('express');
 const bodyParser 		= require('body-parser');
 const cookieParser 	= require('cookie-parser');
 const unixTime 			= require('unix-time');
-const DB 						= require('./lib/dbaccess.js')('localhost', 'root', 'v2tJ)Jjt=NS!F<%', 'lokalePatientenDB');
+const DB 						= require('./lib/dbaccess.js')('localhost', 'root', 'selbstanmeldungstool', 'lokalePatientenDB');
 const ginaListener	= require('./lib/ginaBaseService.js');
 const fs 						= require('fs');
 const https2 				= require('http2');
@@ -118,8 +118,8 @@ DB.connect()
 			Https2 listens on both http ports, so there is no
 			way of using http.
 		*/
-		https2.createSecureServer(keys, server).listen(8080);
-		https2.createSecureServer(keys, server).listen(8081);
+		https2.createSecureServer(keys, server).listen(80);
+		https2.createSecureServer(keys, server).listen(443);
 	})
 	.catch((error) => console.error(error));
 	

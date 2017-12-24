@@ -4,6 +4,8 @@ echo "Committext: "
 read committext
 echo "Branch: "
 read branch
+echo "Database root login:"
+mysqldump -u root -p --routines lokalePatientenDB > ./db/ordination.sql
 git pull $(git remote) master
 git checkout $branch
 git add .
