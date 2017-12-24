@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.19, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.20, for Linux (x86_64)
 --
 -- Host: localhost    Database: lokalePatientenDB
 -- ------------------------------------------------------
--- Server version	5.7.19-0ubuntu0.16.04.1
+-- Server version	5.7.20-0ubuntu0.17.10.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -24,9 +24,10 @@ DROP TABLE IF EXISTS `benutzer`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `benutzer` (
   `username` varchar(45) NOT NULL,
-  `passwort` varchar(45) NOT NULL,
+  `passwort` varchar(100) NOT NULL,
   `rolle` varchar(45) NOT NULL,
   `beschreibung` varchar(255) DEFAULT NULL,
+  `salt` char(12) NOT NULL,
   PRIMARY KEY (`username`),
   KEY `fk_rolle` (`rolle`),
   CONSTRAINT `fk_rolle` FOREIGN KEY (`rolle`) REFERENCES `rollen` (`rollen`)
@@ -39,7 +40,7 @@ CREATE TABLE `benutzer` (
 
 LOCK TABLES `benutzer` WRITE;
 /*!40000 ALTER TABLE `benutzer` DISABLE KEYS */;
-INSERT INTO `benutzer` VALUES ('drmuncan','S Õs®Ðõ€‰WÛÝ\n½','arzt','Dr. Muncan David ist Oberarzt und gelegentlicher Gastvortragender an der Med Uni Wien.'),('haustanteraphael','Lâ_Ùë)drÍï·};¡ü®¬e·ßMAÑ*','nutzer','Frau Raphael ist seit jahrzehnten im Gesundheitsbereich tätig. Ihre Spezialitäten sind das Kartenleserstecken und Aushändigen von Ecards.');
+INSERT INTO `benutzer` VALUES ('drmuncan','079c01d6c2507a743b32023fcb63c790a0b3d791dad7134233250a72','arzt','Super typ','pV2MEk3mG6nO'),('haustanteraphael','3759740c22fd53ac9c07627bd618bda97c6cd4c66c4e2ac7032a1065','nutzer','Super Frau','HUq6NLyr0OUu');
 /*!40000 ALTER TABLE `benutzer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -106,9 +107,9 @@ DROP TABLE IF EXISTS `sessions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sessions` (
-  `session_id` varchar(35) NOT NULL,
+  `session_id` char(26) NOT NULL,
   `timestamp` int(11) DEFAULT NULL,
-  `username` varchar(45) DEFAULT NULL,
+  `username` varchar(45) NOT NULL,
   PRIMARY KEY (`session_id`),
   KEY `fk_session` (`username`),
   CONSTRAINT `fk_session` FOREIGN KEY (`username`) REFERENCES `benutzer` (`username`)
@@ -121,9 +122,41 @@ CREATE TABLE `sessions` (
 
 LOCK TABLES `sessions` WRITE;
 /*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
-INSERT INTO `sessions` VALUES ('=8NjtCPE)cvSdA%CN5NeuFdk§p2bKnq',0,'drmuncan');
 /*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'lokalePatientenDB'
+--
+/*!50003 DROP FUNCTION IF EXISTS `hashPW` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `hashPW`(password TEXT, salt TEXT, count INT) RETURNS text CHARSET latin1
+BEGIN
+DECLARE hash TEXT;
+SET hash = CONCAT(salt ,'.' , password);
+iteration: LOOP
+  IF count > 0 THEN
+  SET hash = SHA2(hash, 224);
+SET count = count - 1;
+ELSE
+LEAVE iteration;
+END IF;
+END LOOP;
+RETURN hash;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -134,4 +167,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-10-19 22:02:07
+-- Dump completed on 2017-12-24  1:49:04
