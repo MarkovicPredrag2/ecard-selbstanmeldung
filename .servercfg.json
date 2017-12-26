@@ -1,0 +1,14 @@
+{
+	"ssl": {
+		"key": "/home/ecard/ssl-cert/five4u_spengergasse_at.key",
+		"cert": "/home/ecard/ssl-cert/five4u_spengergasse_at_2246905/five4u_spengergasse_at.crt"
+	},
+	"gina": {
+		"ipaddress": "10.196.2.18",
+		"reader": "Test-03 (02:94:93)",
+		"interval": 400,
+		"test": true
+	},
+	"cookiename": "AnsichtSessionCookie",
+	"dbname": "lokalePatientenDB"
+}

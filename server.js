@@ -4,47 +4,75 @@ const express 			= require('express');
 const bodyParser 		= require('body-parser');
 const cookieParser 	= require('cookie-parser');
 const unixTime 			= require('unix-time');
-const DB 						= require('./lib/dbaccess.js')('localhost', 'root', 'selbstanmeldungstool', 'lokalePatientenDB');
+const DB 						= new require('./lib/dbaccess.js')('localhost', 'root', 'selbstanmeldungstool', 'lokalePatientenDB');
 const ginaListener	= require('./lib/ginaBaseService.js');
 const fs 						= require('fs');
-const https2 				= require('http2');
+const server 				= require('http2');
+const winston 			= require('winston');
 
-//-----------	App settings	-----------
-/*
-	Keys for a secure https connection.
-	===================================
-	
-	key: Path to the private key.
-	crt: Path to the certificate.
-	ca: Path to the chaining file.
-*/
-const keys = {
-	key: fs.readFileSync('/home/ecard/ssl-cert/five4u_spengergasse_at.key'), 
-  cert: fs.readFileSync('/home/ecard/ssl-cert/five4u_spengergasse_at_2246905/five4u_spengergasse_at.crt')
+//-----------	Configuration -----------
+
+//	Reading the config file.
+const cfg = JSON.parse(fs.readFileSync('./.servercfg.json', 'utf8'));
+//	Instantiating the logging instance.
+//	Includes production ready logs.
+const logger = new (winston.Logger)({
+  transports: [
+  	new (winston.transports.File)({
+      name: 'server-error',
+      filename: './logs/server-error.log',
+      level: 'server_error'
+    }),
+    new (winston.transports.File)({
+      name: 'server-traffic',
+      filename: './logs/server-traffic.log',
+      level: 'traffic_info'
+    }),
+    new (winston.transports.File)({
+      name: 'gina-errors',
+      filename: './logs/gina-errors.log',
+      level: 'gina_error'
+    })
+  ]
+});
+
+const logMetaData = {
+	file: __filename
 };
+
+//-----------	App settings -----------
+
+//	Keys for a secure https connection.
+//	===================================
+//	key: Path to the private key.
+//	crt: Path to the certificate.
+//	ca: Path to the chaining file.
+const keys = {
+	key: fs.readFileSync(cfg.ssl.key), 
+  cert: fs.readFileSync(cfg.ssl.cert)
+};
+
 
 /*
 	Initialise app instances.
 	The intendation corresponds to the
 	order in the inhertiance tree.
 */
-const server 		= express(),
+const app 		= express(),
 				public 			= express(),
 				role			 	= express(),
 					arzt 				= express(),
 					benutzer		= express();
 
 //	Global variables
-server.locals.cookieName = 'AnsichtSessionCookie';
-
+app.locals.cookieName = cfg.cookiename;
 //	Set the middleware (will be inherited)
-server.use(bodyParser.urlencoded({ extended: false }));
-server.use(bodyParser.json());
-server.use(cookieParser());
-
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cookieParser());
 //	Set children apps
-server.use('/public', public);
-server.use('/role', role);
+app.use('/public', public);
+app.use('/role', role);
 
 /*
 	Authentication function:
@@ -52,8 +80,8 @@ server.use('/role', role);
 */
 role.use((req, res, next) => {
 	console.log('Permission lookup ...');
-	if (typeof req.cookies[server.locals.cookieName] !== 'undefined')	//	For performance reasons
-		webclientModule.checkIfCookieisValid(req.cookies, server.locals.cookieName)
+	if (typeof req.cookies[app.locals.cookieName] !== 'undefined')	//	For performance reasons
+		webclientModule.checkIfCookieisValid(req.cookies, app.locals.cookieName)
 			.then((session) => {
 				//	If cookie is valid,
 				//	invoke next middleware-function
@@ -63,13 +91,14 @@ role.use((req, res, next) => {
 				} else {
 					//	If not, send the login page.
 					//	Delete cookie, since its already overdue.
-					res.clearCookie(server.locals.cookieName);
+					res.clearCookie(app.locals.cookieName);
 					//	and redirect user to the login
 					res.redirect('/');
 				}
 			})
 			.catch((error) => {
 				//	Send error message back
+				logger.log('server_error', error, logMetaData);
 				res.end(error);
 				console.error(error);
 			});
@@ -106,20 +135,15 @@ benutzer.use((req, res, next) => {
 
 //-----------	DB connection	-----------
 
-//	TODO:
-//	Assignment through hidden config file
-//	Including: host, user, dbms-password, DB, port, 256bit AES Key
 var webclientModule;
 DB.connect()
 	.then((result) => {
 		//	After the DB connection has been established,
 		webclientModule = require('./lib/webclientprocedures.js')(DB);
-		/*
-			Https2 listens on both http ports, so there is no
-			way of using http.
-		*/
-		https2.createSecureServer(keys, server).listen(80);
-		https2.createSecureServer(keys, server).listen(443);
+		//	Https2 listens on both http ports, so there is no
+		//	way of using http.
+		server.createSecureapp(keys, app).listen(80);
+		server.createSecureapp(keys, app).listen(443);
 	})
 	.catch((error) => console.error(error));
 	
@@ -134,7 +158,7 @@ public.post('/login', (req, res) => {
 			webclientModule.createUserSession(user)
 				.then((sessionUID) => {
 					//	Create and send cookie with session UID back.
-					res.cookie(server.locals.cookieName, sessionUID);
+					res.cookie(app.locals.cookieName, sessionUID);
 					//	Redirect the user to
 					//	the correct page
 					webclientModule.redirectUserToPage(user.rolle, res);
@@ -175,7 +199,7 @@ arzt.get('/sse', (req, res) => {
 	req.on('close', () => {
 		//	Set 5 minute timestamp for request
 		//	whose connection broke up
-		webclientModule.setTimeStamp(req.cookies[server.locals.cookieName], (unixTime(new Date()) + 300));
+		webclientModule.setTimeStamp(req.cookies[app.locals.cookieName], (unixTime(new Date()) + 300));
 	});
 });
 
@@ -184,15 +208,15 @@ arzt.get('/sse', (req, res) => {
 //	TODO:
 //	Implement /sse-feed for benutzer
 
-//-----------	server routes	-----------
+//-----------	app routes	-----------
 
 //	If the user already had a recent session
 //	but tabbed out and re-requested /
 //	then redirect him back to his page
-server.get('/', (req, res, next) => {
+app.get('/', (req, res, next) => {
 	console.log('Root lookup ...');
-	if (typeof req.cookies[server.locals.cookieName] !== 'undefined')	//	For performance reasons
-		webclientModule.checkIfCookieisValid(req.cookies, server.locals.cookieName)
+	if (typeof req.cookies[app.locals.cookieName] !== 'undefined')	//	For performance reasons
+		webclientModule.checkIfCookieisValid(req.cookies, app.locals.cookieName)
 			.then((session) => {
 				//	If cookie is valid,
 				//	invoke next middleware-function
@@ -202,7 +226,7 @@ server.get('/', (req, res, next) => {
 				//  invoke next middleware
 				else {
 					//	Delete cookie, since its already overdue
-					res.clearCookie(server.locals.cookieName);
+					res.clearCookie(app.locals.cookieName);
 					next();
 				}
 			})
@@ -215,10 +239,10 @@ server.get('/', (req, res, next) => {
 });
 
 //	Serves all files from the webroot directory statically
-server.use('/', express.static('./webroot', {index: '/public/login.html', fallthrough: false}));
+app.use('/', express.static('./webroot', {index: '/public/login.html', fallthrough: false}));
 
 //	If not found, return '404 not found' file
-server.use((err, req, res, next) => {
+app.use((err, req, res, next) => {
 	//	TODO:
 	//	Send 404 File
 	res.status(404).send('Nix gefunden').end();
@@ -242,7 +266,9 @@ server.use((err, req, res, next) => {
 		the process itself occur.
 	==========================================
 */
-const ginaInformation = ginaListener.listen('10.196.2.18', 'Test-03 (02:94:93)', 400, true);
+
+const ginacfg = cfg.gina;
+const ginaInformation = ginaListener.listen(ginacfg.ipaddress, ginacfg.reader, ginacfg.interval, ginacfg.test);
 
 ginaInformation.on('data', (patient) => {
 	console.log(patient);
