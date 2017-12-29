@@ -4,7 +4,7 @@
 const express 			= require('express');
 const bodyParser 		= require('body-parser');
 const fs 						= require('fs');
-const server 				= require('https');
+const https 				= require('https');
 const winston 			= require('winston');
 const cookieSession = require('client-sessions');
 const path 					= require('path');
@@ -131,24 +131,33 @@ function redirectUser(role, res) {
 	}
 }
 
-//-----------	DB connection	-----------
+//-----------	Starting server	-----------
 
-/*
-	TODO:
-	=====
-	
-	Create a booting function
-	to boot all functions and processes.
-*/
-const dbconf = cfg.dbsettings;
-const DB 	= new MySQLWrapper(dbconf.host, dbconf.user, 'selbstanmeldungstool', dbconf.dbname);
+const dbconf 	= cfg.dbsettings;
+const ginacfg = cfg.gina;
+var ginaInformation;
+
+const DB = new MySQLWrapper(dbconf.host, dbconf.user, 'selbstanmeldungstool', dbconf.dbname);
 DB.connect()
 	.then((result) => {
-		//	Serving on both web ports via https
-		server.createSecureapp(keys, app).listen(80);
-		server.createSecureapp(keys, app).listen(443);
+		console.log('Verbunden mit der DB ...');
+		//	Starting the server
+		https.createServer(keys, app).listen(80, () => {
+			console.log('Verbunden auf Port 80 ...');
+		});
+		https.createServer(keys, app).listen(443, () => {
+			console.log('Verbunden auf Port 443 ...');
+		});
+		//	Starting gina listerner
+		ginaInformation = ginaListener.listen(ginacfg.ipaddress, ginacfg.reader, ginacfg.interval, ginacfg.testCardsAllowed);
+		console.log('Verbunden mit der GINA ...');
+		console.log('Startup fertig!');
 	})
-	.catch((error) => console.error(error));
+	.catch((error) => {
+		logger.log('server_error', `At server startup: ${error}`, logMetaData);
+		//	Exits the program
+		process.exit(1);
+	});
 	
 //-----------	public routes	-----------
 
@@ -347,8 +356,6 @@ app.use((err, req, res, next) => {
 		the process itself occur.
 	==========================================
 */
-const ginacfg = cfg.gina;
-const ginaInformation = ginaListener.listen(ginacfg.ipaddress, ginacfg.reader, ginacfg.interval, ginacfg.testCardsAllowed);
 
 ginaInformation.on('data', (patient) => {
 	//	Patient plugged his card.
