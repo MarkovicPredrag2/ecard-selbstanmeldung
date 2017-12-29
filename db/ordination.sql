@@ -40,7 +40,7 @@ CREATE TABLE `benutzer` (
 
 LOCK TABLES `benutzer` WRITE;
 /*!40000 ALTER TABLE `benutzer` DISABLE KEYS */;
-INSERT INTO `benutzer` VALUES ('drmuncan','079c01d6c2507a743b32023fcb63c790a0b3d791dad7134233250a72','arzt','Super typ','pV2MEk3mG6nO'),('haustanteraphael','3759740c22fd53ac9c07627bd618bda97c6cd4c66c4e2ac7032a1065','nutzer','Super Frau','HUq6NLyr0OUu');
+INSERT INTO `benutzer` VALUES ('drmuncan','079c01d6c2507a743b32023fcb63c790a0b3d791dad7134233250a72','arzt','Super typ','pV2MEk3mG6nO'),('haustanteraphael','3759740c22fd53ac9c07627bd618bda97c6cd4c66c4e2ac7032a1065','nutzer','Super Frau','HUq6NLyr0OUu'),('leonardo','157d8b261af7afe3fb32851230e2fa1c14211ae2dd34d07583247562','ipadapp','Super app','jYzlVjTsIVQL');
 /*!40000 ALTER TABLE `benutzer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -55,12 +55,13 @@ CREATE TABLE `patienten` (
   `pt_svnr` char(10) NOT NULL,
   `pt_vorname` varchar(255) NOT NULL,
   `pt_nachname` varchar(255) NOT NULL,
-  `pt_lebensjahr` tinyint(3) unsigned NOT NULL,
-  `pt_adresse` varchar(255) NOT NULL,
-  `pt_hausnummer` smallint(5) unsigned NOT NULL,
-  `pt_stiege` tinyint(3) unsigned NOT NULL,
-  `pt_plz` smallint(5) unsigned NOT NULL,
-  `pt_ort` varchar(255) NOT NULL,
+  `pt_lebensjahr` tinyint(3) unsigned DEFAULT NULL,
+  `pt_adresse` varchar(255) DEFAULT NULL,
+  `pt_hausnummer` smallint(5) unsigned DEFAULT NULL,
+  `pt_stiege` tinyint(3) unsigned DEFAULT NULL,
+  `pt_plz` smallint(5) unsigned DEFAULT NULL,
+  `pt_ort` varchar(255) DEFAULT NULL,
+  `pt_titel` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`pt_svnr`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -71,7 +72,6 @@ CREATE TABLE `patienten` (
 
 LOCK TABLES `patienten` WRITE;
 /*!40000 ALTER TABLE `patienten` DISABLE KEYS */;
-INSERT INTO `patienten` VALUES ('5043030695','Dawid','Muncan',3,'Zentrum der Welt',503,3,1020,'Wien'),('5043030698','Dawid','Muncan',3,'Zentrum der Welt',503,3,1020,'Wien'),('5043030699','Petar','Muncan',72,'Kleistgasse',503,3,1020,'Wien');
 /*!40000 ALTER TABLE `patienten` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -95,34 +95,8 @@ CREATE TABLE `rollen` (
 
 LOCK TABLES `rollen` WRITE;
 /*!40000 ALTER TABLE `rollen` DISABLE KEYS */;
-INSERT INTO `rollen` VALUES ('arzt','Aerzte koennen Einsicht auf die Arztansicht nehmen und Patientenveranlassungen durchfuehren.'),('nutzer','Nutzer haben Zugriff auf die Warteliste.');
+INSERT INTO `rollen` VALUES ('arzt','Aerzte koennen Einsicht auf die Arztansicht nehmen und Patientenveranlassungen durchfuehren.'),('ipadapp','Nutzer, welche sich über die App einloggen. Erhalten Daten der Kartenlesegeraete.'),('nutzer','Nutzer haben Zugriff auf die Warteliste.');
 /*!40000 ALTER TABLE `rollen` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `sessions`
---
-
-DROP TABLE IF EXISTS `sessions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sessions` (
-  `session_id` char(26) NOT NULL,
-  `timestamp` int(11) DEFAULT NULL,
-  `username` varchar(45) NOT NULL,
-  PRIMARY KEY (`session_id`),
-  KEY `fk_session` (`username`),
-  CONSTRAINT `fk_session` FOREIGN KEY (`username`) REFERENCES `benutzer` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sessions`
---
-
-LOCK TABLES `sessions` WRITE;
-/*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -167,4 +141,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-27  0:08:35
+-- Dump completed on 2017-12-29  2:20:05

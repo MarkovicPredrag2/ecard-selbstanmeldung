@@ -18,10 +18,11 @@
   },
   "homepage": "https://github.com/MarkovicPredrag2/ecard-selbstanmeldung#readme",
   "dependencies": {
-    "cookie-parser": "^1.4.3",
+    "client-sessions": "^0.8.0",
     "express": "^4.16.2",
-    "http2": "^3.3.7",
     "mysql": "^2.15.0",
+    "pug": "^2.0.0-rc.4",
+    "serve-favicon": "^2.4.5",
     "unix-time": "^1.0.1",
     "winston": "^2.4.0"
   },
