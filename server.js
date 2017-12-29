@@ -135,29 +135,28 @@ function redirectUser(role, res) {
 
 const dbconf 	= cfg.dbsettings;
 const ginacfg = cfg.gina;
-var ginaInformation;
 
 const DB = new MySQLWrapper(dbconf.host, dbconf.user, 'selbstanmeldungstool', dbconf.dbname);
 DB.connect()
 	.then((result) => {
 		console.log('Verbunden mit der DB ...');
-		//	Starting the server
-		https.createServer(keys, app).listen(80, () => {
-			console.log('Verbunden auf Port 80 ...');
-		});
-		https.createServer(keys, app).listen(443, () => {
-			console.log('Verbunden auf Port 443 ...');
-		});
-		//	Starting gina listerner
-		ginaInformation = ginaListener.listen(ginacfg.ipaddress, ginacfg.reader, ginacfg.interval, ginacfg.testCardsAllowed);
-		console.log('Verbunden mit der GINA ...');
-		console.log('Startup fertig!');
 	})
 	.catch((error) => {
 		logger.log('server_error', `At server startup: ${error}`, logMetaData);
 		//	Exits the program
 		process.exit(1);
 	});
+
+//	Starting the server
+https.createServer(keys, app).listen(80, () => {
+	console.log('Verbunden auf Port 80 ...');
+});
+https.createServer(keys, app).listen(443, () => {
+	console.log('Verbunden auf Port 443 ...');
+});
+
+//	Starting gina listerner
+const ginaInformation = ginaListener.listen(ginacfg.ipaddress, ginacfg.reader, ginacfg.interval, ginacfg.testCardsAllowed);
 	
 //-----------	public routes	-----------
 
@@ -356,7 +355,6 @@ app.use((err, req, res, next) => {
 		the process itself occur.
 	==========================================
 */
-
 ginaInformation.on('data', (patient) => {
 	//	Patient plugged his card.
 	//	Add patient to the database

@@ -12,8 +12,8 @@
 	"cookiesettings": {
 		"cookieName": "AnsichtSessionCookie",
 		"secret": "%uhQGVU8j;C,ylSC=4MSkxyc,Gt|@`}R&F5+$XnU`eq58VQp.6aOq?*+rTq^K9{",
-		"duration": 24 * 60 * 60 * 1000,
-		"activeDuration": 5 * 60 * 1000,
+		"duration": 86400000,
+		"activeDuration": 300000,
 		"cookie": {
 			"ephemeral": true,
 			"httpOnly": false,
