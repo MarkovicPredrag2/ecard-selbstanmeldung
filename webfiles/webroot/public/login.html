@@ -20,27 +20,26 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    <link href="signin.css" rel="stylesheet">
+    <link href="/public/resources/styles/signin.css" rel="stylesheet">
   </head>
 
   <body>
 
     <div class="container">
 
-      <form class="form-signin">
+      <form class="form-signin" action="/public/login" method="post">
         <h2 class="form-signin-heading">e-card Selbstanmeldungstool</h2>
-        <label for="inputEmail" class="sr-only">username</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="User-Name" required autofocus>
-        <label for="inputPassword" class="sr-only">password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Passwort" required>
+        <label for="login_username" class="sr-only">Username</label>
+        <input type="text" id="login_username" class="form-control" placeholder="User-Name" name="username" required autofocus>
+        <label for="login_password" class="sr-only">Passwort</label>
+        <input type="password" id="ilogin_password" class="form-control" placeholder="Passwort" name="password" required>
         <div class="checkbox">
           <label>
             <input type="checkbox" value="remember-me"> Angemeldet bleiben
           </label>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit"  onclick="window.location.href='/role/arzt/arztansicht.html'">Anmelden</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Anmelden</button>
         <p></P>
-        <p id="warning">User-Name oder Passwort falsch!</p>
       </form>
 
     </div> <!-- /container -->

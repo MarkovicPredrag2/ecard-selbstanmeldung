@@ -40,7 +40,7 @@ CREATE TABLE `benutzer` (
 
 LOCK TABLES `benutzer` WRITE;
 /*!40000 ALTER TABLE `benutzer` DISABLE KEYS */;
-INSERT INTO `benutzer` VALUES ('drmuncan','079c01d6c2507a743b32023fcb63c790a0b3d791dad7134233250a72','arzt','Super typ','pV2MEk3mG6nO'),('haustanteraphael','3759740c22fd53ac9c07627bd618bda97c6cd4c66c4e2ac7032a1065','nutzer','Super Frau','HUq6NLyr0OUu'),('leonardo','157d8b261af7afe3fb32851230e2fa1c14211ae2dd34d07583247562','ipadapp','Super app','jYzlVjTsIVQL');
+INSERT INTO `benutzer` VALUES ('drmuncan','079c01d6c2507a743b32023fcb63c790a0b3d791dad7134233250a72','arzt','Super typ','pV2MEk3mG6nO'),('haustanteraphael','bc11cc8894686f577cd3393c5d94add7c34c46eb9096181669bf6fbd','benutzer','Super Frau','wsL4ElQRbAl0'),('leonardo','157d8b261af7afe3fb32851230e2fa1c14211ae2dd34d07583247562','ipadapp','Super app','jYzlVjTsIVQL');
 /*!40000 ALTER TABLE `benutzer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -72,6 +72,7 @@ CREATE TABLE `patienten` (
 
 LOCK TABLES `patienten` WRITE;
 /*!40000 ALTER TABLE `patienten` DISABLE KEYS */;
+INSERT INTO `patienten` VALUES ('1003280380','Max','Musterpatient',NULL,NULL,NULL,NULL,NULL,NULL,'Mag.');
 /*!40000 ALTER TABLE `patienten` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -95,7 +96,7 @@ CREATE TABLE `rollen` (
 
 LOCK TABLES `rollen` WRITE;
 /*!40000 ALTER TABLE `rollen` DISABLE KEYS */;
-INSERT INTO `rollen` VALUES ('arzt','Aerzte koennen Einsicht auf die Arztansicht nehmen und Patientenveranlassungen durchfuehren.'),('ipadapp','Nutzer, welche sich über die App einloggen. Erhalten Daten der Kartenlesegeraete.'),('nutzer','Nutzer haben Zugriff auf die Warteliste.');
+INSERT INTO `rollen` VALUES ('arzt','Aerzte koennen Einsicht auf die Arztansicht nehmen und Patientenveranlassungen durchfuehren.'),('benutzer','Nutzer haben Zugriff auf die Warteliste.'),('ipadapp','Nutzer, welche sich über die App einloggen. Erhalten Daten der Kartenlesegeraete.');
 /*!40000 ALTER TABLE `rollen` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,4 +142,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-29 14:18:46
+-- Dump completed on 2018-01-01 23:33:08

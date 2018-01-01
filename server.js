@@ -19,36 +19,40 @@ const MySQLWrapper 	= require('./lib/dbaccess.js');
 //	Reading the config file.
 const cfg = JSON.parse(fs.readFileSync('./.servercfg.json', 'utf8'));
 
-//	Instantiating the logging instance.
-const logger = new (winston.Logger)({
+//	Logging instances.
+const serverTrafficLogger = new (winston.Logger)({
   transports: [
   	new (winston.transports.File)({
       name: 'server-error',
-      filename: path.join(cfg.logsettings.logpath, 'server-error.log'),
-      level: 'server_error'
+      filename: path.join('./logs/', 'server-error.log'),
+      level: 'error'
     }),
     new (winston.transports.File)({
       name: 'server-traffic',
-      filename: path.join(cfg.logsettings.logpath, 'server-traffic.log'),
-      level: 'server_traffic_info'
+      filename: path.join('./logs/', 'server-traffic.log'),
+      level: 'info'
+    })
+   ]
+});
+
+const ginaErrorLogger = new (winston.Logger)({
+  transports: [
+  	new (winston.transports.File)({
+      name: 'gina-proc-errors',
+      filename: path.join('./logs/', 'gina-proc-errors.log'),
+      level: 'fatal'
     }),
     new (winston.transports.File)({
       name: 'gina-errors',
-      filename: path.join(cfg.logsettings.logpath, 'gina-errors.log'),
-      level: 'gina_error'
-    }),
-    new (winston.transports.File)({
-      name: 'gina-proc-errors',
-      filename: path.join(cfg.logsettings.logpath, 'gina-proc-errors.log'),
-      level: 'gina_proc_error'
+      filename: path.join('./logs/', 'gina-errors.log'),
+      level: 'error'
     })
-  ]
+   ]
 });
 
 //	Metadata, which is included in every log entry
 const logMetaData = {
-	file: 			__filename,
-	directory:  __dirname
+	file: __filename
 };
 
 //	Keys for a secure https connection.
@@ -76,10 +80,15 @@ const app 		= express(),
 //	Template engine settings.
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '/webfiles/views/'));
+public.set('view engine', 'pug');
+public.set('views', path.join(__dirname, '/webfiles/views/'));
+arzt.set('view engine', 'pug');
+arzt.set('views', path.join(__dirname, '/webfiles/views/'));
 
 //	Third party middle ware.
 app.use(favicon(path.join(__dirname, '/webfiles/favicon/ec_logo.ico')));
 app.use(bodyParser.urlencoded({ extended: false }));
+//	app.use(bodyParser.json({ limit: '5mb' })) --> HTTP Size limited to 5mb, replace when in production
 app.use(bodyParser.json());
 app.use(cookieSession(cfg.cookiesettings));
 
@@ -87,12 +96,7 @@ app.use(cookieSession(cfg.cookiesettings));
 app.use('/public', public);
 app.use('/role', role);
 
-//	Set children apps for the role-app.
-role.use('/arzt', arzt);
-role.use('/benutzer', benutzer);
-role.use('/app', ipadapp);
-
-//	SSE subscriütion list for each app
+//	SSE subscription list for each app
 arzt.locals.subscriptions			= [];
 benutzer.locals.subscriptions	= [];
 ipadapp.locals.subscriptions	= [];
@@ -103,7 +107,8 @@ ipadapp.locals.subscriptions	= [];
 */
 role.use((req, res, next) => {
 	if (req[cfg.cookiesettings.cookieName].user &&
-			`/${req[cfg.cookiesettings.cookieName].user.role}` === req.app.mountpath) {
+			`${req[cfg.cookiesettings.cookieName].user.role}` === 
+			req.path.substring(1, req[cfg.cookiesettings.cookieName].user.role.length + 1)) {
 		//	The user is permitted
 		//	to enter the url.
 		//	Call the next middleware.
@@ -112,12 +117,17 @@ role.use((req, res, next) => {
 		//	User does not have a valid cookie
 		//	or is not permitted to enter the url.
 		//	Therefore send a 403.html (access denied).
-		logger.log('server_traffic_info', 
-		`Access denied for User ${req[cfg.cookiesettings.cookieName].user.username} (${req.ip}) who accessed ${req.originalUrl}`,
+		serverTrafficLogger.log('info', 
+		`Access denied for ${req.ip} who accessed ${req.originalUrl}`,
 		logMetaData);
-		res.status(403).sendFile(path.join(__dirname, '/webfiles/misc/403.html')).end();
+		res.status(403).sendFile(path.join(__dirname, '/webfiles/misc/403.html'));
 	}
 });
+
+//	Set children apps for the role-app.
+role.use('/arzt', arzt);
+role.use('/benutzer', benutzer);
+role.use('/app', ipadapp);
 
 /*
 	Redirection function.
@@ -127,7 +137,7 @@ role.use((req, res, next) => {
 function redirectUser(role, res) {
 	switch(role) {
 		case 'arzt': res.redirect('/role/arzt/arztansicht'); break;	//	Route to the rendered arzt view
-		case 'benutzer': res.redirect('/role/benutzer');		 break;	//	Route to the warteliste html
+		case 'benutzer': res.redirect('/role/benutzer/warteliste.html');		 break;	//	Route to the warteliste html
 	}
 }
 
@@ -136,33 +146,36 @@ function redirectUser(role, res) {
 const dbconf 	= cfg.dbsettings;
 const ginacfg = cfg.gina;
 
-const DB = new MySQLWrapper(dbconf.host, dbconf.user, 'selbstanmeldungstool', dbconf.dbname);
+const DB = new MySQLWrapper(dbconf.host, dbconf.user, 'v2tJ)Jjt=NS!F<%', dbconf.dbname);
 DB.connect()
 	.then((result) => {
 		console.log('Verbunden mit der DB ...');
 	})
 	.catch((error) => {
-		logger.log('server_error', `At server startup: ${error}`, logMetaData);
+		serverTrafficLogger.log('error', `At server startup: ${error}`, logMetaData);
 		//	Exits the program
 		process.exit(1);
 	});
 
+//  Ports to listen on (443 & 80 at production, both ssl)
+const port_1 = 80;
+const port_2 = 443;
 //	Starting the server
-https.createServer(keys, app).listen(80, () => {
-	console.log('Verbunden auf Port 80 ...');
+https.createServer(keys, app).listen(port_1, () => {
+	console.log(`Verbunden auf Port ${port_1}`);
 });
-https.createServer(keys, app).listen(443, () => {
-	console.log('Verbunden auf Port 443 ...');
+https.createServer(keys, app).listen(port_2, (port) => {
+	console.log(`Verbunden auf Port ${port_2}`);
 });
 
 //	Starting gina listerner
-const ginaInformation = ginaListener.listen(ginacfg.ipaddress, ginacfg.reader, ginacfg.interval, ginacfg.testCardsAllowed);
+const ginaInformation = 
+        ginaListener.listen(ginacfg.ipaddress, ginacfg.reader, ginacfg.interval, ginacfg.testCardsAllowed);
 	
 //-----------	public routes	-----------
 
 public.post('/login', (req, res) => {
-	logger.log('server_traffic_info', `${req.ip} accessed ${req.originalUrl}`, logMetaData);
-	console.log('Received POST request at /login');
+	serverTrafficLogger.log('info', `${req.ip} accessed ${req.originalUrl}`, logMetaData);
 	//	Check the credentials
 	//	the user provided within
 	//	the http body.
@@ -170,8 +183,10 @@ public.post('/login', (req, res) => {
 		.then((user) => {
 			//	The user seems to exist, therefore
 			//	sending him a cookie back.
-			req[cfg.cookiesettings.cookieName].user.username 	= user.username;
-			req[cfg.cookiesettings.cookieName].user.role			= user.rolle;
+			req[cfg.cookiesettings.cookieName].user	= {
+				username: user.username,
+				role: user.rolle
+			};
 			//	After the cookie has been send,
 			//	redirect the user to the right
 			//	url (depending on his role), 
@@ -184,7 +199,7 @@ public.post('/login', (req, res) => {
 			//	existing credentials. Therefore,
 			//	send back a rendered html view
 			//	with a credentials error.
-			logger.log('server_error', `${req.ip}@${req.originalUrl}: ${error}`, logMetaData);
+			serverTrafficLogger.log('error', `${req.ip}@${req.originalUrl}: ${error}`, logMetaData);
 			res.render('login', { warning: 'Invalide eingabe. User konnte nicht gefunden werden.' });
 		});
 });
@@ -197,17 +212,17 @@ public.post('/login', (req, res) => {
 	Serve the rendered arztansicht.
 */
 arzt.get('/arztansicht', (req, res) => {
-	logger.log('server_traffic_info', 
+	serverTrafficLogger.log('info', 
 		`User ${req[cfg.cookiesettings.cookieName].user.username} (${req.ip}) accessed ${req.originalUrl}`, 
 		logMetaData);
+	//	res.sendFile('./webfiles/webroot/role/arzt/test.html');
 	res.render('arztansicht', { user: `Dr. ${req[cfg.cookiesettings.cookieName].user.username}` });
 });
 
 arzt.get('/sse', (req, res) => {
-	logger.log('server_traffic_info', 
+	serverTrafficLogger.log('info', 
 		`User ${req[cfg.cookiesettings.cookieName].user.username} (${req.ip}) accessed ${req.originalUrl}`,
 		logMetaData);
-	console.log('Received GET request at /sse');
 	// 	Set timeout as high as possible (in secs)
 	req.setTimeout(Number.MAX_VALUE);
 	//	Send headers for event-stream connection
@@ -230,10 +245,9 @@ arzt.get('/sse', (req, res) => {
 //-----------	ipadapp routes	-----------
 
 ipadapp.get('/sse', (req, res) => {
-	logger.log('server_traffic_info', 
+	serverTrafficLogger.log('info', 
 		`User ${req[cfg.cookiesettings.cookieName].user} (${req.ip}) accessed ${req.originalUrl}`,
 		logMetaData);
-	console.log('Received GET request at /ipadapp/sse');
 	// 	Set timeout as high as possible (in secs)
 	req.setTimeout(Number.MAX_VALUE);
 	//	Send headers for event-stream connection
@@ -269,10 +283,9 @@ ipadapp.put('/patientdata', (req, res) => {
 //-----------	benutzer routes	-----------
 
 benutzer.get('/sse', (req, res) => {
-	logger.log('server_traffic_info', 
+	serverTrafficLogger.log('info', 
 		`User ${req[cfg.cookiesettings.cookieName].user} (${req.ip}) accessed ${req.originalUrl}`,
 		logMetaData);
-	console.log('Received GET request at /benutzer/sse');
 	// 	Set timeout as high as possible (in secs)
 	req.setTimeout(Number.MAX_VALUE);
 	//	Send headers for event-stream connection
@@ -291,6 +304,7 @@ benutzer.get('/sse', (req, res) => {
 			benutzer.locals.subscriptions.findIndex(x => x == res), 1);
 	});
 });
+
 //-----------	app routes	-----------
 
 /*
@@ -299,8 +313,7 @@ benutzer.get('/sse', (req, res) => {
 	then redirect him back to his page.
 */
 app.get('/', (req, res, next) => {
-	logger.log('server_traffic_info', `${req.ip} accessed ${req.originalUrl}`, logMetaData);
-	console.log('Root lookup ...');
+	serverTrafficLogger.log('info', `${req.ip} accessed ${req.originalUrl}`, logMetaData);
 	if (req[cfg.cookiesettings.cookieName].user) {
 		//	The user already seems to have
 		//	a valid cookie. Why demanding
@@ -323,7 +336,8 @@ app.use('/', express.static('./webfiles/webroot', { index: '/public/login.html',
 
 //	Return 404 not found html file
 app.use((err, req, res, next) => {
-	res.status(404).sendFile(path.join(__dirname, '/webfiles/misc/404.html')).end();
+	serverTrafficLogger.log('info', `404 not found: ${req.ip} accessed ${req.originalUrl}`, logMetaData);
+	res.status(404).sendFile(path.join(__dirname, '/webfiles/misc/404.html'));
 });
 
 //-----------	Gina Section -----------
@@ -370,14 +384,14 @@ ginaInformation.on('data', (patient) => {
 			});
 		})
 		.catch((error) => {
-			logger.log('server_error', `db error: ${error}`, logMetaData);
+			serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
 		});
 });
 
 ginaInformation.on('error', (error) => {
-	logger.log('gina_error', error, logMetaData);
+	ginaErrorLogger.log('error', error, logMetaData);
 });
 
 ginaInformation.on('procerror', (error) => {
-	logger.log('gina_proc_error', error, logMetaData);
+	ginaErrorLogger.log('fatal', error, logMetaData);
 });

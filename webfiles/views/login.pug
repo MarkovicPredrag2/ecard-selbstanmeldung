@@ -15,20 +15,20 @@ html(lang='en')
     title Signin Template for Bootstrap
     // Bootstrap CSS
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css', integrity='sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb', crossorigin='anonymous')
-    link(href='signin.css', rel='stylesheet')
+    link(href='/public/resources/styles/signin.css', rel='stylesheet')
   body
     .container
-      form.form-signin
+      form.form-signin(action='/public/login', method='post')
         h2.form-signin-heading e-card Selbstanmeldungstool
-        label.sr-only(for='inputEmail') username
-        input#inputEmail.form-control(type='email', placeholder='User-Name', required='', autofocus='')
-        label.sr-only(for='inputPassword') password
-        input#inputPassword.form-control(type='password', placeholder='Passwort', required='')
+        label.sr-only(for='login_username') Username
+        input#login_username.form-control(type='text', placeholder='User-Name', name='username', required='', autofocus='')
+        label.sr-only(for='login_password') Passwort
+        input#ilogin_password.form-control(type='password', placeholder='Passwort', name='password', required='')
         .checkbox
           label
             input(type='checkbox', value='remember-me')
             |  Angemeldet bleiben
-        button.btn.btn-lg.btn-primary.btn-block(type='submit', onclick="window.location.href='/role/arzt/arztansicht.html'") Anmelden
+        button.btn.btn-lg.btn-primary.btn-block(type='submit') Anmelden
         p
         p#warning= warning
     // /container
