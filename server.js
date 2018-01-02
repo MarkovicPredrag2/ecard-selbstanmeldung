@@ -105,9 +105,14 @@ ipadapp.locals.subscriptions	= [];
 	Authentication function:
 	Every app within the restricted route will use this function.
 */
+
 role.use((req, res, next) => {
-	if (req[cfg.cookiesettings.cookieName].user &&
-			`${req[cfg.cookiesettings.cookieName].user.role}` === 
+  if (req.path === '/logout' && req[cfg.cookiesettings.cookieName].user) {
+    //  The /logout URL is free for all users to access.
+    next();
+  }
+	else if (req[cfg.cookiesettings.cookieName].user &&
+			req[cfg.cookiesettings.cookieName].user.role === 
 			req.path.substring(1, req[cfg.cookiesettings.cookieName].user.role.length + 1)) {
 		//	The user is permitted
 		//	to enter the url.
@@ -122,6 +127,10 @@ role.use((req, res, next) => {
 		logMetaData);
 		res.status(403).sendFile(path.join(__dirname, '/webfiles/misc/403.html'));
 	}
+});
+
+benutzer.use((req, res, next) => {
+  
 });
 
 //	Set children apps for the role-app.
@@ -146,7 +155,7 @@ function redirectUser(role, res) {
 const dbconf 	= cfg.dbsettings;
 const ginacfg = cfg.gina;
 
-const DB = new MySQLWrapper(dbconf.host, dbconf.user, 'v2tJ)Jjt=NS!F<%', dbconf.dbname);
+const DB = new MySQLWrapper(dbconf.host, dbconf.user, dbconf.password, dbconf.dbname);
 DB.connect()
 	.then((result) => {
 		console.log('Verbunden mit der DB ...');
@@ -158,14 +167,14 @@ DB.connect()
 	});
 
 //  Ports to listen on (443 & 80 at production, both ssl)
-const port_1 = 80;
-const port_2 = 443;
+const portcfg = cfg.ports;
+
 //	Starting the server
-https.createServer(keys, app).listen(port_1, () => {
-	console.log(`Verbunden auf Port ${port_1}`);
+https.createServer(app).listen(portcfg.port_1, () => {
+	console.log(`Verbunden auf Port ${portcfg.port_1}`);
 });
-https.createServer(keys, app).listen(port_2, (port) => {
-	console.log(`Verbunden auf Port ${port_2}`);
+https.createServer(app).listen(portcfg.port_2, (port) => {
+	console.log(`Verbunden auf Port ${portcfg.port_2}`);
 });
 
 //	Starting gina listerner
@@ -181,6 +190,12 @@ public.post('/login', (req, res) => {
 	//	the http body.
 	DB.lookUpUser(req.body)
 		.then((user) => {
+		  //  If the user attemps a multi sign in,
+		  //  delete the existing cookie.
+		  if (req[cfg.cookiesettings.cookieName].user) {
+		    req[cfg.cookiesettings.cookieName].reset();
+		    console.log('Cookie got killed!');
+		  }
 			//	The user seems to exist, therefore
 			//	sending him a cookie back.
 			req[cfg.cookiesettings.cookieName].user	= {
@@ -205,6 +220,13 @@ public.post('/login', (req, res) => {
 });
 
 //-----------	Restricted routes	-----------
+
+//-----------  role routes -----------
+
+role.get('/logout', (req, res) => {
+  req[cfg.cookiesettings.cookieName].reset();
+  res.redirect('/');
+});
 
 //-----------	arzt routes	-----------
 
@@ -240,6 +262,16 @@ arzt.get('/sse', (req, res) => {
 		arzt.locals.subscriptions.splice(
 			arzt.locals.subscriptions.findIndex(x => x == res), 1);
 	});
+});
+
+//  Baustelle
+arzt.put('/warteliste', (req, res) => {
+  if (res.body.payload) {
+    
+  } else {
+    //  Bad request from the user
+    res.status(400).end();
+  }
 });
 
 //-----------	ipadapp routes	-----------

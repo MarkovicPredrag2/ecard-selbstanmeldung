@@ -101,6 +101,32 @@ INSERT INTO `rollen` VALUES ('arzt','Aerzte koennen Einsicht auf die Arztansicht
 UNLOCK TABLES;
 
 --
+-- Table structure for table `warteliste`
+--
+
+DROP TABLE IF EXISTS `warteliste`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `warteliste` (
+  `pt_svnr` char(10) NOT NULL,
+  `timestamp_enter` int(10) NOT NULL,
+  `rank` int(11) NOT NULL,
+  `enter` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`pt_svnr`),
+  CONSTRAINT `fk_svnr_id` FOREIGN KEY (`pt_svnr`) REFERENCES `patienten` (`pt_svnr`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `warteliste`
+--
+
+LOCK TABLES `warteliste` WRITE;
+/*!40000 ALTER TABLE `warteliste` DISABLE KEYS */;
+/*!40000 ALTER TABLE `warteliste` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Dumping routines for database 'lokalePatientenDB'
 --
 /*!50003 DROP FUNCTION IF EXISTS `hashPW` */;
@@ -142,4 +168,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-01 23:33:08
+-- Dump completed on 2018-01-02 17:20:58

@@ -23,9 +23,14 @@
 	"dbsettings": {
 		"host":	"localhost",
 		"user": "root",
+		"password": "v2tJ)Jjt=NS!F<%",
 		"dbname": "lokalePatientenDB"
 	},
 	"logsettings": {
 		"logpath": "./logs/"
+	},
+	"ports": {
+	  "port_1": 80,
+	  "port_2": 443
 	}
 }
