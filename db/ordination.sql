@@ -40,7 +40,7 @@ CREATE TABLE `benutzer` (
 
 LOCK TABLES `benutzer` WRITE;
 /*!40000 ALTER TABLE `benutzer` DISABLE KEYS */;
-INSERT INTO `benutzer` VALUES ('drmuncan','079c01d6c2507a743b32023fcb63c790a0b3d791dad7134233250a72','arzt','Super typ','pV2MEk3mG6nO'),('haustanteraphael','bc11cc8894686f577cd3393c5d94add7c34c46eb9096181669bf6fbd','benutzer','Super Frau','wsL4ElQRbAl0'),('leonardo','157d8b261af7afe3fb32851230e2fa1c14211ae2dd34d07583247562','ipadapp','Super app','jYzlVjTsIVQL');
+INSERT INTO `benutzer` VALUES ('bernhard','0245457bb5db62d26074447be901fcaaadcfdeb37e32c28f82aa5819','ipadapp','Super app','jYzlVjTsIVQL'),('drmuncan','079c01d6c2507a743b32023fcb63c790a0b3d791dad7134233250a72','arzt','Super typ','pV2MEk3mG6nO'),('haustanteraphael','bc11cc8894686f577cd3393c5d94add7c34c46eb9096181669bf6fbd','benutzer','Super Frau','wsL4ElQRbAl0');
 /*!40000 ALTER TABLE `benutzer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -98,6 +98,57 @@ LOCK TABLES `rollen` WRITE;
 /*!40000 ALTER TABLE `rollen` DISABLE KEYS */;
 INSERT INTO `rollen` VALUES ('arzt','Aerzte koennen Einsicht auf die Arztansicht nehmen und Patientenveranlassungen durchfuehren.'),('benutzer','Nutzer haben Zugriff auf die Warteliste.'),('ipadapp','Nutzer, welche sich über die App einloggen. Erhalten Daten der Kartenlesegeraete.');
 /*!40000 ALTER TABLE `rollen` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sessions`
+--
+
+DROP TABLE IF EXISTS `sessions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sessions` (
+  `session_id` varchar(35) NOT NULL,
+  `timestamp` int(11) DEFAULT NULL,
+  `username` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`session_id`),
+  KEY `fk_session` (`username`),
+  CONSTRAINT `fk_session` FOREIGN KEY (`username`) REFERENCES `benutzer` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sessions`
+--
+
+LOCK TABLES `sessions` WRITE;
+/*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
+INSERT INTO `sessions` VALUES ('=8NjtCPE)cvSdA%CN5NeuFdk§p2bKnq',0,'drmuncan'),('te?arDQZU_OOZf>9)6A_D6ocTCT>tAZN',0,'drmuncan'),('TSzI>g3%b6<nwibpzEz8RU_D?v',0,'drmuncan'),('Y6W2Q<aAuhUtCh!HF2x)doGUPVRf',0,'drmuncan');
+/*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `test`
+--
+
+DROP TABLE IF EXISTS `test`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `test` (
+  `zahl` int(11) NOT NULL AUTO_INCREMENT,
+  `text` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`zahl`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `test`
+--
+
+LOCK TABLES `test` WRITE;
+/*!40000 ALTER TABLE `test` DISABLE KEYS */;
+INSERT INTO `test` VALUES (1,'aendert'),(2,'hello2'),(3,'hello3'),(5,'hello4'),(7,'hello5');
+/*!40000 ALTER TABLE `test` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -168,4 +219,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-02 17:20:58
+-- Dump completed on 2018-01-07 22:33:48

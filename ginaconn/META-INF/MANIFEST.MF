@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Rsrc-Class-Path: ./ axis.jar commons-discovery-0.2.jar javax.wsdl_1.6.
+ 2.v201012040545.jar jaxrpc.jar org.apache.commons.logging_1.1.1.v2011
+ 01211721.jar saaj.jar json-simple-1.1.1.jar mail.jar
+Class-Path: .
+Rsrc-Main-Class: Client
+Main-Class: org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader
+

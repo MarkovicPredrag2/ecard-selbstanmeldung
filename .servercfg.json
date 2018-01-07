@@ -6,6 +6,8 @@
 	"gina": {
 		"ipaddress": "10.196.2.18",
 		"reader": "Test-03 (02:94:93)",
+		"ocardreader": "Test-04 (02:93:94)",
+		"pin": "0000",
 		"interval": 400,
 		"testCardsAllowed": true
 	},
@@ -30,7 +32,7 @@
 		"logpath": "./logs/"
 	},
 	"ports": {
-	  "port_1": 80,
-	  "port_2": 443
+	  "port_1": 8080,
+	  "port_2": 8081
 	}
 }
