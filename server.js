@@ -344,7 +344,7 @@ ipadapp.get('/sse', (req, res) => {
 		logMetaData);
 
 	startSSE(req, res, ipadapp, 2147483647);
-
+  console.log("Wurde angemeldet");
   // TODO: Implement test stub for ipadapp data.
   ipadapp.locals.subscriptions.forEach((subscriber) => {
     subscriber.connection.write(`id: patient`);
