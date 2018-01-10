@@ -158,22 +158,15 @@ function startSSE(req, res, user, timeout) {
 		'Connection': 'keep-alive'
 	});
 	res.write('\n');
-  if (user == arzt) {
-    user.locals.subscriptions.push({ user: req[cookieName].user, connection: res});
-  } else {
-    user.locals.subscriptions.push(res);
-  }
+
+  // Push the user to the subscriptions
+  user.locals.subscriptions.push({ user: req[cookieName].user, connection: res});
 
 	req.on('close', () => {
 		//	Pop closed connection
 		//	from the stack.
-    if (user == arzt) {
-      user.locals.subscriptions.splice(
-  			user.locals.subscriptions.findIndex(x => x.connection == res), 1);
-    } else {
-      user.locals.subscriptions.splice(
-  			user.locals.subscriptions.findIndex(x => x == res), 1);
-    }
+    user.locals.subscriptions.splice(
+  		user.locals.subscriptions.findIndex(x => x.connection == res), 1);
 	});
 }
 
@@ -219,14 +212,15 @@ public.post('/login', (req, res) => {
 	//	Check the credentials
 	//	the user provided within
 	//	the http body.
-  if (req[cookieName].user) {
-    // Prevents the user to
-    // generate a second cookie
-    // if he already has a valid
-    // cookie.
-    res.status(403).end();
-  } else DB.lookUpUser(req.body)
+  DB.lookUpUser(req.body)
 		.then((user) => {
+      if (req[cookieName].user) {
+        // If the user already
+        // has a valid cookie,
+        // reset the cookie.
+        req[cookieName].reset();
+        console.log("Users cookie got resetted");
+      }
 			//	The user seems to exist, therefore
 			//	sending him a cookie back.
 			req[cookieName].user	= {
@@ -297,11 +291,11 @@ arzt.get('/patientendata', (req, res) => {
   else if(req.body.patient.svnr == "1984190499") {
     res.json({name: "Reichts", grund: "Rezept", svnr: "1984190499"});
   }
-})
+});
 
-//  Baustelle
+// TODO: Implement warteliste ranking logic
 arzt.put('/warteliste', (req, res) => {
-  if (req.body.payload) {
+  /*if (req.body.payload) {
     var payload = req.body.payload;
     // It's a ranking request
     // Dataformat:
@@ -339,12 +333,7 @@ arzt.put('/warteliste', (req, res) => {
     } else {
     //  Bad request from the user
     res.status(400).end();
-  }
-});
-
-app.put('/callin', (req, res) => {
-  // TODO: Alter the called in patient's enter column to true
-  // Remember: Only the first ranked can be called in
+  }*/
 });
 
 // -----------	ipadapp routes	-----------
@@ -353,7 +342,47 @@ ipadapp.get('/sse', (req, res) => {
 	serverTrafficLogger.log('info',
 		`User ${req[cookieName].user.username} (${req.ip}) accessed ${req.originalUrl}`,
 		logMetaData);
+
 	startSSE(req, res, ipadapp, 2147483647);
+
+  // TODO: Implement test stub for ipadapp data.
+  ipadapp.locals.subscriptions.forEach((subscriber) => {
+    subscriber.connection.write(`id: patient`);
+    subscriber.connection.write('\n');
+    subscriber.connection.write(`data: ${JSON.stringify({
+      person: {
+        geschlecht: 'F',
+        titel: 'Dr.',
+        nachname: 'Kenjamin',
+        vorname: 'Bolouch',
+        gebdatum: '19.6.1999'
+      },
+      adresse: {
+        hausnummer: 7,
+        ort: 'Wien',
+        plz: '1110',
+        strasse: 'Favoritenstrasse'
+      },
+      versicherung: {
+        svnr: '5555030688',
+        anspruchdaten: [
+          {
+            anspruchsart: 'Kassenaerzte',
+            svtcode: 'BVA',
+            kostenteilbefreit: true,
+            rezeptbefreit: false
+          },
+          {
+            anspruchsart: 'Kassenaerzte',
+            svtcode: 'WGKK',
+            kostenteilbefreit: true,
+            rezeptbefreit: false
+          }
+        ]
+      }
+    })}`);
+    subscriber.connection.write('\n\n');
+  });
 });
 
 ipadapp.put('/patientdata', (req, res) => {
@@ -409,10 +438,10 @@ app.get('/', (req, res, next) => {
 app.use('/', express.static('./webfiles/webroot', { index: '/public/login.html', fallthrough: false }));
 
 //	Return 404 not found html file
-/*app.use((err, req, res, next) => {
+app.use((err, req, res, next) => {
 	serverTrafficLogger.log('info', `404 not found: ${req.ip} accessed ${req.originalUrl}`, logMetaData);
 	res.status(404).sendFile(path.join(__dirname, '/webfiles/misc/404.html'));
-});*/
+});
 
 //-----------	Gina Section -----------
 
@@ -453,12 +482,12 @@ ginaInformation.on('data', (patient) => {
 			//	send the patient data along
 			//	with all of his data in the DB
 			//	to the subscribed iPad-apps.
-			ipadapp.locals.subscriptions.forEach((subscriber) => {
+			/*ipadapp.locals.subscriptions.forEach((subscriber) => {
         subscriber.write(`id: patient`);
         subscriber.write('\n');
         subscriber.write(`data: ${JSON.stringify(patient)}`);
         subscriber.write('\n\n');
-			});
+			});*/
 		})
 		.catch((error) => {
 			serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
