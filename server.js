@@ -271,7 +271,12 @@ arzt.get('/arztansicht', (req, res) => {
   // TODO:
   // Implement for loop in jade
   // by parsing the DB results.
-	res.render('arztansicht', { user: `Dr. ${req[cookieName].user.username}` });
+
+  //Codestup for prototype showcase
+	res.render('arztansicht', { user: `Dr. ${req[cookieName].user.username}`,
+                              arztansicht: [{name: "Ernst", grund: "Untersuchung", svnr: "1234200199"},
+                              {name: "Muncan", grund: "Rezept", svnr: "1123230999"},
+                              {name: "Reichts", grund: "Rezept", svnr: "1984190499"}]});
 });
 
 arzt.get('/sse', (req, res) => {
@@ -280,6 +285,19 @@ arzt.get('/sse', (req, res) => {
 		logMetaData);
   startSSE(req, res, arzt, 2147483647);
 });
+
+//Codestub for prototype showcase
+arzt.get('/patientendata', (req, res) => {
+  if(req.body.patient.svnr == "1234200199") {
+    res.json({name: "Ernst", grund: "Untersuchung", svnr: "1234200199"});
+  }
+  else if(req.body.patient.svnr == "1123230999") {
+    res.json({name: "Muncan", grund: "Rezept", svnr: "1123230999"});
+  }
+  else if(req.body.patient.svnr == "1984190499") {
+    res.json({name: "Reichts", grund: "Rezept", svnr: "1984190499"});
+  }
+})
 
 //  Baustelle
 arzt.put('/warteliste', (req, res) => {
@@ -391,10 +409,10 @@ app.get('/', (req, res, next) => {
 app.use('/', express.static('./webfiles/webroot', { index: '/public/login.html', fallthrough: false }));
 
 //	Return 404 not found html file
-app.use((err, req, res, next) => {
+/*app.use((err, req, res, next) => {
 	serverTrafficLogger.log('info', `404 not found: ${req.ip} accessed ${req.originalUrl}`, logMetaData);
 	res.status(404).sendFile(path.join(__dirname, '/webfiles/misc/404.html'));
-});
+});*/
 
 //-----------	Gina Section -----------
 
