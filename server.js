@@ -1,18 +1,18 @@
 //-----------	Imports	-----------
 
 //	Third party modules
-const express 	= require('express');
-const bodyParser 	= require('body-parser');
-const fs 	= require('fs');
+const express = require('express');
+const bodyParser = require('body-parser');
+const fs = require('fs');
 const https = require('http');
 const winston = require('winston');
 const cookieSession = require('client-sessions');
-const path 	= require('path');
-const favicon 	= require('serve-favicon');
+const path = require('path');
+const favicon = require('serve-favicon');
 
 //	Self written modules
-const ginaListener	= require('./lib/ginaBaseService.js');
-const MySQLWrapper 	= require('./lib/dbaccess.js');
+const ginaListener = require('./lib/ginaBaseService.js');
+const MySQLWrapper = require('./lib/dbaccess.js');
 
 //-----------	Configuration -----------
 
