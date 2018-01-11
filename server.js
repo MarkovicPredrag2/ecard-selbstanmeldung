@@ -4,7 +4,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
-const https = require('http');
+const https = require('https');
 const winston = require('winston');
 const cookieSession = require('client-sessions');
 const path = require('path');
@@ -60,10 +60,10 @@ const logMetaData = {
 //	key: Path to the private key.
 //	crt: Path to the certificate.
 //	ca: Path to the chaining file.
-/*const keys = {
+const keys = {
 	key: fs.readFileSync(cfg.ssl.key),
   cert: fs.readFileSync(cfg.ssl.cert)
-};*/
+};
 
 //-----------	Express configuration -----------
 
@@ -84,7 +84,6 @@ public.set('view engine', 'pug');
 public.set('views', path.join(__dirname, '/webfiles/views/'));
 arzt.set('view engine', 'pug');
 arzt.set('views', path.join(__dirname, '/webfiles/views/'));
-
 //	Third party middle ware.
 app.use(favicon(path.join(__dirname, '/webfiles/favicon/ec_logo.ico')));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -189,11 +188,11 @@ DB.connect()
 	});
 
 //	Starting the server
-https.createServer(app).listen(portcfg.port_1, () => {
+https.createServer(keys, app).listen(portcfg.port_1, () => {
 	console.log(`Verbunden auf Port ${portcfg.port_1}`);
 });
 
-https.createServer(app).listen(portcfg.port_2, (port) => {
+https.createServer(keys, app).listen(portcfg.port_2, (port) => {
 	console.log(`Verbunden auf Port ${portcfg.port_2}`);
 });
 
@@ -281,7 +280,7 @@ arzt.get('/sse', (req, res) => {
 });
 
 //Codestub for prototype showcase
-arzt.get('/patientendata', (req, res) => {
+arzt.post('/patientendata', (req, res) => {
   if(req.body.patient.svnr == "1234200199") {
     res.json({name: "Ernst", grund: "Untersuchung", svnr: "1234200199"});
   }
@@ -349,38 +348,7 @@ ipadapp.get('/sse', (req, res) => {
   ipadapp.locals.subscriptions.forEach((subscriber) => {
     subscriber.connection.write(`id: patient`);
     subscriber.connection.write('\n');
-    subscriber.connection.write(`data: ${JSON.stringify({
-      person: {
-        geschlecht: 'F',
-        titel: 'Dr.',
-        nachname: 'Kenjamin',
-        vorname: 'Bolouch',
-        gebdatum: '19.6.1999'
-      },
-      adresse: {
-        hausnummer: 7,
-        ort: 'Wien',
-        plz: '1110',
-        strasse: 'Favoritenstrasse'
-      },
-      versicherung: {
-        svnr: '5555030688',
-        anspruchdaten: [
-          {
-            anspruchsart: 'Kassenaerzte',
-            svtcode: 'BVA',
-            kostenteilbefreit: true,
-            rezeptbefreit: false
-          },
-          {
-            anspruchsart: 'Kassenaerzte',
-            svtcode: 'WGKK',
-            kostenteilbefreit: true,
-            rezeptbefreit: false
-          }
-        ]
-      }
-    })}`);
+    subscriber.connection.write(`data: ${JSON.stringify({"svnr": "1234 011399", "versicherungen":[{ "versicherung": "KAV"},{ "versicherung": "UVA"}], "namen":{"name": "Mustermann","vorname": "Max","titel_vorne": "Dr.","titel_hinten": ""},"adresse":{"strasse": "Teststraße","hausnummer": "12a","plz": "1012","ort": "Wien","land": "Österreich"}})}`);
     subscriber.connection.write('\n\n');
   });
 });
@@ -438,10 +406,10 @@ app.get('/', (req, res, next) => {
 app.use('/', express.static('./webfiles/webroot', { index: '/public/login.html', fallthrough: false }));
 
 //	Return 404 not found html file
-app.use((err, req, res, next) => {
+/*app.use((err, req, res, next) => {
 	serverTrafficLogger.log('info', `404 not found: ${req.ip} accessed ${req.originalUrl}`, logMetaData);
 	res.status(404).sendFile(path.join(__dirname, '/webfiles/misc/404.html'));
-});
+});*/
 
 //-----------	Gina Section -----------
 

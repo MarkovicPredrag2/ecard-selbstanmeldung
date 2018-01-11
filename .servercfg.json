@@ -25,14 +25,14 @@
 	"dbsettings": {
 		"host":	"localhost",
 		"user": "root",
-		"password": "v2tJ)Jjt=NS!F<%",
+		"password": "selbstanmeldungstool",
 		"dbname": "lokalePatientenDB"
 	},
 	"logsettings": {
 		"logpath": "./logs/"
 	},
 	"ports": {
-	  "port_1": 8080,
-	  "port_2": 8081
+	  "port_1": 80,
+	  "port_2": 443
 	}
 }

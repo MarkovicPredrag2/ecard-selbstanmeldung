@@ -1,16 +1,16 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <script type="text/javascript" src="./js/time.js"></script>
     <title>e-card Selbstanmeldungstool</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/font-awesome-4.7.0/css/font-awesome.min.css">
-    <link href="//netdna.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
     <link href="./css/sidebar-links.css" rel="stylesheet">
     <link href="./css/sortablestyle.css" rel="stylesheet">
     <link href="./css/sidebar-rechts.css" rel="stylesheet">
+    <link href="./css/patcontainer.css" rel="stylesheet">
   </head>
 
   <body onload="startTime()">
@@ -32,19 +32,21 @@
         </font>
       </a>
     </nav>
-
     <div id="wrappersr">
         <div id="sidebar-wrappersr">
           <ul id="columns">
-            <ol class="sidebar-navr example">
-              <li style="background-color: white">
-                <b>Hr. Saric - Rezept</b>
+            <ol class="sidebar-navr example" id="patcontainer">
+              <!--for patient in arztansicht
+                li
+                  span(id=patient.svnr onclick="requestPatientData(this)") #{patient.grund} - #{patient.name}-->
+              <li>
+                <span id="5555" onclick="requestPatientData(this)">Hr. Saric - Rezept</span>
               </li>
               <li>
-                <b>Hr. Seifert - Rezept</b>
+                <span id="6666" onclick="requestPatientData(this)">Hr. Seifert - Rezept</span>
               </li>
               <li>
-                <b>Hr. Barrientos - Untersuchung</b>
+                <span id="7777" onclick="requestPatientData(this)">Hr. Barrientos - Untersuchung</span>
               </li>
             </ol>
           </ul>
@@ -65,7 +67,7 @@
                   </a>
                 </li>
                 <li class="sidebar-brand">
-                  <a data-toggle="tooltip" title="Ausloggen" href="/public/logout">
+                  <a data-toggle="tooltip" title="Ausloggen" href="/role/logout">
                     <!--style="color: #dd2a1a; font-size: 50px"-->
                     <span style="color: #d32317" class="fa fa-power-off" aria-hidden="true"></span>
                   </a>
@@ -74,24 +76,41 @@
         </div>
         <div id="page-content-wrappers">
             <div class="container-fluid">
-                <h1><small>Hr. Max Mustermann</small></h1>
-                <h2><small>1234567890 - BVA</small></h2>
+                <h1><small id="name"></small></h1>
+                <h2><small id="svnr"></small></h2>
+                <h2><small id="grund"></small></h2>
                 <!-- <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
                 <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p> -->
             </div>
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     <script src='./js/jquery-sortable.js'></script>
+    <script type="text/javascript" src="./js/time.js"></script>
     <script>
-    $(document).ready(function(){
-      $(function  () {
+      $(document).ready(function() {
+        $(function () {
         $("ol.example").sortable();
+        });
       });
-    });
+      function requestPatientData(dom) {
+        $.ajax({
+          url: '/role/arzt/patientendata',
+          type: 'POST',
+          dataType: 'json',
+          contentType: "application/json",
+          data: JSON.stringify({ "patient": { "svnr": dom.getAttribute('id') } }),
+          async: true,
+          success: function(patient) {
+            $("#name").html(patient.name);
+            $("#svnr").html(patient.svnr);
+            $("#grund").html(patient.grund);
+          }
+        });
+      }
     </script>
   </body>
 </html>
