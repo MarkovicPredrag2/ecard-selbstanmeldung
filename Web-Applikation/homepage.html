@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="de">
+  <!-- ======= Meta Tags ======= -->
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Homepage Arzt</title>
+
+    <!-- ======= CSS dependencies ======= -->
+
+    <!-- Bootstrap v3.3.7 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Font awesome v4.7.0 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body onload="startTime()">
+    <!-- ======= Navbar ======= -->
+
+    <nav class="navbar navbar-inverse">
+      <div style="font-size: 20px" class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <!-- Home Icon -->
+          <a data-toggle="tooltip" title="Home" class="navbar-brand fa fa-home" aria-hidden="true" href="#"></a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+            <!-- User -->
+            <!--Template: username p= user-->
+            <li><p style="color: orange" class="navbar-text fa fa-user-md" aria-hidden="true" id="user"> Dr Muncan</p></li>
+            <!-- Navigation -->
+            <li><a href="/public/role/arzt/ansicht/warteraumansicht">Warteraumansicht</a></li>
+            <li><a href="/public/role/arzt/ansicht/arztansicht">Arztansicht</a></li>
+            <li><a href="/public/role/arzt/ansicht/logs">Logging Historie</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <!-- Time -->
+            <li><p id="clock" class="navbar-text"></p></li>
+            <!-- Logout button -->
+            <li data-toggle="tooltip" title="Logout"><a style="color: red" href="/public/role/logout" class="fa fa-power-off" aria-hidden="true"></a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ======= Mid-Section ======= -->
+
+    <div class="container">
+      <div class="row" id="ansichten">
+        <!-- Warteraumansicht -->
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+          <div class="thumbnail">
+            <a data-toggle="tooltip" title="Warteraumansicht" href="/public/role/arzt/ansicht/warteraumansicht" ><img src="./img/LogoWebseite_queue.jpg" alt="Warteraumansicht"></a>
+            <div class="caption">
+              <h3>Warteraumansicht</h3>
+              <p>Hier können Sie die vergangen Patientenaktionen einsehen.</p>
+            </div>
+          </div>
+        </div>
+        <!-- Arztansicht -->
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+          <div class="thumbnail">
+            <a data-toggle="tooltip" title="Arztansicht" href="/public/role/arzt/ansicht/arztansicht"><img src="./img/LogoWebseite_doc.jpg" alt="Arztansicht"></a>
+            <div class="caption">
+              <h3>Arztansicht</h3>
+              <p>Über diese Ansicht können Sie die Patienten in der Warteliste verwalten und ihre Stammdaten einsehen.</p>
+            </div>
+          </div>
+        </div>
+        <!-- Logging -->
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+          <div class="thumbnail">
+          <a data-toggle="tooltip" title="Logging Historie" href="/public/role/arzt/ansicht/logs"><img src="./img/LogoWebseite_Log.jpg" alt="Logging Historie"></a>
+            <div class="caption">
+              <h3>Logging Historie</h3>
+              <p>Hier können Sie die vergangenen Veränderungen der Patientendaten einsehen.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======= Footer ======= -->
+
+      <div>
+        <hr class="featurette-divider">
+        <footer>
+          <p>
+            &copy; 2018 Five4U, Diplomprojekt &middot; <a href="/public/impressum.html">Impressum</a>
+            <span style="float: right;">E-Card Selbstanmeldungs Tool &middot; <a href="/public/info.html">Info</a></span>
+          </p>
+        </footer>
+      </div>
+    </div>
+
+    <!-- ======= JS Dependencies ======= -->
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Time Script -->
+    <script type="text/javascript" src="./js/time.js"></script>
+    <!-- jQuery Animation -->
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $("#ansichten div div.thumbnail").hover(function(){
+          $(this).css("border", "green solid 1.2px");
+          }, function(){
+          $(this).css("border", "#ddd solid 1px");
+        });
+      });
+    </script>
+  </body>
+</html>

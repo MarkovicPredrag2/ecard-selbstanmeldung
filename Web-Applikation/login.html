@@ -1,52 +1,98 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<title>Login</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="./img/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./vendor/animate/animate.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./css/util_login.css">
+	<link rel="stylesheet" type="text/css" href="./css/main_login.css">
+	<link rel="stylesheet" type="text/css" href="./css/background_login.css">
+<!--===============================================================================================-->
+</head>
+<body>
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../../../favicon.ico">
+	<div class="limiter">
+		<div class="container-login100 backgroundimage">
+			<div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
+				<form class="login100-form validate-form flex-sb flex-w" method="post" action="/public/login">
+					<span class="login100-form-title p-b-32">
+						Account Login
+					</span>
 
-    <style>
-      #warning {
-          text-align: center;
-          font-size: 20px;
-          font-weight: bold;
-          color: red;
-      }
-    </style>
+					<span class="txt1 p-b-11">
+						Username
+					</span>
+					<div class="wrap-input100 validate-input m-b-36" data-validate = "Username is required">
+						<input class="input100" type="text" name="username">
+						<span class="focus-input100"></span>
+					</div>
+					<span class="txt1 p-b-11">
+						Password
+					</span>
+					<div class="wrap-input100 validate-input m-b-12" data-validate = "Password is required">
+						<input class="input100" type="password" name="password">
+						<span class="focus-input100"></span>
+					</div>
 
-    <title>Signin Template for Bootstrap</title>
+					<div class="flex-sb-m w-full p-b-48">
+						<div class="contact100-form-checkbox">
+							<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+							<label class="label-checkbox100" for="ckb1">
+								Remember me
+							</label>
+						</div>
+					</div>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    <link href="signin.css" rel="stylesheet">
-  </head>
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn" style="margin: auto; width: 100%">
+							Login
+						</button>
+					</div>
+				</form>
+				<!-- Warning -->
+				<!-- p#warning= warning -->
+				<p id="warning"></p>
+			</div>
+		</div>
+	</div>
 
-  <body>
 
-    <div class="container">
+	<div id="dropDownSelect1"></div>
 
-      <form class="form-signin">
-        <h2 class="form-signin-heading">e-card Selbstanmeldungstool</h2>
-        <label for="inputEmail" class="sr-only">username</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="User-Name" required autofocus>
-        <label for="inputPassword" class="sr-only">password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Passwort" required>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Angemeldet bleiben
-          </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit"  onclick="window.location.href='./arztansicht.html'">Anmelden</button>
-        <p></P>
-        <p id="warning">User-Name oder Passwort falsch!</p>
-      </form>
-
-    </div> <!-- /container -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-  </body>
+<!--===============================================================================================-->
+	<script src="./vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="./vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="./vendor/bootstrap/js/popper.js"></script>
+	<script src="./vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="./vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="./vendor/daterangepicker/moment.min.js"></script>
+	<script src="./vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="./vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="./js/main.js"></script>
+</body>
 </html>

@@ -40,7 +40,7 @@ CREATE TABLE `benutzer` (
 
 LOCK TABLES `benutzer` WRITE;
 /*!40000 ALTER TABLE `benutzer` DISABLE KEYS */;
-INSERT INTO `benutzer` VALUES ('bernhard','0245457bb5db62d26074447be901fcaaadcfdeb37e32c28f82aa5819','ipadapp','Super app','jYzlVjTsIVQL'),('drmuncan','079c01d6c2507a743b32023fcb63c790a0b3d791dad7134233250a72','arzt','Super typ','pV2MEk3mG6nO'),('haustanteraphael','bc11cc8894686f577cd3393c5d94add7c34c46eb9096181669bf6fbd','benutzer','Super Frau','wsL4ElQRbAl0');
+INSERT INTO `benutzer` VALUES ('bernhard','0245457bb5db62d26074447be901fcaaadcfdeb37e32c28f82aa5819','ipadapp','Super app','jYzlVjTsIVQL'),('drmuncan','079c01d6c2507a743b32023fcb63c790a0b3d791dad7134233250a72','arzt','Super typ','pV2MEk3mG6nO');
 /*!40000 ALTER TABLE `benutzer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -96,7 +96,7 @@ CREATE TABLE `rollen` (
 
 LOCK TABLES `rollen` WRITE;
 /*!40000 ALTER TABLE `rollen` DISABLE KEYS */;
-INSERT INTO `rollen` VALUES ('arzt','Aerzte koennen Einsicht auf die Arztansicht nehmen und Patientenveranlassungen durchfuehren.'),('benutzer','Nutzer haben Zugriff auf die Warteliste.'),('ipadapp','Nutzer, welche sich über die App einloggen. Erhalten Daten der Kartenlesegeraete.');
+INSERT INTO `rollen` VALUES ('arzt','Aerzte koennen Einsicht auf die Arztansicht nehmen und Patientenveranlassungen durchfuehren.'),('ipadapp','Nutzer, welche sich über die App einloggen. Erhalten Daten der Kartenlesegeraete.');
 /*!40000 ALTER TABLE `rollen` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,11 +160,13 @@ DROP TABLE IF EXISTS `warteliste`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `warteliste` (
   `pt_svnr` char(10) NOT NULL,
-  `timestamp_enter` int(10) NOT NULL,
-  `rank` int(11) NOT NULL,
-  `enter` tinyint(1) DEFAULT NULL,
+  `w_rank` int(11) NOT NULL,
+  `w_behandeltvon` varchar(45) DEFAULT NULL,
+  `w_entertimestamp` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`pt_svnr`),
-  CONSTRAINT `fk_svnr_id` FOREIGN KEY (`pt_svnr`) REFERENCES `patienten` (`pt_svnr`)
+  KEY `fk_user` (`w_behandeltvon`),
+  CONSTRAINT `fk_svnr_warteliste` FOREIGN KEY (`pt_svnr`) REFERENCES `patienten` (`pt_svnr`),
+  CONSTRAINT `fk_user` FOREIGN KEY (`w_behandeltvon`) REFERENCES `benutzer` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -219,4 +221,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-11 22:03:17
+-- Dump completed on 2018-01-21 18:05:37

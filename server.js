@@ -4,7 +4,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
-const https = require('https');
+const https = require('http');
 const winston = require('winston');
 const cookieSession = require('client-sessions');
 const path = require('path');
@@ -60,10 +60,10 @@ const logMetaData = {
 //	key: Path to the private key.
 //	crt: Path to the certificate.
 //	ca: Path to the chaining file.
-const keys = {
+/*const keys = {
 	key: fs.readFileSync(cfg.ssl.key),
   cert: fs.readFileSync(cfg.ssl.cert)
-};
+};*/
 
 //-----------	Express configuration -----------
 
@@ -96,9 +96,9 @@ app.use('/public', public);
 app.use('/role', role);
 
 //	SSE subscription list for each app
-arzt.locals.subscriptions			= [];
-benutzer.locals.subscriptions	= [];
-ipadapp.locals.subscriptions	= [];
+arzt.locals.subscriptionsArzt	= [];
+arzt.locals.subscriptionsWarteliste	= [];
+ipadapp.locals.subscriptions = [];
 
 /*
 	Authentication function:
@@ -159,7 +159,7 @@ function startSSE(req, res, user, timeout) {
 	res.write('\n');
 
   // Push the user to the subscriptions
-  user.locals.subscriptions.push({ user: req[cookieName].user, connection: res});
+  user.push({ user: req[cookieName].user, connection: res});
 
 	req.on('close', () => {
 		//	Pop closed connection
@@ -188,11 +188,11 @@ DB.connect()
 	});
 
 //	Starting the server
-https.createServer(keys, app).listen(portcfg.port_1, () => {
+https.createServer(app).listen(portcfg.port_1, () => {
 	console.log(`Verbunden auf Port ${portcfg.port_1}`);
 });
 
-https.createServer(keys, app).listen(portcfg.port_2, (port) => {
+https.createServer(app).listen(portcfg.port_2, (port) => {
 	console.log(`Verbunden auf Port ${portcfg.port_2}`);
 });
 
@@ -218,7 +218,6 @@ public.post('/login', (req, res) => {
         // has a valid cookie,
         // reset the cookie.
         req[cookieName].reset();
-        console.log("Users cookie got resetted");
       }
 			//	The user seems to exist, therefore
 			//	sending him a cookie back.
@@ -254,54 +253,53 @@ role.get('/logout', (req, res) => {
 
 //-----------	arzt routes	-----------
 
-/*
-	Serve the rendered arztansicht.
-*/
-arzt.get('/arztansicht', (req, res) => {
+// Serve the templates
+arzt.get('/ansicht/:ansicht', (req, res) => {
 	serverTrafficLogger.log('info',
 		`User ${req[cookieName].user.username} (${req.ip}) accessed ${req.originalUrl}`,
 		logMetaData);
-  // TODO:
-  // Implement for loop in jade
-  // by parsing the DB results.
+    var ansicht = req.params.ansicht.toLowerCase();
+    var template = { user: req[cookieName].user.username };
+    // If the requested site is the arztansicht,
+    // also add the patient ranking template.
+    if (ansicht == 'arztansicht') {
+      // TODO:
+      // Implement for loop in jade
+      // by parsing the DB results.
 
-  //Codestup for prototype showcase
-	res.render('arztansicht', { user: `Dr. ${req[cookieName].user.username}`,
-                              arztansicht: [{name: "Ernst", grund: "Untersuchung", svnr: "1234200199"},
-                              {name: "Muncan", grund: "Rezept", svnr: "1123230999"},
-                              {name: "Reichts", grund: "Rezept", svnr: "1984190499"}]});
+      // template.query = ...;
+    }
+
+	res.render(ansicht, template);
 });
 
-arzt.get('/sse', (req, res) => {
+// Start the sse to provide
+// New patient sse
+arzt.get('/patientsse', (req, res) => {
 	serverTrafficLogger.log('info',
 		`User ${req[cookieName].user.username} (${req.ip}) accessed ${req.originalUrl}`,
 		logMetaData);
-  startSSE(req, res, arzt, 2147483647);
+  startSSE(req, res, arzt.locals.subscriptionsArzt, 2147483647);
 });
 
-//Codestub for prototype showcase
-arzt.post('/patientendata', (req, res) => {
-  if(req.body.patient.svnr == "1234200199") {
-    res.json({name: "Ernst", grund: "Untersuchung", svnr: "1234200199"});
-  }
-  else if(req.body.patient.svnr == "1123230999") {
-    res.json({name: "Muncan", grund: "Rezept", svnr: "1123230999"});
-  }
-  else if(req.body.patient.svnr == "1984190499") {
-    res.json({name: "Reichts", grund: "Rezept", svnr: "1984190499"});
-  }
-});
+// Start sse to provide warteraum data
+arzt.get('/warteraumsse', (req, res) => {
+  serverTrafficLogger.log('info',
+		`User ${req[cookieName].user.username} (${req.ip}) accessed ${req.originalUrl}`,
+		logMetaData);
+  startSSE(req, res, arzt.locals.subscriptionsWarteliste, 2147483647);
+})
 
 // TODO: Implement warteliste ranking logic
 arzt.put('/warteliste', (req, res) => {
-  /*if (req.body.payload) {
+  if (req.body.payload) {
     var payload = req.body.payload;
     // It's a ranking request
     // Dataformat:
     // { from: '5050060985', before: '4075081055'}
     DB.rankWarteliste(payload.from, payload.before)
       .then((result) => {
-        arzt.locals.subscriptions.forEach((subscriber) => {
+        arzt.locals.subscriptionsArzt.forEach((subscriber) => {
           // Inform all arzt subscribers
           // Except the requesting arzt.
           if (subscriber.user != req[cookieName].user) {
@@ -316,7 +314,7 @@ arzt.put('/warteliste', (req, res) => {
         serverTrafficLogger.log('error', `@${req.originalUrl}: ${error}`, logMetaData);
         // Only inform the subscriber
         // who send the request
-        var connection = arzt.locals.subscriptions
+        var connection = arzt.locals.subscriptionsArzt
           .find(x => x.user == req[cookieName].user).connection;
         DB.loadWarteliste()
           .then((result) => {
@@ -332,7 +330,7 @@ arzt.put('/warteliste', (req, res) => {
     } else {
     //  Bad request from the user
     res.status(400).end();
-  }*/
+  }
 });
 
 // -----------	ipadapp routes	-----------
@@ -342,15 +340,7 @@ ipadapp.get('/sse', (req, res) => {
 		`User ${req[cookieName].user.username} (${req.ip}) accessed ${req.originalUrl}`,
 		logMetaData);
 
-	startSSE(req, res, ipadapp, 2147483647);
-  console.log("Wurde angemeldet");
-  // TODO: Implement test stub for ipadapp data.
-  ipadapp.locals.subscriptions.forEach((subscriber) => {
-    subscriber.connection.write(`id: patient`);
-    subscriber.connection.write('\n');
-    subscriber.connection.write(`data: ${JSON.stringify({"svnr": "1234 011399", "versicherungen":[{ "versicherung": "KAV"},{ "versicherung": "UVA"}], "namen":{"name": "Mustermann","vorname": "Max","titel_vorne": "Dr.","titel_hinten": ""},"adresse":{"strasse": "Teststraße","hausnummer": "12a","plz": "1012","ort": "Wien","land": "Österreich"}})}`);
-    subscriber.connection.write('\n\n');
-  });
+	startSSE(req, res, ipadapp.locals.subscriptions, 2147483647);
 });
 
 ipadapp.put('/patientdata', (req, res) => {
@@ -365,15 +355,6 @@ ipadapp.put('/patientdata', (req, res) => {
 		Also update the arztansichtwarteliste.
 	*/
   console.log(req.body);
-});
-
-//-----------	benutzer routes	-----------
-
-benutzer.get('/sse', (req, res) => {
-	serverTrafficLogger.log('info',
-		`User ${req[cookieName].user} (${req.ip}) accessed ${req.originalUrl}`,
-		logMetaData);
-	startSSE(req, res, benutzer, 2147483647);
 });
 
 //-----------	app routes	-----------
@@ -406,10 +387,10 @@ app.get('/', (req, res, next) => {
 app.use('/', express.static('./webfiles/webroot', { index: '/public/login.html', fallthrough: false }));
 
 //	Return 404 not found html file
-/*app.use((err, req, res, next) => {
+app.use((err, req, res, next) => {
 	serverTrafficLogger.log('info', `404 not found: ${req.ip} accessed ${req.originalUrl}`, logMetaData);
 	res.status(404).sendFile(path.join(__dirname, '/webfiles/misc/404.html'));
-});*/
+});
 
 //-----------	Gina Section -----------
 
@@ -450,12 +431,12 @@ ginaInformation.on('data', (patient) => {
 			//	send the patient data along
 			//	with all of his data in the DB
 			//	to the subscribed iPad-apps.
-			/*ipadapp.locals.subscriptions.forEach((subscriber) => {
+			ipadapp.locals.subscriptions.forEach((subscriber) => {
         subscriber.write(`id: patient`);
         subscriber.write('\n');
         subscriber.write(`data: ${JSON.stringify(patient)}`);
         subscriber.write('\n\n');
-			});*/
+			});
 		})
 		.catch((error) => {
 			serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
