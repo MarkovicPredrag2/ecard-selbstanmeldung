@@ -32,12 +32,12 @@
 		"logpath": "./logs/"
 	},
 	"ports": {
-	  "port_1": 8080,
-	  "port_2": 8081
+	  "port_1": 80,
+	  "port_2": 443
 	},
 	"rooms": {
 		"Warteraum_1": 5,
 		"Warteraum_2": 2,
-		"Warteraum_3": 3,
+		"Warteraum_3": 3
 	}
 }

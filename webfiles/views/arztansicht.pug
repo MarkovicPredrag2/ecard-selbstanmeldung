@@ -1,84 +1,175 @@
 doctype html
-html(lang='en')
+html
   head
-    title e-card Selbstanmeldungstool
+    // ======= Meta Tags ======= <
     meta(charset='utf-8')
-    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
-    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css', integrity='sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb', crossorigin='anonymous')
-    link(href='http://netdna.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-glyphicons.css', rel='stylesheet')
-    link(rel='stylesheet', href='/public/resources/styles/font-awesome-4.7.0/css/font-awesome.min.css')
-    link(href='/public/resources/styles/sidebar-links.css', rel='stylesheet')
-    link(href='/public/resources/styles/sortablestyle.css', rel='stylesheet')
-    link(href='/public/resources/styles/sidebar-rechts.css', rel='stylesheet')
-    link(href='/public/resources/styles/patcontainer.css', rel='stylesheet')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    title Arztansicht
+    // ======= CSS Dependencies =======
+    // Bootstrap v3.3.7
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    // W3schools CSS
+    link(rel='stylesheet', href='https://www.w3schools.com/w3css/4/w3.css')
+    // Font awesome v4.7.0
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+    // Wateliste CSS + sonstiges
+    link(rel='stylesheet', type='text/css', href='/public/resources/css/style.css', media='screen')
   body(onload='startTime()')
-    nav.navbar.navbar-dark.bg-dark
-      a.navbar-item.dropdown
-        // <img src="./img/user.png" style="float:left;">
-        font(color='white')
-          // Template: username h3= user
-          b
-            h3= user
-      a.active
-        font(color='white')
-          b
-            h3
-              p#clock
-    #wrappersr
-      #sidebar-wrappersr
-        ul#columns
-          ol#patcontainer.sidebar-navr.example
-            for patient in arztansicht
-              li
-                span(id=patient.svnr onclick="requestPatientData(this)") #{patient.grund} - #{patient.name}
-
-    #wrappers
-      #sidebar-wrappers
-        ul.sidebar-nav
-          li.sidebar-brand
-            a(style='font-size: 16px; color: #199bd8;', data-toggle='tooltip', title='Patienten aufrufen', href='#')
-              span.fa.fa-arrow-left(style='content:', aria-hidden='true')
-          li.sidebar-brand
-            a(href='#', data-toggle='tooltip', title='Patienten entlassen')
-              span.fa.fa-check(style='color: #1ad85f', aria-hidden='true')
-          li.sidebar-brand
-            a(data-toggle='tooltip', title='Ausloggen', href='/role/logout')
-              // style="color: #dd2a1a; font-size: 50px"
-              span.fa.fa-power-off(style='color: #d32317', aria-hidden='true')
-      #page-content-wrappers
-        .container-fluid
-          h1
-            small#name
-          h2
-            small#svnr
-          h2
-            small#grund
-          //
-            <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
-            <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p>
+    // ======= Navbar =======
+    nav.navbar.navbar-inverse.navbar-static-top(style='position:fixed; width:100%;')
+      .container-fluid(style='font-size: 20px')
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#myNavbar')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          // Home Icon
+          a.navbar-brand.fa.fa-home.fa-2x(data-toggle='tooltip', title='Home', aria-hidden='true', href='/role/arzt/ansicht/homepage')
+        #myNavbar.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            // User
+            // Template: username p= user
+            li
+              p.navbar-text.fa.fa-user-md.fa-2x(style='color: orange', aria-hidden='true')
+                | &nbsp
+                span#user= user
+            // Navigation
+            li
+              a(href='/role/arzt/ansicht/warteraumansicht', style='margin-top: 5%') Warteraumansicht
+            li
+              a(href='/role/arzt/ansicht/arztansicht', style='margin-top: 7%') Arztansicht
+            li
+              a(href='/role/arzt/ansicht/logs', style='margin-top: 5%') Logging Historie
+          ul.nav.navbar-nav.navbar-right
+            // Time
+            li
+              p#clock.navbar-text(style='margin-top: 15.5%;')
+            // Logout button
+            li(data-toggle='tooltip', title='Logout')
+              a.fa.fa-power-off.fa-2x(style='color: red; margin-top: 17%;', href='/role/logout', aria-hidden='true')
+    // ======= Mid-Section =======
+    // Linke Nav-Bar
+    .w3-sidebar.w3-bar-block.w3-black.w3-xxlarge(style='width:70px; margin-top:71px;')
+      a.w3-bar-item.w3-button(href='#')
+        i.fa.fa-check(style='color:#20c40d', title='Patient-Fertig')
+      a.w3-bar-item.w3-button(href='#')
+        i.fa.fa-sign-in(style='color:#20c40d', title='Patient hereinholen')
+    // Patienten-Stammdaten
+    div(style='margin-left:100px; position:fixed; margin-top:72px')
+      .W3-container
+        h2#h_vorname Hr. Christopher Neuberger
+        h3#h_versicherung 1234567890 - WGKK
+      .w3-container
+        table.anzeigetable
+          // TO-DO:Richtige Felder zum Anzeigen
+          tr
+            td
+              label Vorname:
+            td
+              label#t_vorname Christopher
+            td
+              label SVNR:
+            td
+              label 1234567890
+          tr
+            td
+              label Nachname:
+            td
+              label#t_nachname Neuberger
+            td
+              label Adresse:
+            td
+              label Sattstraße 7
+          tr
+            td
+              label Grund:
+            td
+              label#t_grund Untersuchung
+    // Warteliste
+    div(align='right', style='padding-top:71px')
+      ul.list.example
+        li#1.list(onclick='requestPatientData(this)')
+          i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
+          h3(style='text-align: left') Hr. Christopher Neuberger
+          p Untersuchung (18 Jahre alt)
+        li#1.list(onclick='requestPatientData(this)')
+          i.fa.fa-file-text-o.fa-4x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
+          h3(style='text-align: left') Hr. Miguel Santos &nbsp
+          p Rezept (18 Jahre alt)
+        li#2.list(onclick='requestPatientData(this)')
+          i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
+          h3(style='text-align: left') Hr. Predrag Markovic
+          p Untersuchung (18 Jahre alt)
+        li#3.list(onclick='requestPatientData(this)')
+          i.fa.fa-briefcase.fa-4x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
+          h3(style='text-align: left') Hr. Eren Icme
+          p Arbeitsun. (21 Jahre alt)
+        li#4.list(onclick='requestPatientData(this)')
+          i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
+          h3(style='text-align: left') Hr. Leonardo Barrientos
+          p Untersuchung (18 Jahre alt)
+        li#5.list(onclick='requestPatientData(this)')
+          i.fa.fa-file-text-o.fa-4x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
+          h3(style='text-align: left') Hr. Philipp Stöckl
+          p Rezept (18 Jahre alt)
+        li#6.list(onclick='requestPatientData(this)')
+          i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
+          h3(style='text-align: left') Hr. Raphale Seifert
+          p Untersuchung (18 Jahre alt)
+        li#7.list(onclick='requestPatientData(this)')
+          i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
+          h3(style='text-align: left') Hr. Bernahrd Saric
+          p Untersuchung (18 Jahre alt)
+        li#8.list(onclick='requestPatientData(this)')
+          i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
+          h3(style='text-align: left') Hr. Tobias Leitner
+          p Untersuchung (18 Jahre alt)
+        li#9.list(onclick='requestPatientData(this)')
+          i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
+          h3(style='text-align: left') Fr. Lara Sophie Stöckl
+          p Untersuchung (17 Jahre alt)
+        li#10.list(onclick='requestPatientData(this)')
+          i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
+          h3(style='text-align: left') Fr. Anna Musterfrau
+          p Untersuchung (45 Jahre alt)
+        li#11.list(onclick='requestPatientData(this)')
+          i.fa.fa-file-text-o.fa-4x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
+          h3(style='text-align: left') Hr. Maximilian Müller
+          p Rezept (80 Jahre alt)
+        li#12.list(onclick='requestPatientData(this)')
+          i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
+          h3(style='text-align: left') Fr. Marie Maier
+          p Untersuchung (28 Jahre alt)
+        li#13.list(onclick='requestPatientData(this)')
+          i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
+          h3(style='text-align: left') Fr. Sonja Alser
+          p Untersuchung (90 Jahre alt)
+    // ======= JS Dependencies =======
+    // jQuery library
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js', integrity='sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh', crossorigin='anonymous')
-    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js', integrity='sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ', crossorigin='anonymous')
-    script(src='/public/resources/scripts/jquery-sortable.js')
-    script(type='text/javascript', src='/public/resources/scripts/time.js')
+    // Latest compiled JavaScript
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+    // Time Script
+    script(type='text/javascript', src='/public/resources/js/time.js')
+    script(src='/public/resources/js/jquery-sortable.js')
+    script(src='/public/resources/js/patientendaten.js')
     script.
       $(document).ready(function() {
       $(function () {
-      $("ol.example").sortable();
+      $("ul.example").sortable();
       });
       });
-      function requestPatientData(dom) {
-      $.ajax({
-      url: '/role/arzt/patientendata',
-      type: 'POST',
-      dataType: 'json',
-      contentType: "application/json",
-      data: JSON.stringify({ "patient": { "svnr": dom.getAttribute('id') } }),
-      async: true,
-      success: function(patient) {
-      $("#name").html(patient.name);
-      $("#svnr").html(patient.svnr);
-      $("#grund").html(patient.grund);
-      }
-      });
-      }

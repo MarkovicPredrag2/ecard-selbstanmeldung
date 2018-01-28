@@ -1,0 +1,106 @@
+
+/* Funktioniert noch nicht */
+div.test {
+  margin: 20px;
+}
+
+
+ul.list {
+  list-style-type: none;
+  width: 38%;
+  height: 100%;
+}
+
+h3.list {
+    font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
+    text-align: left;
+}
+
+li.list img {
+  float: left;
+  margin: 0 15px 0 0;
+}
+
+li.list p {
+    float: left;
+    font: 200 15px/1.2 Helvetica, Helvetica, serif;
+}
+
+li.list {
+  padding: 10px;
+  overflow: auto;
+  border-bottom: 1px solid #ccc;
+  border-left: 5px solid #ccc;
+  border-top: 1px solid #ccc;
+}
+
+li.list:hover {
+  background: #eee;
+  cursor: pointer;
+}
+
+body.dragging, body.dragging * {
+  cursor: move !important;
+}
+
+.dragged {
+  position: absolute;
+  opacity: 0.5;
+  z-index: 2000;
+}
+
+ol.example li.placeholder {
+  position: relative;
+  /** More li styles **/
+}
+ol.example li.placeholder:before {
+  position: absolute;
+  /** Define arrowhead **/
+}
+
+.flex.container{
+  display: flex;
+  align-items: stretch;
+  background-color: #f1f1f1;
+}
+
+.w3-container {
+  margin-top: 10%;
+  margin-left: 5%;
+  background-color: #DCDCDC	;
+  height: 100%;
+  width: 100%;
+}
+
+.anzeigetable {
+  display: block;
+  border-style: none;
+  border-collapse: separate;
+  font-size: 24px;
+  font-style: 1.5 Helvetica;
+  padding-left: 0.5%;
+}
+
+body.dragging, body.dragging * {
+  cursor: move !important;
+}
+
+.dragged {
+  position: absolute;
+  opacity: 0.5;
+  z-index: 2000;
+}
+
+ul.example li.placeholder {
+  position: relative;
+  /** More li styles **/
+  background-color: white;
+}
+ul.example li {
+  background-color: white;
+}
+ul.example li.placeholder:before {
+  position: absolute;
+  /** Define arrowhead **/
+  background-color: white;
+}

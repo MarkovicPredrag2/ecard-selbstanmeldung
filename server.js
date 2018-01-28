@@ -4,22 +4,22 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
-const https = require('http');
+const https = require('https');
 const winston = require('winston');
 const cookieSession = require('client-sessions');
 const path = require('path');
 const favicon = require('serve-favicon');
 
-//	Self written modules
+// Self written modules
 const ginaListener = require('./lib/ginaBaseService.js');
 const MySQLWrapper = require('./lib/dbaccess.js');
 
 //-----------	Configuration -----------
 
-//	Reading the config file.
+// Reading the config file.
 const cfg = JSON.parse(fs.readFileSync('./.servercfg.json', 'utf8'));
 
-//	Logging instances.
+// Logging instances.
 const serverTrafficLogger = new (winston.Logger)({
   transports: [
   	new (winston.transports.File)({
@@ -60,10 +60,10 @@ const logMetaData = {
 //	key: Path to the private key.
 //	crt: Path to the certificate.
 //	ca: Path to the chaining file.
-/*const keys = {
+const keys = {
 	key: fs.readFileSync(cfg.ssl.key),
   cert: fs.readFileSync(cfg.ssl.cert)
-};*/
+};
 
 //-----------	Express configuration -----------
 
@@ -139,8 +139,7 @@ role.use('/ipadapp', ipadapp);
 // who provide valid cookies.
 function redirectUser(role, res) {
 	switch(role) {
-		case 'arzt': res.redirect('/role/arzt/arztansicht'); break;	//	Route to the rendered arzt view
-		case 'benutzer': res.redirect('/role/benutzer/warteliste.html'); break;	//	Route to the warteliste html
+		case 'arzt': res.redirect('/role/arzt/ansicht/homepage'); break;
     case 'ipadapp': res.status(200).end('Eingeloggt'); break;
 	}
 }
@@ -188,23 +187,23 @@ DB.connect()
 	});
 
 //	Starting the server
-https.createServer(app).listen(portcfg.port_1, () => {
+https.createServer(app, keys).listen(portcfg.port_1, () => {
 	console.log(`Verbunden auf Port ${portcfg.port_1}`);
 });
 
-https.createServer(app).listen(portcfg.port_2, (port) => {
+https.createServer(app, keys).listen(portcfg.port_2, (port) => {
 	console.log(`Verbunden auf Port ${portcfg.port_2}`);
 });
 
 //	Starting gina listerner
-const ginaInformation =
-        ginaListener.listen(ginacfg.ipaddress, ginacfg.reader, ginacfg.ocardreader, ginacfg.pin, ginacfg.interval, ginacfg.testCardsAllowed);
+// const ginaInformation =
+//         ginaListener.listen(ginacfg.ipaddress, ginacfg.reader, ginacfg.ocardreader, ginacfg.pin, ginacfg.interval, ginacfg.testCardsAllowed);
 
-ginaInformation.on('connection', () => {
-  console.log('Verbunden mit der GINA');
-})
+// ginaInformation.on('connection', () => {
+//   console.log('Verbunden mit der GINA');
+// })
 
-//-----------	public routes	-----------
+//-----------  public routes -----------
 
 public.post('/login', (req, res) => {
 	serverTrafficLogger.log('info', `${req.ip} accessed ${req.originalUrl}`, logMetaData);
@@ -241,8 +240,6 @@ public.post('/login', (req, res) => {
 			res.render('login', { warning: 'Invalide eingabe. User konnte nicht gefunden werden.' });
 		});
 });
-
-//-----------	Restricted routes	-----------
 
 //-----------  role routes -----------
 
@@ -421,32 +418,32 @@ app.use((err, req, res, next) => {
 		the process itself occur.
 	==========================================
 */
-ginaInformation.on('data', (patient) => {
-	//	Patient plugged his card.
-	//	Add patient to the database
-	//	if he/she does not exist.
-	DB.addPatient(patient)
-		.then((result) => {
-			//	After adding the patient,
-			//	send the patient data along
-			//	with all of his data in the DB
-			//	to the subscribed iPad-apps.
-			ipadapp.locals.subscriptions.forEach((subscriber) => {
-        subscriber.write(`id: patient`);
-        subscriber.write('\n');
-        subscriber.write(`data: ${JSON.stringify(patient)}`);
-        subscriber.write('\n\n');
-			});
-		})
-		.catch((error) => {
-			serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
-		});
-});
-
-ginaInformation.on('error', (error) => {
-	ginaErrorLogger.log('error', error, logMetaData);
-});
-
-ginaInformation.on('procerror', (error) => {
-	ginaErrorLogger.log('fatal', error, logMetaData);
-});
+// ginaInformation.on('data', (patient) => {
+// 	//	Patient plugged his card.
+// 	//	Add patient to the database
+// 	//	if he/she does not exist.
+// 	DB.addPatient(patient)
+// 		.then((result) => {
+// 			//	After adding the patient,
+// 			//	send the patient data along
+// 			//	with all of his data in the DB
+// 			//	to the subscribed iPad-apps.
+// 			ipadapp.locals.subscriptions.forEach((subscriber) => {
+//         subscriber.write(`id: patient`);
+//         subscriber.write('\n');
+//         subscriber.write(`data: ${JSON.stringify(patient)}`);
+//         subscriber.write('\n\n');
+// 			});
+// 		})
+// 		.catch((error) => {
+// 			serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
+// 		});
+// });
+//
+// ginaInformation.on('error', (error) => {
+// 	ginaErrorLogger.log('error', error, logMetaData);
+// });
+//
+// ginaInformation.on('procerror', (error) => {
+// 	ginaErrorLogger.log('fatal', error, logMetaData);
+// });

@@ -8,11 +8,15 @@ html(lang='de')
   // ======= CSS dependencies =======
   // Bootstrap v3.3.7
   link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+  // W3schools CSS
+  link(rel='stylesheet', href='https://www.w3schools.com/w3css/4/w3.css')
   // Font awesome v4.7.0
   link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+  // Wateliste CSS + sonstiges
+  link(rel='stylesheet', type='text/css', href='/public/resources/css/style.css', media='screen')
   body(onload='startTime()')
     // ======= Navbar =======
-    nav.navbar.navbar-inverse
+    nav.navbar.navbar-inverse.navbar-static-top
       .container-fluid(style='font-size: 20px')
         .navbar-header
           button.navbar-toggle(type='button', data-toggle='collapse', data-target='#myNavbar')
@@ -20,42 +24,44 @@ html(lang='de')
             span.icon-bar
             span.icon-bar
           // Home Icon
-          a.navbar-brand.fa.fa-home(data-toggle='tooltip', title='Home', aria-hidden='true', href='#')
+          a.navbar-brand.fa.fa-home.fa-2x(data-toggle='tooltip', title='Home', aria-hidden='true', href='/role/arzt/ansicht/homepage')
         #myNavbar.collapse.navbar-collapse
           ul.nav.navbar-nav
             // User
             // Template: username p= user
             li
-              p#user.navbar-text.fa.fa-user-md(style='color: orange', aria-hidden='true')= user
+              p#user.navbar-text.fa.fa-user-md.fa-2x(style='color: orange', aria-hidden='true')
+                | &nbsp
+                span#user= user
             // Navigation
             li
-              a(href='/public/role/arzt/ansicht/warteraumansicht') Warteraumansicht
+              a(href='/role/arzt/ansicht/warteraumansicht', style='margin-top: 5%') Warteraumansicht
             li
-              a(href='/public/role/arzt/ansicht/arztansicht') Arztansicht
+              a(href='/role/arzt/ansicht/arztansicht', style='margin-top: 7%') Arztansicht
             li
-              a(href='/public/role/arzt/ansicht/logs') Logging Historie
+              a(href='/role/arzt/ansicht/logs', style='margin-top: 5%') Logging Historie
           ul.nav.navbar-nav.navbar-right
             // Time
             li
-              p#clock.navbar-text
+              p#clock.navbar-text(style='margin-top: 15.5%;')
             // Logout button
             li(data-toggle='tooltip', title='Logout')
-              a.fa.fa-power-off(style='color: red', href='/public/role/logout', aria-hidden='true')
+              a.fa.fa-power-off.fa-2x(style='color: red; margin-top: 17%;', href='/role/logout', aria-hidden='true')
     // ======= Mid-Section =======
     .container
       #ansichten.row
         // Warteraumansicht
         .col-xs-12.col-sm-6.col-md-4.col-lg-4
           .thumbnail
-            a(data-toggle='tooltip', title='Warteraumansicht', href='/public/role/arzt/ansicht/warteraumansicht')
-              img(src='/public/resources/img/ecard_blur.jpg', alt='Warteraumansicht')
+            a(data-toggle='tooltip', title='Warteraumansicht', href='/role/arzt/ansicht/warteraumansicht')
+              img(src='/public/resources/img/LogoWebseite_queue.jpg', alt='Warteraumansicht')
             .caption
               h3 Warteraumansicht
               p Hier können Sie die vergangen Patientenaktionen einsehen.
         // Arztansicht
         .col-xs-12.col-sm-6.col-md-4.col-lg-4
           .thumbnail
-            a(data-toggle='tooltip', title='Arztansicht', href='/public/role/arzt/ansicht/arztansicht')
+            a(data-toggle='tooltip', title='Arztansicht', href='/role/arzt/ansicht/arztansicht')
               img(src='/public/resources/img/LogoWebseite_doc.jpg', alt='Arztansicht')
             .caption
               h3 Arztansicht
@@ -64,7 +70,7 @@ html(lang='de')
         // Logging
         .col-xs-12.col-sm-6.col-md-4.col-lg-4
           .thumbnail
-            a(data-toggle='tooltip', title='Logging Historie', href='/public/role/arzt/ansicht/logs')
+            a(data-toggle='tooltip', title='Logging Historie', href='/role/arzt/ansicht/logs')
               img(src='/public/resources/img/LogoWebseite_Log.jpg', alt='Logging Historie')
             .caption
               h3 Logging Historie
@@ -75,10 +81,10 @@ html(lang='de')
         footer
           p
             | © 2018 Five4U, Diplomprojekt ·
-            a(href='/public/impressum.html') Impressum
+            a(href='#') Impressum
             span(style='float: right;')
               | E-Card Selbstanmeldungs Tool ·
-              a(href='/public/info.html') Info
+              a(href='#') Info
     // ======= JS Dependencies =======
     // jQuery library
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')

@@ -1,0 +1,15 @@
+.backgroundimage {
+	background-image: url(../img/ecard_blur.jpg);
+	background-color: #363C44;
+	background-position: center;
+	background-size: cover;
+	background-blend-mode: overlay;
+}
+
+#warning {
+	margin-top: 5%;
+	text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: red;
+}

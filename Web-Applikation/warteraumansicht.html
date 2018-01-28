@@ -1,67 +1,93 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
+
   <head>
-    <style>
-      img {
-          float: left;
-      }
-    </style>
-    <style>
-      #para1 {
-          padding-left: 0px;
-          font-size: 70px;
-      }
-    </style>
-    <title>Warteliste</title>
-    <!-- Required meta tags -->
+    <!-- ======= Meta Tags ======= -->
+
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Warteraumansicht</title>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <!-- ======= CSS Dependencies ======= -->
+
+    <!-- Bootstrap v3.3.7 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- W3schools CSS -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <!-- Font awesome v4.7.0 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Tabelle bzw. Tabs CSS -->
+    <link rel="stylesheet" type="text/css" href="./public/resources/css/style_tabelle.css" media="screen"/>
+    <!-- Tabelle - Sortierung  -->
+    <link rel="stylesheet" type="text/css" href="./public/resources/css/style_tabelle_dms.css" media="screen" />
   </head>
-  <body>
 
-    <nav class="navbar navbar-dark bg-dark">
-      <a class="navbar-item dropdown"><font color="white"><b><h3>&nbsp; Herzlich Willkommen bei Dr. Musterarzt!</h3></b></font></a>
-      <a class="active"><font color="white"><b><h3><p id="clock"></p></h3></b></font></a>
+  <body onload="startTime()">
+
+    <!-- ======= Navbar ======= -->
+
+    <nav class="navbar navbar-inverse navbar-static-top" style="position:fixed; width:100%;">
+      <div style="font-size: 20px" class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <!-- Home Icon -->
+          <a data-toggle="tooltip" title="Home" class="navbar-brand fa fa-home fa-2x" aria-hidden="true" href="/role/arzt/ansicht/homepage"></a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+            <!--Template: username p= user-->
+            <li><p style="color: orange" class="navbar-text fa fa-user-md fa-2x" aria-hidden="true" id="user"> Dr. Hofbauer</p></li>
+            <!-- Navigation -->
+            <li><a href="/role/arzt/ansicht/warteraumansicht" style="margin-top: 5%">Warteraumansicht</a></li>
+            <li><a href="/role/arzt/ansicht/arztansicht" style="margin-top: 7%">Arztansicht</a></li>
+            <li><a href="/role/arzt/ansicht/logs" style="margin-top: 5%">Logging Historie</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <!-- Time -->
+            <li><p id="clock" class="navbar-text" style="margin-top: 15.5%;"></p></li>
+            <!-- Logout button -->
+            <li data-toggle="tooltip" title="Logout"><a style="color: red; margin-top: 17%;" href="/role/logout" class="fa fa-power-off fa-2x" aria-hidden="true"></a></li>
+          </ul>
+        </div>
+      </div>
     </nav>
 
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <p id="para1"><img src="bild.jpg" style="width:20%;height:20%;margin-right:15px;">Nächster Patient: Hr. Musterpatient</p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <p id="para1"><img src="bild.jpg" style="width:20%;height:20%;margin-right:15px;">Wartezeit seit Anmeldung: 9 Minuten</p>
+    <!-- ======= Mid-Section ======= -->
 
-    <script>
-    var d = new Date();
-    if(d.getMinutes()<10)
-    {
-      document.getElementById("clock").innerHTML = d.getHours()+":0"+d.getMinutes();
-    }
-    else if(d.getHours()<10)
-    {
-      document.getElementById("clock").innerHTML = "0" + d.getHours()+":"+d.getMinutes();
-    }
-    else if(d.getHours()<10 && d.getHours()<10)
-    {
-      document.getElementById("clock").innerHTML = "0" + d.getHours()+"0:"+d.getMinutes();
-    }
-    else {
-      document.getElementById("clock").innerHTML = d.getHours()+":"+d.getMinutes();
-    }
-    </script>
+    <div class="container">
+      <!-- Logos oben links bzw. rechts -->
+      <span><img src="./public/resources/img/ecs.png" style="margin-top: 10%; flaot:left; width: 5%; height: 5%"/></span>
+      <span><img src="./public/resources/img/svc.png" style="margin-top: 10%; float:right; width: 10%; height: 7.5%"/></span>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+      <!-- Warteliste Name + Raum mit Bildern -->
+      <font size="11"><i class="fa fa-user-plus fa-4x" style="margin-left:10%; margin-top: 5%" aria-hidden="true"><font size="12" style="margin-left:20px"><b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Christopher Neuberger</b></font></i></font>
+      <font size="11"><img src="./public/resources/img/door.png" style="margin-left:8%; width: 20%; height:25%; margin-top: 2.5%" aria-hidden="true"><font size="12" style="margin-left:20px">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Ordination: 2</font></img></font>
+
+      <!-- ======= Footer ======= -->
+
+      <div>
+        <hr class="featurette-divider">
+        <footer>
+          <p>
+            &copy; 2018 Five4U, Diplomprojekt &middot; <a href="/public/impressum.html">Impressum</a>
+            <span style="float: right;">E-Card Selbstanmeldungs Tool &middot; <a href="/public/info.html">Info &nbsp &nbsp</a></span>
+          </p>
+        </footer>
+      </div>
+    </div>
+
+    <!-- ======= JS Dependencies ======= -->
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <!-- Time Script -->
+    <script type="text/javascript" src="./public/resources/js/time.js"></script>
   </body>
 </html>

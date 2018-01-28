@@ -11,13 +11,17 @@
 
     <!-- Bootstrap v3.3.7 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- W3schools CSS -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <!-- Font awesome v4.7.0 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Wateliste CSS + sonstiges  -->
+    <link rel="stylesheet" type="text/css" href="./public/resources/css/style.css" media="screen" />
   </head>
   <body onload="startTime()">
     <!-- ======= Navbar ======= -->
 
-    <nav class="navbar navbar-inverse">
+    <nav class="navbar navbar-inverse navbar-static-top">
       <div style="font-size: 20px" class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -26,23 +30,23 @@
             <span class="icon-bar"></span>
           </button>
           <!-- Home Icon -->
-          <a data-toggle="tooltip" title="Home" class="navbar-brand fa fa-home" aria-hidden="true" href="#"></a>
+          <a data-toggle="tooltip" title="Home" class="navbar-brand fa fa-home fa-2x" aria-hidden="true" href="/public/role/arzt/ansicht/homepage"></a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav">
             <!-- User -->
             <!--Template: username p= user-->
-            <li><p style="color: orange" class="navbar-text fa fa-user-md" aria-hidden="true" id="user"> Dr Muncan</p></li>
+            <li><p style="color: orange" class="navbar-text fa fa-user-md fa-2x" aria-hidden="true" id="user"> Dr. Hofbauer</p></li>
             <!-- Navigation -->
-            <li><a href="/public/role/arzt/ansicht/warteraumansicht">Warteraumansicht</a></li>
-            <li><a href="/public/role/arzt/ansicht/arztansicht">Arztansicht</a></li>
-            <li><a href="/public/role/arzt/ansicht/logs">Logging Historie</a></li>
+            <li><a href="/role/arzt/ansicht/warteraumansicht" style="margin-top: 5%">Warteraumansicht</a></li>
+            <li><a href="/role/arzt/ansicht/arztansicht" style="margin-top: 7%">Arztansicht</a></li>
+            <li><a href="/role/arzt/ansicht/logs" style="margin-top: 5%">Logging Historie</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <!-- Time -->
-            <li><p id="clock" class="navbar-text"></p></li>
+            <li><p id="clock" class="navbar-text" style="margin-top: 15.5%;"></p></li>
             <!-- Logout button -->
-            <li data-toggle="tooltip" title="Logout"><a style="color: red" href="/public/role/logout" class="fa fa-power-off" aria-hidden="true"></a></li>
+            <li data-toggle="tooltip" title="Logout"><a style="color: red; margin-top: 17%;" href="/role/logout" class="fa fa-power-off fa-2x" aria-hidden="true"></a></li>
           </ul>
         </div>
       </div>
@@ -55,7 +59,7 @@
         <!-- Warteraumansicht -->
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
           <div class="thumbnail">
-            <a data-toggle="tooltip" title="Warteraumansicht" href="/public/role/arzt/ansicht/warteraumansicht" ><img src="./img/LogoWebseite_queue.jpg" alt="Warteraumansicht"></a>
+            <a data-toggle="tooltip" title="Warteraumansicht" href="/public/role/arzt/ansicht/warteraumansicht" ><img src="./public/resources/img/LogoWebseite_queue.jpg" alt="Warteraumansicht"></a>
             <div class="caption">
               <h3>Warteraumansicht</h3>
               <p>Hier können Sie die vergangen Patientenaktionen einsehen.</p>
@@ -65,7 +69,7 @@
         <!-- Arztansicht -->
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
           <div class="thumbnail">
-            <a data-toggle="tooltip" title="Arztansicht" href="/public/role/arzt/ansicht/arztansicht"><img src="./img/LogoWebseite_doc.jpg" alt="Arztansicht"></a>
+            <a data-toggle="tooltip" title="Arztansicht" href="/public/role/arzt/ansicht/arztansicht"><img src="./public/resources/img/LogoWebseite_doc.jpg" alt="Arztansicht"></a>
             <div class="caption">
               <h3>Arztansicht</h3>
               <p>Über diese Ansicht können Sie die Patienten in der Warteliste verwalten und ihre Stammdaten einsehen.</p>
@@ -75,7 +79,7 @@
         <!-- Logging -->
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
           <div class="thumbnail">
-          <a data-toggle="tooltip" title="Logging Historie" href="/public/role/arzt/ansicht/logs"><img src="./img/LogoWebseite_Log.jpg" alt="Logging Historie"></a>
+          <a data-toggle="tooltip" title="Logging Historie" href="/public/role/arzt/ansicht/logs"><img src="./public/resources/img/LogoWebseite_Log.jpg" alt="Logging Historie"></a>
             <div class="caption">
               <h3>Logging Historie</h3>
               <p>Hier können Sie die vergangenen Veränderungen der Patientendaten einsehen.</p>
@@ -91,7 +95,7 @@
         <footer>
           <p>
             &copy; 2018 Five4U, Diplomprojekt &middot; <a href="/public/impressum.html">Impressum</a>
-            <span style="float: right;">E-Card Selbstanmeldungs Tool &middot; <a href="/public/info.html">Info</a></span>
+            <span style="float: right;">E-Card Selbstanmeldungs Tool &middot; <a href="/public/info.html">Info &nbsp &nbsp</a></span>
           </p>
         </footer>
       </div>
@@ -104,7 +108,7 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- Time Script -->
-    <script type="text/javascript" src="./js/time.js"></script>
+    <script type="text/javascript" src="./public/resources/js/time.js"></script>
     <!-- jQuery Animation -->
     <script type="text/javascript">
       $(document).ready(function() {

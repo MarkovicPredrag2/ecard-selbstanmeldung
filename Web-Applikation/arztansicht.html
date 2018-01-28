@@ -1,116 +1,204 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
   <head>
-    <title>e-card Selbstanmeldungstool</title>
+    <!-- ======= Meta Tags ======= <-->       </-->
+
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-    <link rel="stylesheet" href="./css/font-awesome-4.7.0/css/font-awesome.min.css">
-    <link href="./css/sidebar-links.css" rel="stylesheet">
-    <link href="./css/sortablestyle.css" rel="stylesheet">
-    <link href="./css/sidebar-rechts.css" rel="stylesheet">
-    <link href="./css/patcontainer.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Arztansicht</title>
+
+    <!-- ======= CSS Dependencies ======= -->
+
+    <!-- Bootstrap v3.3.7 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- W3schools CSS -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <!-- Font awesome v4.7.0 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Wateliste CSS + sonstiges  -->
+    <link rel="stylesheet" type="text/css" href="./public/resources/css/style.css" media="screen" />
   </head>
-
   <body onload="startTime()">
+    <!-- ======= Navbar ======= -->
 
-    <nav class="navbar navbar-dark bg-dark">
-      <a class="navbar-item dropdown"><!--<img src="./img/user.png" style="float:left;">-->
-        <font color="white">
-          <!--Template: username h3= user-->
-          <b><h3>&nbsp; Dr. Musterarzt</h3></b>
-        </font>
-      </a>
-      <a class="active">
-        <font color="white">
-          <b>
-            <h3>
-              <p id="clock"></p>
-            </h3>
-          </b>
-        </font>
-      </a>
-    </nav>
-    <div id="wrappersr">
-        <div id="sidebar-wrappersr">
-          <ul id="columns">
-            <ol class="sidebar-navr example" id="patcontainer">
-              <!--for patient in arztansicht
-                li
-                  span(id=patient.svnr onclick="requestPatientData(this)") #{patient.grund} - #{patient.name}-->
-              <li>
-                <span id="5555" onclick="requestPatientData(this)">Hr. Saric - Rezept</span>
-              </li>
-              <li>
-                <span id="6666" onclick="requestPatientData(this)">Hr. Seifert - Rezept</span>
-              </li>
-              <li>
-                <span id="7777" onclick="requestPatientData(this)">Hr. Barrientos - Untersuchung</span>
-              </li>
-            </ol>
+    <nav class="navbar navbar-inverse navbar-static-top" style="position:fixed; width:100%;">
+      <div style="font-size: 20px" class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <!-- Home Icon -->
+          <a data-toggle="tooltip" title="Home" class="navbar-brand fa fa-home fa-2x" aria-hidden="true" href="/role/arzt/ansicht/homepage"></a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+            <!-- User -->
+            <!--Template: username p= user-->
+            <li><p style="color: orange" class="navbar-text fa fa-user-md fa-2x" aria-hidden="true" id="user"> Dr. Hofbauer</p></li>
+            <!-- Navigation -->
+            <li><a href="/role/arzt/ansicht/warteraumansicht" style="margin-top: 5%">Warteraumansicht</a></li>
+            <li><a href="/role/arzt/ansicht/arztansicht" style="margin-top: 7%">Arztansicht</a></li>
+            <li><a href="/role/arzt/ansicht/logs" style="margin-top: 5%">Logging Historie</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <!-- Time -->
+            <li><p id="clock" class="navbar-text" style="margin-top: 15.5%;"></p></li>
+            <!-- Logout button -->
+            <li data-toggle="tooltip" title="Logout"><a style="color: red; margin-top: 17%;" href="/role/logout" class="fa fa-power-off fa-2x" aria-hidden="true"></a></li>
           </ul>
         </div>
-    </div>
+      </div>
+    </nav>
 
-    <div id="wrappers">
-        <div id="sidebar-wrappers">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                  <a style="font-size: 16px; color: #199bd8;" data-toggle="tooltip" title="Patienten aufrufen" href="#">
-                    <span style="content:" class="fa fa-arrow-left" aria-hidden="true"></span>
-                  </a>
-                </li>
-                <li class="sidebar-brand">
-                  <a href="#" data-toggle="tooltip" title="Patienten entlassen">
-                    <span style="color: #1ad85f" class="fa fa-check" aria-hidden="true"></span>
-                  </a>
-                </li>
-                <li class="sidebar-brand">
-                  <a data-toggle="tooltip" title="Ausloggen" href="/role/logout">
-                    <!--style="color: #dd2a1a; font-size: 50px"-->
-                    <span style="color: #d32317" class="fa fa-power-off" aria-hidden="true"></span>
-                  </a>
-                </li>
-            </ul>
-        </div>
-        <div id="page-content-wrappers">
-            <div class="container-fluid">
-                <h1><small id="name"></small></h1>
-                <h2><small id="svnr"></small></h2>
-                <h2><small id="grund"></small></h2>
-                <!-- <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
-                <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p> -->
-            </div>
-        </div>
-    </div>
+    <!-- ======= Mid-Section ======= -->
 
+      <!-- Linke Nav-Bar -->
+      <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge" style="width:70px; margin-top:71px;">
+        <a href="#" class="w3-bar-item w3-button"><i class="fa fa-check" style="color:#20c40d" title="Patient-Fertig"></i></a>
+        <a href="#" class="w3-bar-item w3-button"><i class="fa fa-sign-in" style="color:#20c40d" title="Patient hereinholen"></i></a>
+      </div>
+      <!-- Patienten-Stammdaten -->
+      <div style="margin-left:100px; position:fixed; margin-top:72px">
+        <div class="W3-container">
+          <h2 id="h_vorname">Hr. Christopher Neuberger</h2>
+          <h3 id="h_versicherung">1234567890 - WGKK</h3>
+      </div>
+        <div class="w3-container">
+          <table class="anzeigetable">
+            <!-- TO-DO:Richtige Felder zum Anzeigen -->
+
+            <tr>
+              <td><label>Vorname:</label></td>
+              <td><label id="t_vorname">Christopher</label></td>
+              <td><label>SVNR:</label></td>
+              <td><label>1234567890</label></td>
+            </tr>
+            <tr>
+              <td><label>Nachname:</label></td>
+              <td><label id="t_nachname">Neuberger</label></td>
+              <td><label>Adresse:</label></td>
+              <td><label>Sattstraße 7</label></td>
+            </tr>
+            <tr>
+              <td><label>Grund:</label></td>
+              <td><label id="t_grund">Untersuchung</label></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Warteliste -->
+      <div align="right" style="padding-top:71px">
+        <ul class="list example">
+          <li class="list" id="1" onclick="requestPatientData(this)">
+            <i class="fa fa-stethoscope fa-5x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
+            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
+            <h3 style="text-align: left">Hr. Christopher Neuberger</h3>
+            <p>Untersuchung (18 Jahre alt)</p>
+          </li>
+
+          <li class="list" id="1" onclick="requestPatientData(this)">
+            <i class="fa fa-file-text-o fa-4x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
+            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
+            <h3 style="text-align: left">Hr. Miguel Santos &nbsp</h3>
+            <p>Rezept (18 Jahre alt)</p>
+          </li>
+
+          <li class="list" id="2" onclick="requestPatientData(this)">
+            <i class="fa fa-stethoscope fa-5x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
+            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
+            <h3 style="text-align: left">Hr. Predrag Markovic</h3>
+            <p>Untersuchung (18 Jahre alt)</p>
+          </li>
+
+          <li class="list" id="3" onclick="requestPatientData(this)">
+            <i class="fa fa-briefcase fa-4x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
+            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
+            <h3 style="text-align: left">Hr. Eren Icme</h3>
+            <p>Arbeitsun. (21 Jahre alt)</p>
+          </li>
+
+          <li class="list" id="4" onclick="requestPatientData(this)">
+            <i class="fa fa-stethoscope fa-5x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
+            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
+            <h3 style="text-align: left">Hr. Leonardo Barrientos</h3>
+            <p>Untersuchung (18 Jahre alt)</p>
+          </li>
+          <li class="list" id="5" onclick="requestPatientData(this)">
+            <i class="fa fa-file-text-o fa-4x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
+            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
+            <h3 style="text-align: left">Hr. Philipp Stöckl</h3>
+            <p>Rezept (18 Jahre alt)</p>
+          </li>
+          <li class="list" id="6" onclick="requestPatientData(this)">
+            <i class="fa fa-stethoscope fa-5x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
+            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
+            <h3 style="text-align: left">Hr. Raphale Seifert</h3>
+            <p>Untersuchung (18 Jahre alt)</p>
+          </li>
+          <li class="list" id="7" onclick="requestPatientData(this)">
+            <i class="fa fa-stethoscope fa-5x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
+            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
+            <h3 style="text-align: left">Hr. Bernahrd Saric</h3>
+            <p>Untersuchung (18 Jahre alt)</p>
+          </li>
+          <li class="list" id="8" onclick="requestPatientData(this)">
+            <i class="fa fa-stethoscope fa-5x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
+            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
+            <h3 style="text-align: left">Hr. Tobias Leitner</h3>
+            <p>Untersuchung (18 Jahre alt)</p>
+          </li>
+          <li class="list" id="9" onclick="requestPatientData(this)">
+            <i class="fa fa-stethoscope fa-5x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
+            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
+            <h3 style="text-align: left">Fr. Lara Sophie Stöckl</h3>
+            <p>Untersuchung (17 Jahre alt)</p>
+          </li>
+          <li class="list" id="10" onclick="requestPatientData(this)">
+            <i class="fa fa-stethoscope fa-5x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
+            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
+            <h3 style="text-align: left">Fr. Anna Musterfrau</h3>
+            <p>Untersuchung (45 Jahre alt)</p>
+          </li>
+          <li class="list" id="11" onclick="requestPatientData(this)">
+            <i class="fa fa-file-text-o fa-4x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
+            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
+            <h3 style="text-align: left">Hr. Maximilian Müller</h3>
+            <p>Rezept (80 Jahre alt)</p>
+          </li>
+          <li class="list" id="12" onclick="requestPatientData(this)">
+            <i class="fa fa-stethoscope fa-5x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
+            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
+            <h3 style="text-align: left">Fr. Marie Maier</h3>
+            <p>Untersuchung (28 Jahre alt)</p>
+          </li>
+          <li class="list" id="13" onclick="requestPatientData(this)">
+            <i class="fa fa-stethoscope fa-5x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
+            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
+            <h3 style="text-align: left">Fr. Sonja Alser</h3>
+            <p>Untersuchung (90 Jahre alt)</p>
+          </li>
+        </ul>
+      </div>
+
+    <!-- ======= JS Dependencies ======= -->
+
+    <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-    <script src='./js/jquery-sortable.js'></script>
-    <script type="text/javascript" src="./js/time.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Time Script -->
+    <script type="text/javascript" src="./public/resources/js/time.js"></script>
+    <script src='./public/resources/js/jquery-sortable.js'></script>
+    <script src='./public/resources/js/patientendaten.js'></script>
     <script>
       $(document).ready(function() {
         $(function () {
-        $("ol.example").sortable();
+        $("ul.example").sortable();
         });
       });
-      function requestPatientData(dom) {
-        $.ajax({
-          url: '/role/arzt/patientendata',
-          type: 'POST',
-          dataType: 'json',
-          contentType: "application/json",
-          data: JSON.stringify({ "patient": { "svnr": dom.getAttribute('id') } }),
-          async: true,
-          success: function(patient) {
-            $("#name").html(patient.name);
-            $("#svnr").html(patient.svnr);
-            $("#grund").html(patient.grund);
-          }
-        });
-      }
     </script>
   </body>
 </html>
