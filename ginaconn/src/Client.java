@@ -7,9 +7,12 @@ import java.rmi.RemoteException;
 import javax.xml.rpc.ServiceException;
 
 import at.chipkarte.client.base.soap.BaseServiceLocator;
+import at.chipkarte.client.base.soap.IBaseService;
 import at.chipkarte.client.base.soap.exceptions.CardExceptionContent;
 import at.chipkarte.client.base.soap.exceptions.DialogExceptionContent;
 import at.chipkarte.client.base.soap.exceptions.ServiceExceptionContent;
+import at.chipkarte.client.sas.soap.ISasService;
+import at.chipkarte.client.vdas.soap.IVdasService;
 
 public class Client {
 	private static final char CARD_READER_STATUS_REQUEST 	= 'R';
@@ -17,28 +20,36 @@ public class Client {
 	
 	public static void main(String[] args) throws ServiceException, ServiceExceptionContent, CardExceptionContent, RemoteException {
 		GinaCallerWrapper session;
-		if((session = init(args)) == null) {
+		args = new String[4];
+		args[0] = "https://10.196.2.18";
+		args[1] = "Test-03 (02:94:93)";
+		args[2] = "Test-02 (02:81:7c)";
+		args[3] = "0000";
+ 		if((session = init(args)) == null) {
 			System.exit(-1);
 		}
-		System.out.print("{ init: true }");
-		try (InputStreamReader cin = new InputStreamReader(System.in)) {
-			while (true) switch ((char) cin.read()) {
-				case CARD_READER_STATUS_REQUEST:
-					System.out.print(session.getCardReaderStatus(10000));
-					break;
-				case PATIENT_INFORMATION_REQUEST:
-					System.out.print(session.getPatientInformation());
-					break;
-				case 'Q':
-					cin.close();
-					System.exit(-1);
-					break;
-				default:
-					System.err.print("Wrong command code");
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		
+		System.out.println(session.getCardReaderStatus(10000).toJSONString());
+		System.out.println(session.getPatientInformation().toJSONString());
+//		System.out.print("{ init: true }");
+//		try (InputStreamReader cin = new InputStreamReader(System.in)) {
+//			while (true) switch ((char) cin.read()) {
+//				case CARD_READER_STATUS_REQUEST:
+//					System.out.print(session.getCardReaderStatus(10000));
+//					break;
+//				case PATIENT_INFORMATION_REQUEST:
+//					System.out.print(session.getPatientInformation());
+//					break;
+//				case 'Q':
+//					cin.close();
+//					System.exit(-1);
+//					break;
+//				default:
+//					System.err.print("Wrong command code");
+//			}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 	
 	private static GinaCallerWrapper init(String[] args) {
@@ -50,20 +61,14 @@ public class Client {
 		if (args.length < 4) {
 			return null;
 		}
-		
 		String hostAddr = args[0],
 				cardReaderAddr = args[1],
 				ocardReaderAddr = args[2],
 				PIN = args[3];
 		
 		GinaCallerWrapper session;
-		
 		try {
-			session = new GinaCallerWrapper(cardReaderAddr, ocardReaderAddr, PIN);
-			ServiceLocator ginaServiceLocator = new ServiceLocator(hostAddr);
-			ginaServiceLocator.connectToBaseService(session);
-			ginaServiceLocator.connectToSasService(session);
-			ginaServiceLocator.connectToVdasService(session);
+			session = new GinaCallerWrapper(cardReaderAddr, ocardReaderAddr, PIN, hostAddr);
 			session.invokeDialog();
 			return session;
 		} catch (ServiceException e) {

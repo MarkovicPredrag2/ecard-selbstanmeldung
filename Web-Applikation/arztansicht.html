@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <!-- ======= Meta Tags ======= <-->       </-->
+    <!-- ======= Meta Tags ======= -->
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,23 +30,23 @@
             <span class="icon-bar"></span>
           </button>
           <!-- Home Icon -->
-          <a data-toggle="tooltip" title="Home" class="navbar-brand fa fa-home fa-2x" aria-hidden="true" href="/role/arzt/ansicht/homepage"></a>
+          <a data-toggle="tooltip" title="Home" class="navbar-brand fa fa-home fa-2x" aria-hidden="true" href="#"></a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav">
             <!-- User -->
             <!--Template: username p= user-->
-            <li><p style="color: orange" class="navbar-text fa fa-user-md fa-2x" aria-hidden="true" id="user"> Dr. Hofbauer</p></li>
+            <li><p style="color: orange" class="navbar-text fa fa-user-md fa-2x" aria-hidden="true">&nbsp <span id="user">Hofbauer</span></p></li>
             <!-- Navigation -->
-            <li><a href="/role/arzt/ansicht/warteraumansicht" style="margin-top: 5%">Warteraumansicht</a></li>
-            <li><a href="/role/arzt/ansicht/arztansicht" style="margin-top: 7%">Arztansicht</a></li>
-            <li><a href="/role/arzt/ansicht/logs" style="margin-top: 5%">Logging Historie</a></li>
+            <li><a href="/public/role/arzt/ansicht/warteraumansicht" style="margin-top: 5%">Warteraumansicht</a></li>
+            <li><a href="/public/role/arzt/ansicht/arztansicht" style="margin-top: 7%">Arztansicht</a></li>
+            <li><a href="/public/role/arzt/ansicht/logs" style="margin-top: 5%">Logging Historie</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <!-- Time -->
             <li><p id="clock" class="navbar-text" style="margin-top: 15.5%;"></p></li>
             <!-- Logout button -->
-            <li data-toggle="tooltip" title="Logout"><a style="color: red; margin-top: 17%;" href="/role/logout" class="fa fa-power-off fa-2x" aria-hidden="true"></a></li>
+            <li data-toggle="tooltip" title="Logout"><a style="color: red; margin-top: 17%;" href="/public/role/logout" class="fa fa-power-off fa-2x" aria-hidden="true"></a></li>
           </ul>
         </div>
       </div>
@@ -68,7 +68,6 @@
         <div class="w3-container">
           <table class="anzeigetable">
             <!-- TO-DO:Richtige Felder zum Anzeigen -->
-
             <tr>
               <td><label>Vorname:</label></td>
               <td><label id="t_vorname">Christopher</label></td>
@@ -90,96 +89,21 @@
       </div>
 
       <!-- Warteliste -->
+      <!--
+        for patient in patients
+          li.list(onclick='requestPatientData(this)' id= patient.svnr)
+            if patient.grund == "Untersuchung"
+              i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+            else if patient.grund == "AUM"
+              i.fa.fa-briefcase.fa-4x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+            else if patient.grund == "Rezept"
+              i.fa.fa-file-text-o.fa-4x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+            i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
+            h3(style='text-align: left') patient.grund
+            p patient.anrede patient.nachname patient.vorname (patient.alter Jahre alt)
+       -->
       <div align="right" style="padding-top:71px">
-        <ul class="list example">
-          <li class="list" id="1" onclick="requestPatientData(this)">
-            <i class="fa fa-stethoscope fa-5x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
-            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
-            <h3 style="text-align: left">Hr. Christopher Neuberger</h3>
-            <p>Untersuchung (18 Jahre alt)</p>
-          </li>
-
-          <li class="list" id="1" onclick="requestPatientData(this)">
-            <i class="fa fa-file-text-o fa-4x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
-            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
-            <h3 style="text-align: left">Hr. Miguel Santos &nbsp</h3>
-            <p>Rezept (18 Jahre alt)</p>
-          </li>
-
-          <li class="list" id="2" onclick="requestPatientData(this)">
-            <i class="fa fa-stethoscope fa-5x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
-            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
-            <h3 style="text-align: left">Hr. Predrag Markovic</h3>
-            <p>Untersuchung (18 Jahre alt)</p>
-          </li>
-
-          <li class="list" id="3" onclick="requestPatientData(this)">
-            <i class="fa fa-briefcase fa-4x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
-            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
-            <h3 style="text-align: left">Hr. Eren Icme</h3>
-            <p>Arbeitsun. (21 Jahre alt)</p>
-          </li>
-
-          <li class="list" id="4" onclick="requestPatientData(this)">
-            <i class="fa fa-stethoscope fa-5x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
-            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
-            <h3 style="text-align: left">Hr. Leonardo Barrientos</h3>
-            <p>Untersuchung (18 Jahre alt)</p>
-          </li>
-          <li class="list" id="5" onclick="requestPatientData(this)">
-            <i class="fa fa-file-text-o fa-4x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
-            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
-            <h3 style="text-align: left">Hr. Philipp Stöckl</h3>
-            <p>Rezept (18 Jahre alt)</p>
-          </li>
-          <li class="list" id="6" onclick="requestPatientData(this)">
-            <i class="fa fa-stethoscope fa-5x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
-            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
-            <h3 style="text-align: left">Hr. Raphale Seifert</h3>
-            <p>Untersuchung (18 Jahre alt)</p>
-          </li>
-          <li class="list" id="7" onclick="requestPatientData(this)">
-            <i class="fa fa-stethoscope fa-5x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
-            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
-            <h3 style="text-align: left">Hr. Bernahrd Saric</h3>
-            <p>Untersuchung (18 Jahre alt)</p>
-          </li>
-          <li class="list" id="8" onclick="requestPatientData(this)">
-            <i class="fa fa-stethoscope fa-5x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
-            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
-            <h3 style="text-align: left">Hr. Tobias Leitner</h3>
-            <p>Untersuchung (18 Jahre alt)</p>
-          </li>
-          <li class="list" id="9" onclick="requestPatientData(this)">
-            <i class="fa fa-stethoscope fa-5x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
-            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
-            <h3 style="text-align: left">Fr. Lara Sophie Stöckl</h3>
-            <p>Untersuchung (17 Jahre alt)</p>
-          </li>
-          <li class="list" id="10" onclick="requestPatientData(this)">
-            <i class="fa fa-stethoscope fa-5x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
-            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
-            <h3 style="text-align: left">Fr. Anna Musterfrau</h3>
-            <p>Untersuchung (45 Jahre alt)</p>
-          </li>
-          <li class="list" id="11" onclick="requestPatientData(this)">
-            <i class="fa fa-file-text-o fa-4x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
-            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
-            <h3 style="text-align: left">Hr. Maximilian Müller</h3>
-            <p>Rezept (80 Jahre alt)</p>
-          </li>
-          <li class="list" id="12" onclick="requestPatientData(this)">
-            <i class="fa fa-stethoscope fa-5x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
-            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
-            <h3 style="text-align: left">Fr. Marie Maier</h3>
-            <p>Untersuchung (28 Jahre alt)</p>
-          </li>
-          <li class="list" id="13" onclick="requestPatientData(this)">
-            <i class="fa fa-stethoscope fa-5x" aria-hidden="true" style="float:left; margin: 0 15px 0 0;"></i>
-            <i class="fa fa-bars fa-3x" aria-hidden="true" style="float:right; padding-top:27.5px"></i>
-            <h3 style="text-align: left">Fr. Sonja Alser</h3>
-            <p>Untersuchung (90 Jahre alt)</p>
-          </li>
+        <ul class="list example" id="patientlist">
         </ul>
       </div>
 
@@ -191,14 +115,35 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- Time Script -->
     <script type="text/javascript" src="./public/resources/js/time.js"></script>
-    <script src='./public/resources/js/jquery-sortable.js'></script>
-    <script src='./public/resources/js/patientendaten.js'></script>
+    <!-- Sortable Library -->
+    <script src="./public/resources/js/jquery-sortable.js"></script>
+    <!-- Client to Server Response logic -->
+    <script src="./public/resources/js/backend.js" charset="utf-8"></script>
+    <!-- SSE Event Receiver script-->
+    <script src="./public/resources/js/ssereceiver.js" charset="utf-8"></script>
+    <!-- ID for test purpose -->
+    <script type="text/javascript">
+      var appID = 1000000 * Math.random();
+    </script>
     <script>
       $(document).ready(function() {
-        $(function () {
-        $("ul.example").sortable();
+        $("ul.example").sortable({
+          onDrop: function ($item, container, _super) {
+            // Send data ranking data to server
+            $.post("/role/arzt/warteliste", rankPatientBefore($item.attr("id")));
+            _super($item, container);
+          }
         });
       });
+      function requestPatientData(dom) {
+        $.post("/role/arzt/patientdata", { "patient": JSON.stringify(dom.getAttribute('id'))},
+          function(data, status) {
+            var patient = data[0];
+            $("#t_vorname").html(patient.vorname);
+            $("#t_nachname").html(patient.nachname);
+            $("#t_grund").html(patient.grund);
+        });
+      }
     </script>
   </body>
 </html>

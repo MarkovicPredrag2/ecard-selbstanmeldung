@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    // ======= Meta Tags ======= <
+    // ======= Meta Tags =======
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     title Arztansicht
@@ -24,7 +24,7 @@ html
             span.icon-bar
             span.icon-bar
           // Home Icon
-          a.navbar-brand.fa.fa-home.fa-2x(data-toggle='tooltip', title='Home', aria-hidden='true', href='/role/arzt/ansicht/homepage')
+          a.navbar-brand.fa.fa-home.fa-2x(data-toggle='tooltip', title='Home', aria-hidden='true', href='#')
         #myNavbar.collapse.navbar-collapse
           ul.nav.navbar-nav
             // User
@@ -32,21 +32,21 @@ html
             li
               p.navbar-text.fa.fa-user-md.fa-2x(style='color: orange', aria-hidden='true')
                 | &nbsp
-                span#user= user
+                span#user Hofbauer
             // Navigation
             li
-              a(href='/role/arzt/ansicht/warteraumansicht', style='margin-top: 5%') Warteraumansicht
+              a(href='/public/role/arzt/ansicht/warteraumansicht', style='margin-top: 5%') Warteraumansicht
             li
-              a(href='/role/arzt/ansicht/arztansicht', style='margin-top: 7%') Arztansicht
+              a(href='/public/role/arzt/ansicht/arztansicht', style='margin-top: 7%') Arztansicht
             li
-              a(href='/role/arzt/ansicht/logs', style='margin-top: 5%') Logging Historie
+              a(href='/public/role/arzt/ansicht/logs', style='margin-top: 5%') Logging Historie
           ul.nav.navbar-nav.navbar-right
             // Time
             li
               p#clock.navbar-text(style='margin-top: 15.5%;')
             // Logout button
             li(data-toggle='tooltip', title='Logout')
-              a.fa.fa-power-off.fa-2x(style='color: red; margin-top: 17%;', href='/role/logout', aria-hidden='true')
+              a.fa.fa-power-off.fa-2x(style='color: red; margin-top: 17%;', href='/public/role/logout', aria-hidden='true')
     // ======= Mid-Section =======
     // Linke Nav-Bar
     .w3-sidebar.w3-bar-block.w3-black.w3-xxlarge(style='width:70px; margin-top:71px;')
@@ -87,77 +87,18 @@ html
               label#t_grund Untersuchung
     // Warteliste
     div(align='right', style='padding-top:71px')
-      ul.list.example
-        li#1.list(onclick='requestPatientData(this)')
-          i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
-          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
-          h3(style='text-align: left') Hr. Christopher Neuberger
-          p Untersuchung (18 Jahre alt)
-        li#1.list(onclick='requestPatientData(this)')
-          i.fa.fa-file-text-o.fa-4x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
-          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
-          h3(style='text-align: left') Hr. Miguel Santos &nbsp
-          p Rezept (18 Jahre alt)
-        li#2.list(onclick='requestPatientData(this)')
-          i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
-          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
-          h3(style='text-align: left') Hr. Predrag Markovic
-          p Untersuchung (18 Jahre alt)
-        li#3.list(onclick='requestPatientData(this)')
-          i.fa.fa-briefcase.fa-4x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
-          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
-          h3(style='text-align: left') Hr. Eren Icme
-          p Arbeitsun. (21 Jahre alt)
-        li#4.list(onclick='requestPatientData(this)')
-          i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
-          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
-          h3(style='text-align: left') Hr. Leonardo Barrientos
-          p Untersuchung (18 Jahre alt)
-        li#5.list(onclick='requestPatientData(this)')
-          i.fa.fa-file-text-o.fa-4x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
-          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
-          h3(style='text-align: left') Hr. Philipp Stöckl
-          p Rezept (18 Jahre alt)
-        li#6.list(onclick='requestPatientData(this)')
-          i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
-          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
-          h3(style='text-align: left') Hr. Raphale Seifert
-          p Untersuchung (18 Jahre alt)
-        li#7.list(onclick='requestPatientData(this)')
-          i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
-          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
-          h3(style='text-align: left') Hr. Bernahrd Saric
-          p Untersuchung (18 Jahre alt)
-        li#8.list(onclick='requestPatientData(this)')
-          i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
-          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
-          h3(style='text-align: left') Hr. Tobias Leitner
-          p Untersuchung (18 Jahre alt)
-        li#9.list(onclick='requestPatientData(this)')
-          i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
-          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
-          h3(style='text-align: left') Fr. Lara Sophie Stöckl
-          p Untersuchung (17 Jahre alt)
-        li#10.list(onclick='requestPatientData(this)')
-          i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
-          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
-          h3(style='text-align: left') Fr. Anna Musterfrau
-          p Untersuchung (45 Jahre alt)
-        li#11.list(onclick='requestPatientData(this)')
-          i.fa.fa-file-text-o.fa-4x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
-          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
-          h3(style='text-align: left') Hr. Maximilian Müller
-          p Rezept (80 Jahre alt)
-        li#12.list(onclick='requestPatientData(this)')
-          i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
-          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
-          h3(style='text-align: left') Fr. Marie Maier
-          p Untersuchung (28 Jahre alt)
-        li#13.list(onclick='requestPatientData(this)')
-          i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
-          i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
-          h3(style='text-align: left') Fr. Sonja Alser
-          p Untersuchung (90 Jahre alt)
+      ul#patientlist.list.example
+        for patient in patients
+          li.list(onclick='requestPatientData(this)' id= patient.svnr)
+            if patient.grund == "Untersuchung"
+              i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+            else if patient.grund == "AUM"
+              i.fa.fa-briefcase.fa-4x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+            else if patient.grund == "Rezept"
+              i.fa.fa-file-text-o.fa-4x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+            i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
+            h3(style='text-align: left') #{patient.grund}
+            p #{patient.anrede} #{patient.nachname} #{patient.vorname} (#{patient.alter} Jahre alt)
     // ======= JS Dependencies =======
     // jQuery library
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
@@ -165,11 +106,30 @@ html
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
     // Time Script
     script(type='text/javascript', src='/public/resources/js/time.js')
+    // Sortable Library
     script(src='/public/resources/js/jquery-sortable.js')
-    script(src='/public/resources/js/patientendaten.js')
+    // Client to Server Response logic
+    script(src='/public/resources/js/backend.js', charset='utf-8')
+    // SSE Event Receiver script
+    script(src='/public/resources/js/ssereceiver.js', charset='utf-8')
+    // ID for test purpose
+    script(type='text/javascript').
+      var appID = 1000000 * Math.random();
     script.
       $(document).ready(function() {
-      $(function () {
-      $("ul.example").sortable();
+s      $("ul.example").sortable({
+      onDrop: function ($item, container, _super) {
+      $.post("/role/arzt/warteliste", rankPatientBefore($item.attr("id")));
+      _super($item, container);
+      }
       });
       });
+      function requestPatientData(dom) {
+      $.post("/role/arzt/patientdata", { "patient": JSON.stringify(dom.getAttribute('id'))},
+      function(data, status) {
+      var patient = data[0];
+      $("#t_vorname").html(patient.vorname);
+      $("#t_nachname").html(patient.nachname);
+      $("#t_grund").html(patient.grund);
+      });
+      }

@@ -4,7 +4,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
-const https = require('https');
+const https = require('http');
 const winston = require('winston');
 const cookieSession = require('client-sessions');
 const path = require('path');
@@ -12,7 +12,7 @@ const favicon = require('serve-favicon');
 
 // Self written modules
 const ginaListener = require('./lib/ginaBaseService.js');
-const MySQLWrapper = require('./lib/dbaccess.js');
+const MySQLWrapper = require('./lib/dbqueries.js');
 
 //-----------	Configuration -----------
 
@@ -60,10 +60,10 @@ const logMetaData = {
 //	key: Path to the private key.
 //	crt: Path to the certificate.
 //	ca: Path to the chaining file.
-const keys = {
-	key: fs.readFileSync(cfg.ssl.key),
-  cert: fs.readFileSync(cfg.ssl.cert)
-};
+// const keys = {
+// 	key: fs.readFileSync(cfg.ssl.key),
+//   cert: fs.readFileSync(cfg.ssl.cert)
+// };
 
 //-----------	Express configuration -----------
 
@@ -175,7 +175,7 @@ const ginacfg = cfg.gina;
 const portcfg = cfg.ports;
 const cookieName = cfg.cookiesettings.cookieName;
 
-const DB = new MySQLWrapper(dbconf.host, dbconf.user, dbconf.password, dbconf.dbname);
+const DB = new SelbstanmeldungsDB(dbconf.host, dbconf.user, dbconf.password, dbconf.dbname);
 DB.connect()
 	.then((result) => {
 		console.log('Verbunden mit der DB ...');
@@ -187,11 +187,11 @@ DB.connect()
 	});
 
 //	Starting the server
-https.createServer(app, keys).listen(portcfg.port_1, () => {
+https.createServer(app).listen(portcfg.port_1, () => {
 	console.log(`Verbunden auf Port ${portcfg.port_1}`);
 });
 
-https.createServer(app, keys).listen(portcfg.port_2, (port) => {
+https.createServer(app).listen(portcfg.port_2, (port) => {
 	console.log(`Verbunden auf Port ${portcfg.port_2}`);
 });
 
@@ -255,19 +255,41 @@ arzt.get('/ansicht/:ansicht', (req, res) => {
 	serverTrafficLogger.log('info',
 		`User ${req[cookieName].user.username} (${req.ip}) accessed ${req.originalUrl}`,
 		logMetaData);
+
     var ansicht = req.params.ansicht.toLowerCase();
     var template = { user: req[cookieName].user.username };
+
     // If the requested site is the arztansicht,
     // also add the patient ranking template.
     if (ansicht == 'arztansicht') {
-      // TODO:
-      // Implement for loop in jade
-      // by parsing the DB results.
-
-      // template.query = ...;
+      DB.getWartelistePatients()
+    		.then((result) => {
+    		 	template.patients = result;
+          res.render(ansicht, template);
+    		 })
+    		 .catch((error) => {
+          serverTrafficLogger.log('error', `@${req.originalUrl}: ${error}`, logMetaData);
+    		 	res.sendStatus(500).end();
+    		 })
+    } else {
+        res.render(ansicht, template);
     }
-
-	res.render(ansicht, template);
+});
+// five4u.spengergasse.at/role/arzt/logdata?logart=5 -> JS Clientside
+app.get('/logdata', (req, res) => {
+  // TODO: Loghistorie zurückgeben
+  if (req.param.logart) {
+    DB.dumpLog(req.param.logart)
+      .then((result) => {
+         res.json(result);
+       })
+       .catch((error) => {
+         serverTrafficLogger.log('error', `@${req.originalUrl}: ${error}`, logMetaData);
+         res.sendStatus(500).end();
+       })
+  } else {
+    res.sendStatus(404).end();
+  }
 });
 
 // Start the sse to provide
@@ -289,44 +311,40 @@ arzt.get('/warteraumsse', (req, res) => {
 
 // TODO: Implement warteliste ranking logic
 arzt.put('/warteliste', (req, res) => {
-  if (req.body.payload) {
-    var payload = req.body.payload;
+  if (ranking.from && ranking.before) {
+    var payload = req.body;
     // It's a ranking request
-    // Dataformat:
-    // { from: '5050060985', before: '4075081055'}
+    // Dataformat: { from: '5050060985', before: '4075081055'}
     DB.rankWarteliste(payload.from, payload.before)
       .then((result) => {
-        arzt.locals.subscriptionsArzt.forEach((subscriber) => {
-          // Inform all arzt subscribers
-          // Except the requesting arzt.
-          if (subscriber.user != req[cookieName].user) {
-            subscriber.connection.write('id: patient');
-            subscriber.connection.write('/n');
-            subscriber.connection.write('data: ${result}');
-            subscriber.connection.write('/n/n');
-          }
+        arzt.locals.subscriptionsArzt.filter(x => x.user != req[cookieName].user).forEach((subscriber) => {
+          // Inform all arzt subscribers except the requesting arzt.
+          subscriber.connection.write('id: patient');
+          subscriber.connection.write('\n');
+          subscriber.connection.write('data: ${ JSON.stringify(result) }');
+          subscriber.connection.write('\n\n');
         });
       })
       .catch((error) => {
         serverTrafficLogger.log('error', `@${req.originalUrl}: ${error}`, logMetaData);
-        // Only inform the subscriber
-        // who send the request
+        // Only inform the subscriber who send the request
         var connection = arzt.locals.subscriptionsArzt
           .find(x => x.user == req[cookieName].user).connection;
-        DB.loadWarteliste()
+        DB.getWartelistePatients()
           .then((result) => {
             connection.write('id: reset');
-            connection.write('/n');
-            connection.write('data: ${result}');
-            connection.write('/n/n');
+            connection.write('\n');
+            connection.write('data: ${ JSON.stringify(result) }');
+            connection.write('\n\n');
            })
            .catch((error) => {
-             error
+             console.error(error);
+             serverTrafficLogger.log('error', `@${req.originalUrl}: ${error}`, logMetaData);
            });
       });
     } else {
     //  Bad request from the user
-    res.status(400).end();
+    res.sendStatus(400).end();
   }
 });
 
@@ -384,10 +402,10 @@ app.get('/', (req, res, next) => {
 app.use('/', express.static('./webfiles/webroot', { index: '/public/login.html', fallthrough: false }));
 
 //	Return 404 not found html file
-app.use((err, req, res, next) => {
-	serverTrafficLogger.log('info', `404 not found: ${req.ip} accessed ${req.originalUrl}`, logMetaData);
-	res.status(404).sendFile(path.join(__dirname, '/webfiles/misc/404.html'));
-});
+// app.use((err, req, res, next) => {
+// 	serverTrafficLogger.log('info', `404 not found: ${req.ip} accessed ${req.originalUrl}`, logMetaData);
+// 	res.status(404).sendFile(path.join(__dirname, '/webfiles/misc/404.html'));
+// });
 
 //-----------	Gina Section -----------
 
@@ -418,32 +436,32 @@ app.use((err, req, res, next) => {
 		the process itself occur.
 	==========================================
 */
-// ginaInformation.on('data', (patient) => {
-// 	//	Patient plugged his card.
-// 	//	Add patient to the database
-// 	//	if he/she does not exist.
-// 	DB.addPatient(patient)
-// 		.then((result) => {
-// 			//	After adding the patient,
-// 			//	send the patient data along
-// 			//	with all of his data in the DB
-// 			//	to the subscribed iPad-apps.
-// 			ipadapp.locals.subscriptions.forEach((subscriber) => {
-//         subscriber.write(`id: patient`);
-//         subscriber.write('\n');
-//         subscriber.write(`data: ${JSON.stringify(patient)}`);
-//         subscriber.write('\n\n');
-// 			});
-// 		})
-// 		.catch((error) => {
-// 			serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
-// 		});
-// });
-//
-// ginaInformation.on('error', (error) => {
-// 	ginaErrorLogger.log('error', error, logMetaData);
-// });
-//
-// ginaInformation.on('procerror', (error) => {
-// 	ginaErrorLogger.log('fatal', error, logMetaData);
-// });
+ginaInformation.on('data', (patient) => {
+	//	Patient plugged his card.
+	//	Add patient to the database
+	//	if he/she does not exist.
+	DB.addPatient(patient)
+		.then((result) => {
+			//	After adding the patient,
+			//	send the patient data along
+			//	with all of his data in the DB
+			//	to the subscribed iPad-apps.
+			ipadapp.locals.subscriptions.forEach((subscriber) => {
+        subscriber.write(`id: patient`);
+        subscriber.write('\n');
+        subscriber.write(`data: ${JSON.stringify(patient)}`);
+        subscriber.write('\n\n');
+			});
+		})
+		.catch((error) => {
+			serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
+		});
+});
+
+ginaInformation.on('error', (error) => {
+	ginaErrorLogger.log('error', error, logMetaData);
+});
+
+ginaInformation.on('procerror', (error) => {
+	ginaErrorLogger.log('fatal', error, logMetaData);
+});

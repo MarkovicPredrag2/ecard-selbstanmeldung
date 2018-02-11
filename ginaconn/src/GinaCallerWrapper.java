@@ -27,17 +27,24 @@ import javax.xml.rpc.ServiceException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-public class GinaCallerWrapper implements IBaseService, ISasService, IVdasService {
+public class GinaCallerWrapper {
 	// String fields
 	private String PIN;
 	private String dialogId;
 	private String[] cardReader = new String[2];
+	private final String vdasUrl = "/vdas/14", sasUrl = "/sas/12", baseUrl = "/base/15";
 	
 	// Constant JSON objects (for recycling)
 	private final JSONObject state = new JSONObject(); 
 	private final JSONObject client = new JSONObject();
+	private String hostUrl;
 	
-	public GinaCallerWrapper(String cardReaderID, String ocardReaderID, String PIN) {
+	// Services
+	private IBaseService ibs;
+	private ISasService isas;
+	private IVdasService ivdas;
+	
+	public GinaCallerWrapper(String cardReaderID, String ocardReaderID, String PIN, String hostUrl) throws ServiceExceptionContent, RemoteException, ServiceException {
 		super();
 		// Note: 
 		// 0 is the patient card reader
@@ -45,14 +52,43 @@ public class GinaCallerWrapper implements IBaseService, ISasService, IVdasServic
 		this.cardReader[0] = cardReaderID;
 		this.cardReader[1] = ocardReaderID;
 		this.PIN = PIN;
+		this.hostUrl = hostUrl;
+		
+		connectToBaseService();
+		connectToSasService();
+		connectToVdasService();
 	}
 	
 	public void invokeDialog() throws ServiceExceptionContent, DialogExceptionContent, CardExceptionContent, RemoteException {
 		ProduktInfo pi = new ProduktInfo();
 		pi.setProduktId(1);
 		pi.setProduktVersion("1");
-		this.dialogId = createDialog(this.cardReader[0], pi, null, false);
-		authenticateDialog(dialogId, getCardData(this.cardReader[1]).getCin(), this.PIN, this.cardReader[1]);
+		this.dialogId = ibs.createDialog(this.cardReader[0], pi, null, false);
+		
+		// Authenticae the dialog
+		VertragspartnerV2 vertragspartner = ibs.authenticateDialog(this.dialogId, ibs.getCardData(this.cardReader[1]).getCin(), this.PIN, this.cardReader[1]);
+
+		// Set taetigkeitsbereich
+		Ordination[] ordination = vertragspartner.getOrdination();
+		ibs.setDialogAddress(this.dialogId, ordination[0].getOrdinationId(), ordination[0].getTaetigkeitsBereich(0).getId(), null, null, null);
+	}
+	
+	public void connectToBaseService() throws ServiceException, ServiceExceptionContent, RemoteException {
+		BaseServiceLocator baseService = new BaseServiceLocator();
+		baseService.setbase_15EndpointAddress(this.hostUrl + baseUrl);
+		ibs = baseService.getbase_15();
+	}
+	
+	public void connectToSasService() throws ServiceException {
+		SasServiceLocator sasService = new SasServiceLocator();
+		sasService.setsas_12EndpointAddress(this.hostUrl + sasUrl);
+		isas = sasService.getsas_12();
+	}
+	
+	public void connectToVdasService() throws ServiceException {
+		VdasServiceLocator vdasService = new VdasServiceLocator();
+		vdasService.setvdas_14EndpointAddress(this.hostUrl + vdasUrl);
+		ivdas = vdasService.getvdas_14();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -60,7 +96,7 @@ public class GinaCallerWrapper implements IBaseService, ISasService, IVdasServic
 		state.clear();
 		JSONObject cardinfo = new JSONObject();
 		state.put("cardinfo", cardinfo);
-		ReaderStatusEvent[] statusResult = getReaderStatusEvents(null, cardReader, timeOut).getReaderStatusEvents();
+		ReaderStatusEvent[] statusResult = ibs.getReaderStatusEvents(null, new String[] { this.cardReader[0] }, timeOut).getReaderStatusEvents();
 		
 		//	ECard status
 		JSONObject ecardstatus = new JSONObject();
@@ -86,7 +122,7 @@ public class GinaCallerWrapper implements IBaseService, ISasService, IVdasServic
 		client.clear();
 		JSONObject patient = new JSONObject();
 		client.put("patient", patient);
-		Card cardData = getCardData(cardReader[0]);
+		Card cardData = ibs.getCardData(cardReader[0]);
 		
 		// Personal information of the patient
 		JSONObject person = new JSONObject();
@@ -101,7 +137,7 @@ public class GinaCallerWrapper implements IBaseService, ISasService, IVdasServic
 		
 		// Address data of the patient
 		JSONObject address = new JSONObject();
-		Adressdaten addressdata = adressdatenAbfragen(this.dialogId, cardData.getNummer());
+		Adressdaten addressdata = isas.adressdatenAbfragen(this.dialogId, cardData.getNummer());
 		
 		patient.put("addresse", address);
 		
@@ -118,7 +154,7 @@ public class GinaCallerWrapper implements IBaseService, ISasService, IVdasServic
 		
 		// Insurance data of the patient
 		JSONObject insurance = new JSONObject();
-		VersichertendatenAbfrageErgebnis versicherung = getVersichertenDaten(this.dialogId, null, this.cardReader[0]);
+		VersichertendatenAbfrageErgebnis versicherung = ivdas.getVersichertenDaten(this.dialogId, null, this.cardReader[0]);
 		
 		patient.put("versicherung", insurance);
 		
@@ -136,241 +172,5 @@ public class GinaCallerWrapper implements IBaseService, ISasService, IVdasServic
 		insurance.put("anspruchsdaten", claimdata);
 		
 		return patient;
-	}
-	
-	public CardReader[] getCardReaders() throws ServiceExceptionContent, RemoteException {
-		return getCardReaders();
-	}
-
-	@Override
-	public VersichertendatenAbfrageErgebnis getVersichertenDaten(String dialogId,
-			VersichertendatenAbfrage suchKriterien, String cardReaderId)
-			throws RemoteException, AccessExceptionContent, ServiceExceptionContent, DialogExceptionContent,
-			CardExceptionContent, InvalidParameterVdasExceptionContent, VdasExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public VersichertendatenAbfrageErgebnis retrieveVersichertendatenPerStichtag(String dialogId,
-			VersichertendatenAbfragePerStichtag suchKriterien, String cardReaderId)
-			throws RemoteException, AccessExceptionContent, ServiceExceptionContent, DialogExceptionContent,
-			CardExceptionContent, InvalidParameterVdasExceptionContent, VdasExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Adressdaten adressdatenAbfragen(String dialogId, String svNummer)
-			throws RemoteException, AccessExceptionContent, ServiceExceptionContent, DialogExceptionContent,
-			SasExceptionContent, InvalidParameterSuchkriterienExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public AbfrageErgebnis patientendatenAbfragen(String dialogId, String svNummer)
-			throws RemoteException, AccessExceptionContent, ServiceExceptionContent, DialogExceptionContent,
-			SasExceptionContent, InvalidParameterSuchkriterienExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public AbfrageErgebnis svNummerAbfragen(String dialogId, Suchkriterien svNummerAbfragenSuchkriterien)
-			throws RemoteException, AccessExceptionContent, ServiceExceptionContent, DialogExceptionContent,
-			SasExceptionContent, InvalidParameterSuchkriterienExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public VertragspartnerV2 authenticateDialog(String dialogId, String cin, String pin, String cardReaderId)
-			throws RemoteException, ServiceExceptionContent, DialogExceptionContent, CardExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public VertragspartnerV2 authenticateDialogEnt(String dialogId)
-			throws RemoteException, ServiceExceptionContent, DialogExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void changePin(String cardReaderId, String cin, String oldPin, String newPin)
-			throws RemoteException, ServiceExceptionContent, CardExceptionContent {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void changePinWithPuk(String cardReaderId, String cin, String puk, String newPin)
-			throws RemoteException, ServiceExceptionContent, CardExceptionContent {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Property[] checkStatus(String dialogId)
-			throws RemoteException, ServiceExceptionContent, DialogExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void closeDialog(String dialogId) throws RemoteException, ServiceExceptionContent, DialogExceptionContent {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String createDialog(String cardReaderId, ProduktInfo produktInfo, String extUID, Boolean pushMessageEnabled)
-			throws RemoteException, ServiceExceptionContent, DialogExceptionContent, CardExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String createDialogEnt(String cardReaderId, ProduktInfo produktInfo, String extUID, String vpNummer,
-			Boolean pushMessageEnabled)
-			throws RemoteException, ServiceExceptionContent, DialogExceptionContent, CardExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Integer doCardTest(String cardReaderId)
-			throws RemoteException, ServiceExceptionContent, CardExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String[] getBerechtigungen(String dialogId)
-			throws RemoteException, ServiceExceptionContent, DialogExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Card getCardData(String cardReaderId) throws RemoteException, ServiceExceptionContent, CardExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Property[] getExtendedCardData(String cardReaderId, String CIN)
-			throws RemoteException, ServiceExceptionContent, CardExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public BaseProperty[] getFachgebiete() throws RemoteException, ServiceExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public BaseProperty[] getFachgebieteByOrdId(String dialogId, String ordId, String taetigkeitsBereichId)
-			throws RemoteException, ServiceExceptionContent, DialogExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public DialogsInfo getFreeDialogs() throws RemoteException, ServiceExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public StatusInformationen getGinaAndServiceavailabilityInformation()
-			throws RemoteException, ServiceExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public GinaVersion getGinaSoftwareVersion() throws RemoteException, ServiceExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Message[] getMessages(String dialogId, Boolean newOnly)
-			throws RemoteException, ServiceExceptionContent, DialogExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Integer getMinMsgPollingIntervall(String dialogId)
-			throws RemoteException, ServiceExceptionContent, DialogExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ReaderStatusResult getReaderStatusEvents(String handle, String[] cardReaderId, Integer timeOut)
-			throws RemoteException, ServiceExceptionContent, CardExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public SvtProperty[] getSVTs() throws RemoteException, ServiceExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public BaseProperty[] getStaaten() throws RemoteException, ServiceExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public VertragsDaten[] getVertraege(String dialogId)
-			throws RemoteException, ServiceExceptionContent, DialogExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public MessagePollResult pollMessages(String dialogId, String suchzeitpunkt)
-			throws RemoteException, ServiceExceptionContent, DialogExceptionContent {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void releaseCardReader(String cardReaderId)
-			throws RemoteException, ServiceExceptionContent, CardExceptionContent {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setCardReader(String dialogId, String cardReaderId)
-			throws RemoteException, ServiceExceptionContent, DialogExceptionContent, CardExceptionContent {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setDialogAddress(String dialogId, String ordinationId, String taetigkeitsBereichId, String elgaRolle,
-			GdaMa gdaMa, String prozess) throws RemoteException, ServiceExceptionContent, DialogExceptionContent {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void uebersiedelnOrdination(String dialogId, String ordinationId, Boolean forceUebersiedlung)
-			throws RemoteException, ServiceExceptionContent, DialogExceptionContent {
-		// TODO Auto-generated method stub
-		
 	}
 }
