@@ -85,16 +85,15 @@ html
               label Grund:
             td
               label#t_grund Untersuchung
-    // Warteliste
     div(align='right', style='padding-top:71px')
       ul#patientlist.list.example
         for patient in patients
           li.list(onclick='requestPatientData(this)' id= patient.svnr)
-            if patient.grund == "Untersuchung"
+            if patient.grundid == 2
               i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
-            else if patient.grund == "AUM"
+            else if patient.grundid == 3
               i.fa.fa-briefcase.fa-4x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
-            else if patient.grund == "Rezept"
+            else if patient.grundid == 1
               i.fa.fa-file-text-o.fa-4x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
             i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
             h3(style='text-align: left') #{patient.grund}
@@ -112,20 +111,20 @@ html
     script(src='/public/resources/js/backend.js', charset='utf-8')
     // SSE Event Receiver script
     script(src='/public/resources/js/ssereceiver.js', charset='utf-8')
-    // ID for test purpose
-    script(type='text/javascript').
-      var appID = 1000000 * Math.random();
+    // Code to get patient data and rank patients
     script.
+      // Rank patients after dropping a list-element
       $(document).ready(function() {
-s      $("ul.example").sortable({
+      $("ul.example").sortable({
       onDrop: function ($item, container, _super) {
       $.post("/role/arzt/warteliste", rankPatientBefore($item.attr("id")));
       _super($item, container);
       }
       });
       });
+      // Get patient data for a patient.
       function requestPatientData(dom) {
-      $.post("/role/arzt/patientdata", { "patient": JSON.stringify(dom.getAttribute('id'))},
+      $.post("/role/arzt/patientdata", { "patient": JSON.stringify(dom.getAttribute('id')) },
       function(data, status) {
       var patient = data[0];
       $("#t_vorname").html(patient.vorname);

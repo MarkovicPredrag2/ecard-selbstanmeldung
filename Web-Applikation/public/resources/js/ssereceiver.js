@@ -39,7 +39,7 @@ if( typeof(EventSource) !== "undefined" ) {
 			}
 
       // Add the children from the server
-			patient.payload.forEach(function (person, index) {
+			patient.payload.forEach(function (person) {
 				document.getElementById("patientlist").innerHTML +=
 		  		"<li class='list' onclick='requestPatientData(this)' id='" + person.svnr + "'>" +
 		  			"<i class='fa " + iconResolver(person.grund) + " fa-5x' aria-hidden='true' style='float:left; margin: 0 15px 0 0;'></i>" +

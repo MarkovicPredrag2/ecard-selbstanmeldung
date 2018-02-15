@@ -87,6 +87,7 @@ public class GinaCallerWrapper {
 	
 	public void connectToVdasService() throws ServiceException {
 		VdasServiceLocator vdasService = new VdasServiceLocator();
+		System.out.println(this.hostUrl + vdasUrl);
 		vdasService.setvdas_14EndpointAddress(this.hostUrl + vdasUrl);
 		ivdas = vdasService.getvdas_14();
 	}
@@ -106,13 +107,13 @@ public class GinaCallerWrapper {
 		ecardstatus.put("state", statusResult[0].getCardReaderState());
 		ecardstatus.put("type", statusResult[0].getCardType());
 		
-		/*// OCard status
-		JSONObject ocardstatus = new JSONObject();
-		
-		cardinfo.put("oCardinfo", ocardstatus);
-		
-		ocardstatus.put("state", statusResult[1].getCardReaderState());
-		ocardstatus.put("type", statusResult[1].getCardType());*/
+		// OCard status
+//		JSONObject ocardstatus = new JSONObject();
+//		
+//		cardinfo.put("oCardinfo", ocardstatus);
+//		
+//		ocardstatus.put("state", statusResult[1].getCardReaderState());
+//		ocardstatus.put("type", statusResult[1].getCardType());
 		
 		return state;
 	}
@@ -136,40 +137,42 @@ public class GinaCallerWrapper {
 		person.put("geburtsdatum", cardData.getGeburtsdatum());
 		
 		// Address data of the patient
-		JSONObject address = new JSONObject();
-		Adressdaten addressdata = isas.adressdatenAbfragen(this.dialogId, cardData.getNummer());
-		
-		patient.put("addresse", address);
-		
-		address.put("abgabestelle", addressdata.getAbgabestelle());
-		address.put("anschriftzusatz", addressdata.getAnschriftszusatz());
-		address.put("hausnummer", addressdata.getHausnummer());
-		address.put("ort", addressdata.getOrt());
-		address.put("plz", addressdata.getPlz());
-		address.put("postfachnummer", addressdata.getPostfachNummer());
-		address.put("postfachtext", addressdata.getPostfachText());
-		address.put("staatscode", addressdata.getStaatscode());
-		address.put("stocktuernummer", addressdata.getStockTuerNummer());
-		address.put("strasse", addressdata.getStrasse());
+//		JSONObject address = new JSONObject();
+//		Adressdaten addressdata = isas.adressdatenAbfragen(this.dialogId, cardData.getNummer());
+//		
+//		patient.put("addresse", address);
+//		
+//		address.put("abgabestelle", addressdata.getAbgabestelle());
+//		address.put("anschriftzusatz", addressdata.getAnschriftszusatz());
+//		address.put("hausnummer", addressdata.getHausnummer());
+//		address.put("ort", addressdata.getOrt());
+//		address.put("plz", addressdata.getPlz());
+//		address.put("postfachnummer", addressdata.getPostfachNummer());
+//		address.put("postfachtext", addressdata.getPostfachText());
+//		address.put("staatscode", addressdata.getStaatscode());
+//		address.put("stocktuernummer", addressdata.getStockTuerNummer());
+//		address.put("strasse", addressdata.getStrasse());
 		
 		// Insurance data of the patient
 		JSONObject insurance = new JSONObject();
-		VersichertendatenAbfrageErgebnis versicherung = ivdas.getVersichertenDaten(this.dialogId, null, this.cardReader[0]);
 		
-		patient.put("versicherung", insurance);
+//		VersichertendatenAbfrageErgebnis versicherung = ivdas.getVersichertenDaten(this.dialogId, null, this.cardReader[0]);
+		ivdas.
 		
-		insurance.put("svnr", cardData.getNummer());
-		JSONArray claimdata = new JSONArray();
-		for (Anspruchsdaten anspruch : versicherung.getAnspruchsDaten()) {
-			JSONObject claim = new JSONObject();
-			claim.put("anspruchsart", anspruch.getAnspruchsart());
-			claim.put("svtCode", anspruch.getSvtCode());
-			claim.put("versichertenArtCode", anspruch.getVersichertenartCode());
-			claim.put("kostenteilbefreit", anspruch.getKostenanteilbefreit());
-			claim.put("rezeptbefreit", anspruch.getRezeptgebbefreit());
-			claimdata.add(claim);
-		}
-		insurance.put("anspruchsdaten", claimdata);
+//		patient.put("versicherung", insurance);
+//		
+//		insurance.put("svnr", cardData.getNummer());
+//		JSONArray claimdata = new JSONArray();
+//		for (Anspruchsdaten anspruch : versicherung.getAnspruchsDaten()) {
+//			JSONObject claim = new JSONObject();
+//			claim.put("anspruchsart", anspruch.getAnspruchsart());
+//			claim.put("svtCode", anspruch.getSvtCode());
+//			claim.put("versichertenArtCode", anspruch.getVersichertenartCode());
+//			claim.put("kostenteilbefreit", anspruch.getKostenanteilbefreit());
+//			claim.put("rezeptbefreit", anspruch.getRezeptgebbefreit());
+//			claimdata.add(claim);
+//		}
+//		insurance.put("anspruchsdaten", claimdata);
 		
 		return patient;
 	}

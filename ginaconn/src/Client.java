@@ -18,7 +18,7 @@ public class Client {
 	private static final char CARD_READER_STATUS_REQUEST 	= 'R';
 	private static final char PATIENT_INFORMATION_REQUEST 	= 'P';
 	
-	public static void main(String[] args) throws ServiceException, ServiceExceptionContent, CardExceptionContent, RemoteException {
+	public static void main(String[] args) {
 		GinaCallerWrapper session;
 		args = new String[4];
 		args[0] = "https://10.196.2.18";
@@ -29,8 +29,24 @@ public class Client {
 			System.exit(-1);
 		}
 		
-		System.out.println(session.getCardReaderStatus(10000).toJSONString());
-		System.out.println(session.getPatientInformation().toJSONString());
+		try {
+			System.out.println(session.getCardReaderStatus(10000));
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			System.out.println(session.getPatientInformation());
+		} catch (ServiceExceptionContent e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (CardExceptionContent e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 //		System.out.print("{ init: true }");
 //		try (InputStreamReader cin = new InputStreamReader(System.in)) {
 //			while (true) switch ((char) cin.read()) {

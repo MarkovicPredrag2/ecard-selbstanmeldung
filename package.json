@@ -19,6 +19,7 @@
   "homepage": "https://github.com/MarkovicPredrag2/ecard-selbstanmeldung#readme",
   "dependencies": {
     "client-sessions": "^0.8.0",
+    "crypto": "^1.0.1",
     "express": "^4.16.2",
     "mysql": "^2.15.0",
     "pug": "^2.0.0-rc.4",

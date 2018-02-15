@@ -1,4 +1,4 @@
-//-----------	Imports	-----------
+// ===========	Imports	===========
 
 //	Third party modules
 const express = require('express');
@@ -9,12 +9,13 @@ const winston = require('winston');
 const cookieSession = require('client-sessions');
 const path = require('path');
 const favicon = require('serve-favicon');
+const crypto = require('crypto');
 
 // Self written modules
 const ginaListener = require('./lib/ginaBaseService.js');
-const MySQLWrapper = require('./lib/dbqueries.js');
+const SelbstanmeldungsDB = require('./lib/dbqueries.js');
 
-//-----------	Configuration -----------
+// ===========	Configuration ===========
 
 // Reading the config file.
 const cfg = JSON.parse(fs.readFileSync('./.servercfg.json', 'utf8'));
@@ -65,7 +66,7 @@ const logMetaData = {
 //   cert: fs.readFileSync(cfg.ssl.cert)
 // };
 
-//-----------	Express configuration -----------
+// ===========	Express configuration ===========
 
 //	Initialize app instances.
 //	The intendation corresponds to the
@@ -84,7 +85,7 @@ public.set('view engine', 'pug');
 public.set('views', path.join(__dirname, '/webfiles/views/'));
 arzt.set('view engine', 'pug');
 arzt.set('views', path.join(__dirname, '/webfiles/views/'));
-//	Third party middle ware.
+//	Third party middle-ware.
 app.use(favicon(path.join(__dirname, '/webfiles/favicon/ec_logo.ico')));
 app.use(bodyParser.urlencoded({ extended: false }));
 //	app.use(bodyParser.json({ limit: '5mb' })) --> HTTP Size limited to 5mb, replace when in production
@@ -100,11 +101,8 @@ arzt.locals.subscriptionsArzt	= [];
 arzt.locals.subscriptionsWarteliste	= [];
 ipadapp.locals.subscriptions = [];
 
-/*
-	Authentication function:
-	Every app within the restricted route will use this function.
-*/
-
+// Authentication function:
+// Every app within the restricted route will use this function.
 role.use((req, res, next) => {
   if (req.path === '/logout' && req[cookieName].user) {
     //  The /logout URL is free for all users to access.
@@ -133,14 +131,13 @@ role.use('/arzt', arzt);
 role.use('/benutzer', benutzer);
 role.use('/ipadapp', ipadapp);
 
-
 // Redirection function.
 // Used to redirect users
 // who provide valid cookies.
 function redirectUser(role, res) {
 	switch(role) {
 		case 'arzt': res.redirect('/role/arzt/ansicht/homepage'); break;
-    case 'ipadapp': res.status(200).end('Eingeloggt'); break;
+    case 'ipadapp': res.status(200).end('/role/ipadapp/sse'); break;
 	}
 }
 
@@ -163,17 +160,18 @@ function startSSE(req, res, user, timeout) {
 	req.on('close', () => {
 		//	Pop closed connection
 		//	from the stack.
-    user.locals.subscriptions.splice(
-  		user.locals.subscriptions.findIndex(x => x.connection == res), 1);
+    user.splice(
+  		user.findIndex(x => x.connection == res), 1);
 	});
 }
 
-//-----------	Starting server	-----------
+// ===========	Starting server	===========
 
 const dbconf 	= cfg.dbsettings;
 const ginacfg = cfg.gina;
 const portcfg = cfg.ports;
 const cookieName = cfg.cookiesettings.cookieName;
+const appSignatureSecret = cfg.appsignature.secret;
 
 const DB = new SelbstanmeldungsDB(dbconf.host, dbconf.user, dbconf.password, dbconf.dbname);
 DB.connect()
@@ -183,6 +181,7 @@ DB.connect()
 	.catch((error) => {
 		serverTrafficLogger.log('error', `At server startup: ${error}`, logMetaData);
 		//	Exits the program
+    console.error(error);
 		process.exit(1);
 	});
 
@@ -191,7 +190,7 @@ https.createServer(app).listen(portcfg.port_1, () => {
 	console.log(`Verbunden auf Port ${portcfg.port_1}`);
 });
 
-https.createServer(app).listen(portcfg.port_2, (port) => {
+https.createServer(app).listen(portcfg.port_2, () => {
 	console.log(`Verbunden auf Port ${portcfg.port_2}`);
 });
 
@@ -203,10 +202,11 @@ https.createServer(app).listen(portcfg.port_2, (port) => {
 //   console.log('Verbunden mit der GINA');
 // })
 
-//-----------  public routes -----------
+//===========  public routes ===========
 
 public.post('/login', (req, res) => {
 	serverTrafficLogger.log('info', `${req.ip} accessed ${req.originalUrl}`, logMetaData);
+  console.log(JSON.stringify(req.body));
 	//	Check the credentials
 	//	the user provided within
 	//	the http body.
@@ -229,6 +229,7 @@ public.post('/login', (req, res) => {
 			//	url (depending on his role),
 			//	where he receives a
 			//	(eventually rendered) html file.
+      console.log(JSON.stringify(user));
 			redirectUser(user.rolle, res);
 		})
 		.catch((error) => {
@@ -241,14 +242,14 @@ public.post('/login', (req, res) => {
 		});
 });
 
-//-----------  role routes -----------
+//===========  role routes ===========
 
 role.get('/logout', (req, res) => {
   req[cookieName].reset();
   res.redirect('/');
 });
 
-//-----------	arzt routes	-----------
+//===========	arzt routes	===========
 
 // Serve the templates
 arzt.get('/ansicht/:ansicht', (req, res) => {
@@ -275,10 +276,10 @@ arzt.get('/ansicht/:ansicht', (req, res) => {
         res.render(ansicht, template);
     }
 });
-// five4u.spengergasse.at/role/arzt/logdata?logart=5 -> JS Clientside
-app.get('/logdata', (req, res) => {
-  // TODO: Loghistorie zurückgeben
-  if (req.param.logart) {
+
+arzt.get('/logdata', (req, res) => {
+  console.log(req.query);
+  if (req.query.logart) {
     DB.dumpLog(req.param.logart)
       .then((result) => {
          res.json(result);
@@ -348,7 +349,36 @@ arzt.put('/warteliste', (req, res) => {
   }
 });
 
-// -----------	ipadapp routes	-----------
+// Test Stub, to simulate "plug"-process
+arzt.get('/plug', (req, res) => {
+
+  var svnr = "3048280984";
+
+  DB.getPatientForTestPurpose(svnr)
+    .then((result) => {
+      var patientData = {
+        signature: crypto.createHmac('sha256', appSignatureSecret)
+                    .update(svnr)
+                    .digest('hex'),
+        patient: result
+      };
+
+      console.log("Patientdata final >>> " + JSON.stringify(patientData));
+      res.send("Sent");
+     //  ipadapp.locals.subscriptions.forEach((subscriber) => {
+     //    subscriber.write(`id: patient`);
+     //    subscriber.write('\n');
+     //    subscriber.write(`data: ${ JSON.stringify(patientData) }`);
+     //    subscriber.write('\n\n');
+     //  });
+     // })
+     // .catch((error) => {
+     //   console.error(error);
+        //})
+     });
+});
+
+// =========== ipadapp routes ===========
 
 ipadapp.get('/sse', (req, res) => {
 	serverTrafficLogger.log('info',
@@ -358,7 +388,7 @@ ipadapp.get('/sse', (req, res) => {
 	startSSE(req, res, ipadapp.locals.subscriptions, 2147483647);
 });
 
-ipadapp.put('/patientdata', (req, res) => {
+ipadapp.post('/patientdata', (req, res) => {
 	/*
 		TODO:
 		=====
@@ -369,10 +399,29 @@ ipadapp.put('/patientdata', (req, res) => {
 		the patient to the warteliste.
 		Also update the arztansichtwarteliste.
 	*/
-  console.log(req.body);
+  // console.log(req.body);
+  // if (req.body) {
+  //   // TODO: Receive correct data and update patient in the database
+  //   // Also check signature before inserting into database
+  //
+  //   // Signature & Payload
+  //   var signature = req.body.signature,
+  //       payload = req.body.payload,
+  //       svnrSignature = crypto.createHmac('sha256', appSignatureSecret).update(payload.patient.svnr).digest('hex');
+  //
+  //   if (crypto.createHmac('sha256', appSignatureSecret).update(svnr).digest('hex') === signature) {
+  //
+  //   } else {
+  //
+  //   }
+  //
+  // } else {
+  //   // Send bad request message back
+  //   res.sendStatus(403).end();
+  // }
 });
 
-//-----------	app routes	-----------
+// ===========	app routes ===========
 
 /*
 	If the user already had a recent session
@@ -401,13 +450,13 @@ app.get('/', (req, res, next) => {
 //	webroot directory statically
 app.use('/', express.static('./webfiles/webroot', { index: '/public/login.html', fallthrough: false }));
 
-//	Return 404 not found html file
+// // Return 404 not found html file
 // app.use((err, req, res, next) => {
 // 	serverTrafficLogger.log('info', `404 not found: ${req.ip} accessed ${req.originalUrl}`, logMetaData);
 // 	res.status(404).sendFile(path.join(__dirname, '/webfiles/misc/404.html'));
 // });
 
-//-----------	Gina Section -----------
+// ===========	Gina Section ===========
 
 /*
 	Establish the gina connection.
@@ -436,32 +485,40 @@ app.use('/', express.static('./webfiles/webroot', { index: '/public/login.html',
 		the process itself occur.
 	==========================================
 */
-ginaInformation.on('data', (patient) => {
-	//	Patient plugged his card.
-	//	Add patient to the database
-	//	if he/she does not exist.
-	DB.addPatient(patient)
-		.then((result) => {
-			//	After adding the patient,
-			//	send the patient data along
-			//	with all of his data in the DB
-			//	to the subscribed iPad-apps.
-			ipadapp.locals.subscriptions.forEach((subscriber) => {
-        subscriber.write(`id: patient`);
-        subscriber.write('\n');
-        subscriber.write(`data: ${JSON.stringify(patient)}`);
-        subscriber.write('\n\n');
-			});
-		})
-		.catch((error) => {
-			serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
-		});
-});
-
-ginaInformation.on('error', (error) => {
-	ginaErrorLogger.log('error', error, logMetaData);
-});
-
-ginaInformation.on('procerror', (error) => {
-	ginaErrorLogger.log('fatal', error, logMetaData);
-});
+// ginaInformation.on('data', (patient) => {
+// 	//	Patient plugged his card.
+// 	//	Add patient to the database
+// 	//	if he/she does not exist.
+// 	DB.addPatient(patient)
+// 		.then((result) => {
+// 			//	After adding the patient,
+// 			//	send the patient data along
+// 			//	with all of his data in the DB
+// 			//	to the subscribed iPad-apps.
+//
+//       var patientData = {
+//         signature: crypto.createHmac('sha256', appSignatureSecret)
+//                    .update(patient.svnr)
+//                    .digest('hex'),
+//         payload: result[0]
+//       };
+//
+// 			ipadapp.locals.subscriptions.forEach((subscriber) => {
+//         subscriber.write(`id: patient`);
+//         subscriber.write('\n');
+//         subscriber.write(`data: ${ JSON.stringify(patientData) }`);
+//         subscriber.write('\n\n');
+// 			});
+// 		})
+// 		.catch((error) => {
+// 			serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
+// 		});
+// });
+//
+// ginaInformation.on('error', (error) => {
+// 	ginaErrorLogger.log('error', error, logMetaData);
+// });
+//
+// ginaInformation.on('procerror', (error) => {
+// 	ginaErrorLogger.log('fatal', error, logMetaData);
+// });

@@ -22,11 +22,14 @@
 			"secure": false
 		}
 	},
+	"appsignature": {
+		"secret": "iT6FGk,dfvc4vw'<&%Nh"
+	},
 	"dbsettings": {
 		"host":	"localhost",
 		"user": "root",
 		"password": "",
-		"dbname": "lokalePatientenDB"
+		"dbname": "ordination"
 	},
 	"logsettings": {
 		"logpath": "./logs/"

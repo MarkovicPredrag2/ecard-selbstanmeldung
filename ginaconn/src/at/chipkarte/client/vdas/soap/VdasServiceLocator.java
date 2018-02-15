@@ -22,7 +22,7 @@ public class VdasServiceLocator extends org.apache.axis.client.Service implement
     }
 
     // Use to get a proxy class for vdas_14
-    private java.lang.String vdas_14_address = "http://localhost/vdas/14";
+    private java.lang.String vdas_14_address = "https://10.196.2.18/vdas/14";
 
     public java.lang.String getvdas_14Address() {
         return vdas_14_address;
