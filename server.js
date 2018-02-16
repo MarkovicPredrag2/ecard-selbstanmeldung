@@ -4,7 +4,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
-const https = require('http');
+const https = require('https');
 const winston = require('winston');
 const cookieSession = require('client-sessions');
 const path = require('path');
@@ -61,10 +61,10 @@ const logMetaData = {
 //	key: Path to the private key.
 //	crt: Path to the certificate.
 //	ca: Path to the chaining file.
-// const keys = {
-// 	key: fs.readFileSync(cfg.ssl.key),
-//   cert: fs.readFileSync(cfg.ssl.cert)
-// };
+const keys = {
+	key: fs.readFileSync(cfg.ssl.key),
+  cert: fs.readFileSync(cfg.ssl.cert)
+};
 
 // ===========	Express configuration ===========
 
@@ -186,11 +186,11 @@ DB.connect()
 	});
 
 //	Starting the server
-https.createServer(app).listen(portcfg.port_1, () => {
+https.createServer(keys, app).listen(portcfg.port_1, () => {
 	console.log(`Verbunden auf Port ${portcfg.port_1}`);
 });
 
-https.createServer(app).listen(portcfg.port_2, () => {
+https.createServer(keys, app).listen(portcfg.port_2, () => {
 	console.log(`Verbunden auf Port ${portcfg.port_2}`);
 });
 

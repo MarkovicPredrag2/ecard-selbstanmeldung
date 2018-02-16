@@ -13,7 +13,7 @@ if( typeof(EventSource) !== "undefined" ) {
 			// Otherwise, add a new patient to the list
 				document.getElementById("patientlist").innerHTML +=
 		  		"<li class='list' onclick='requestPatientData(this)' id='" + patient.svnr + "'>" +
-		  			"<i class='fa " + iconResolver(patient.grund) + " fa-5x' aria-hidden='true' style='float:left; margin: 0 15px 0 0;'></i>" +
+		  			"<i class='fa " + iconResolver(Number(patient.grundid)) + " fa-5x' aria-hidden='true' style='float:left; margin: 0 15px 0 0;'></i>" +
 		  			"<i class='fa fa-bars fa-3x' aria-hidden='true' style='float:right; padding-top:27.5px'></i>" +
 		  			"<h3 style='text-align: left'>" + patient.grund + "</h3>" +
 		        "<p>".concat(patient.name.anrede, " ", patient.name.nachname, " ", patient.name.vorname, " (", "18", " Jahre alt)","</p>") +
