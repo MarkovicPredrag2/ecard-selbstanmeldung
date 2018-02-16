@@ -87,7 +87,6 @@ public class GinaCallerWrapper {
 	
 	public void connectToVdasService() throws ServiceException {
 		VdasServiceLocator vdasService = new VdasServiceLocator();
-		System.out.println(this.hostUrl + vdasUrl);
 		vdasService.setvdas_14EndpointAddress(this.hostUrl + vdasUrl);
 		ivdas = vdasService.getvdas_14();
 	}
@@ -154,11 +153,13 @@ public class GinaCallerWrapper {
 //		address.put("strasse", addressdata.getStrasse());
 		
 		// Insurance data of the patient
-		JSONObject insurance = new JSONObject();
-		
-//		VersichertendatenAbfrageErgebnis versicherung = ivdas.getVersichertenDaten(this.dialogId, null, this.cardReader[0]);
-		ivdas.
-		
+//		JSONObject insurance = new JSONObject();	
+//		VersichertendatenAbfrage suchKriterium = new VersichertendatenAbfrage();
+//		suchKriterium.setAbteilungsFunktionsCode("false");
+//		suchKriterium.setForceExecution(false);
+//		suchKriterium.setSvNummer(cardData.getNummer());
+//		VersichertendatenAbfrageErgebnis versicherung = ivdas.getVersichertenDaten(this.dialogId, suchKriterium, this.cardReader[0]);
+//		
 //		patient.put("versicherung", insurance);
 //		
 //		insurance.put("svnr", cardData.getNummer());

@@ -12,11 +12,13 @@ html
     link(rel='stylesheet', href='https://www.w3schools.com/w3css/4/w3.css')
     // Font awesome v4.7.0
     link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
-    // Tabelle bzw. Tabs CSS
+    // Data Table CSS Library
+    link(rel='stylesheet', type='text/css', href='//cdn.datatables.net/1.10.16/css/jquery.dataTables.css')
+    // Tab CSS Libary
     link(rel='stylesheet', type='text/css', href='/public/resources/css/style_tabelle.css', media='screen')
     // Tabelle - Sortierung
-    link(rel='stylesheet', type='text/css', href='/public/resources/css/style_tabelle_dms.css', media='screen')
-  body(onload="openTab(event, '1'); startTime(); ")
+    // <link rel="stylesheet" type="text/css" href="/public/resources/css/style_tabelle_dms.css" media="screen" />
+  body(onload="openTab(event, '5'); startTime(); ")
     // ======= Navbar =======
     nav.navbar.navbar-inverse.navbar-static-top(style='position:fixed; width:100%;')
       .container-fluid(style='font-size: 20px')
@@ -50,136 +52,59 @@ html
             li(data-toggle='tooltip', title='Logout')
               a.fa.fa-power-off.fa-2x(style='color: red; margin-top: 17%;', href='/public/role/logout', aria-hidden='true')
     // ======= Mid-Section =======
-    p Click on the buttons inside the tabbed menu:
-    .container(style='width: 90%')
-      .tab(style='margin-top: 75px;')
+    // Tablinks
+    .container(style='width: 90%;')
+      .tab(style='margin-top: 75px; margin-bottom: 25px')
         button.tablinks(onclick="openTab(event, '1')") Patientenanmeldungen
         button.tablinks(onclick="openTab(event, '2')") Patientendatenänderungen
         button.tablinks(onclick="openTab(event, '3')") Patienteneinschreibung
         button.tablinks(onclick="openTab(event, '4')") Patienten Warteliste aufrufe
         button.tablinks(onclick="openTab(event, '5')") Login-Aktiviäten
-      #1.tabcontent
-        table.example.table.table-striped.table-bordered(cellspacing='0', width='100%')
-          thead
-            tr
-              th ID
-              th Timestamp
-              th Sozialversicherungsnummer
-              th Vorname
-              th Nachname
-          tbody#logArtEins
-            //
-              <tr>
-              <td>1</td>
-              <td>2018-02-10</td>
-              <td>1234567890</td>
-              <td>Max</td>
-              <td>Mustermann</td>
-              </tr>
-      #2.tabcontent
-        table.example.table.table-striped.table-bordered(cellspacing='0', width='100%')
-          thead
-            tr
-              th ID
-              th Timestamp
-              th Sozialversicherungsnummer
-              th Änderungen
-          tbody
-            tr
-              td 1
-              td 2018-02-10
-              td 1234567890
-              td Max
-      #3.tabcontent
-        table.example.table.table-striped.table-bordered(cellspacing='0', width='100%')
-          thead
-            tr
-              th ID
-              th Timestamp
-              th Sozialversicherungsnummer
-              th Vorname
-              th Nachname
-              th Grund
-          tbody
-            tr
-              td 1
-              td 2018-02-10
-              td 1234567890
-              td Max
-              td Mustermann
-              th Rezept
-      #4.tabcontent
-        table.example.table.table-striped.table-bordered(cellspacing='0', width='100%')
-          thead
-            tr
-              th ID
-              th Timestamp
-              th Sozialversicherungsnummer
-              th Vorname
-              th Nachname
-              th Arzt
-              th Raum
-          tbody
-            tr
-              td 1
-              td 2018-02-10
-              td 1234567890
-              td Max
-              td Mustermann
-              th Dr. Muncan
-              th Ordination 1
-      #5.tabcontent
-        table.example.table.table-striped.table-bordered(cellspacing='0', width='100%')
-          thead
-            tr
-              th ID
-              th Timestamp
-              th Username
-          tr
-            td 1
-            td 2018-02-10
-            td testuser
-    // ======= Footer =======
-    div
-      hr.featurette-divider
-      footer
-        p
-          | © 2018 Five4U, Diplomprojekt ·
-          a(href='/public/impressum.html') Impressum
-          span(style='float: right;')
-            | E-Card Selbstanmeldungs Tool ·
-            a(href='/public/info.html') Info
+      // Log Table
+      table#logtable.display(cellspacing='0', width='100%')
+        thead
+          tr#tabletop
+            th Hello
+        tbody#tablebody
+      // ======= Footer =======
+      div
+        hr.featurette-divider
+        footer
+          p
+            | © 2018 Five4U, Diplomprojekt ·
+            a(href='/public/impressum.html') Impressum
+            span(style='float: right;')
+              | E-Card Selbstanmeldungs Tool ·
+              a(href='/public/info.html') Info
     // ======= JS Dependencies =======
     // jQuery library
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
     // Latest compiled JavaScript
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
-    script(src='https://code.jquery.com/jquery-1.12.4.js')
-    // <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    // <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+    // jQuery
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
     // Time Script
     script(type='text/javascript', src='/public/resources/js/time.js')
     // Table Library
-    script(type='text/javascript', src='/public/resources/js/jquery.dataTables.min.js')
+    script(type='text/javascript', charset='utf8', src='//cdn.datatables.net/1.10.16/js/jquery.dataTables.js')
     // Log Dump Script
     script(src='/public/resources/js/logdump.js', charset='utf-8')
     // Tab Script
     script(type='text/javascript').
+      // Initialise DataTable
+      $(document).ready(function() {
+      //$('#logtable').DataTable();
+      });
+      // Tab Function
       function openTab(evt, logArt) {
-      var i, tabcontent, tablinks;
-      tabcontent = document.getElementsByClassName("tabcontent");
-      for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
-      }
+      var i, tablinks;
+      // Change the Tab Focus Background
       tablinks = document.getElementsByClassName("tablinks");
       for (i = 0; i < tablinks.length; i++) {
       tablinks[i].className = tablinks[i].className.replace(" active", "");
       }
-      document.getElementById(logArt).style.display = "block";
-      // Request log data
+      // Request log data and show them in the table
       logdump(logArt);
+      // Set current tab-item to active
       evt.currentTarget.className += " active";
       }
-      $(document).ready(function() {
-      $('.example').DataTable();
-      });

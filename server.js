@@ -1,6 +1,6 @@
 // ===========	Imports	===========
 
-//	Third party modules
+// Third party modules
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
@@ -137,7 +137,7 @@ role.use('/ipadapp', ipadapp);
 function redirectUser(role, res) {
 	switch(role) {
 		case 'arzt': res.redirect('/role/arzt/ansicht/homepage'); break;
-    case 'ipadapp': res.status(200).end('/role/ipadapp/sse'); break;
+    case 'ipadapp': res.end(); break;
 	}
 }
 
@@ -197,27 +197,27 @@ https.createServer(app).listen(portcfg.port_2, () => {
 //	Starting gina listerner
 // const ginaInformation =
 //         ginaListener.listen(ginacfg.ipaddress, ginacfg.reader, ginacfg.ocardreader, ginacfg.pin, ginacfg.interval, ginacfg.testCardsAllowed);
-
+//
 // ginaInformation.on('connection', () => {
 //   console.log('Verbunden mit der GINA');
 // })
 
-//===========  public routes ===========
+// ===========  public routes ===========
 
 public.post('/login', (req, res) => {
 	serverTrafficLogger.log('info', `${req.ip} accessed ${req.originalUrl}`, logMetaData);
-  console.log(JSON.stringify(req.body));
 	//	Check the credentials
 	//	the user provided within
 	//	the http body.
+  console.log(JSON.stringify(req.body));
   DB.lookUpUser(req.body)
 		.then((user) => {
-      if (req[cookieName].user) {
-        // If the user already
-        // has a valid cookie,
-        // reset the cookie.
-        req[cookieName].reset();
-      }
+      // if (req[cookieName].user) {
+      //   // If the user already
+      //   // has a valid cookie,
+      //   // reset the cookie.
+      //   req[cookieName].reset();
+      // }
 			//	The user seems to exist, therefore
 			//	sending him a cookie back.
 			req[cookieName].user	= {
@@ -229,7 +229,7 @@ public.post('/login', (req, res) => {
 			//	url (depending on his role),
 			//	where he receives a
 			//	(eventually rendered) html file.
-      console.log(JSON.stringify(user));
+      console.log(user);
 			redirectUser(user.rolle, res);
 		})
 		.catch((error) => {
@@ -242,14 +242,27 @@ public.post('/login', (req, res) => {
 		});
 });
 
-//===========  role routes ===========
+public.post('/ipadappdata', (req, res) => {
+  var payload = req.body;
+  console.log(req.body);
+  payload.testflag = true;
+  arzt.locals.subscriptionsArzt.forEach((subscriber) => {
+    subscriber.connection.write(`id: patient`);
+    subscriber.connection.write('\n');
+    subscriber.connection.write(`data: ${ JSON.stringify(req.body) }`);
+    subscriber.connection.write('\n\n');
+  });
+  res.sendStatus(200);
+});
+
+// ===========  role routes ===========
 
 role.get('/logout', (req, res) => {
   req[cookieName].reset();
   res.redirect('/');
 });
 
-//===========	arzt routes	===========
+// ===========	arzt routes	===========
 
 // Serve the templates
 arzt.get('/ansicht/:ansicht', (req, res) => {
@@ -278,14 +291,16 @@ arzt.get('/ansicht/:ansicht', (req, res) => {
 });
 
 arzt.get('/logdata', (req, res) => {
-  console.log(req.query);
+  console.log(req.query.logart);
   if (req.query.logart) {
-    DB.dumpLog(req.param.logart)
+    DB.dumpLog(req.query.logart)
       .then((result) => {
+        //console.log(JSON.stringify(result));
          res.json(result);
        })
        .catch((error) => {
          serverTrafficLogger.log('error', `@${req.originalUrl}: ${error}`, logMetaData);
+         console.error(error);
          res.sendStatus(500).end();
        })
   } else {
@@ -364,18 +379,17 @@ arzt.get('/plug', (req, res) => {
       };
 
       console.log("Patientdata final >>> " + JSON.stringify(patientData));
-      res.send("Sent");
-     //  ipadapp.locals.subscriptions.forEach((subscriber) => {
-     //    subscriber.write(`id: patient`);
-     //    subscriber.write('\n');
-     //    subscriber.write(`data: ${ JSON.stringify(patientData) }`);
-     //    subscriber.write('\n\n');
-     //  });
-     // })
-     // .catch((error) => {
-     //   console.error(error);
-        //})
-     });
+      res.send("Data was send to the ipadapp clients");
+      ipadapp.locals.subscriptions.forEach((subscriber) => {
+        subscriber.connection.write(`id: patient`);
+        subscriber.connection.write('\n');
+        subscriber.connection.write(`data: ${ JSON.stringify(patientData) }`);
+        subscriber.connection.write('\n\n');
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+    })
 });
 
 // =========== ipadapp routes ===========
@@ -388,6 +402,16 @@ ipadapp.get('/sse', (req, res) => {
 	startSSE(req, res, ipadapp.locals.subscriptions, 2147483647);
 });
 
+//
+// setInterval(() => {
+//   ipadapp.locals.subscriptions.forEach((subscriber) => {
+//     subscriber.connection.write(`id: patient`);
+//     subscriber.connection.write('\n');
+//     subscriber.connection.write(`data: hello test`);
+//     subscriber.connection.write('\n\n');
+//   });
+// }, 2000);
+
 ipadapp.post('/patientdata', (req, res) => {
 	/*
 		TODO:
@@ -399,7 +423,7 @@ ipadapp.post('/patientdata', (req, res) => {
 		the patient to the warteliste.
 		Also update the arztansichtwarteliste.
 	*/
-  // console.log(req.body);
+  console.log(req.body);
   // if (req.body) {
   //   // TODO: Receive correct data and update patient in the database
   //   // Also check signature before inserting into database
@@ -409,10 +433,12 @@ ipadapp.post('/patientdata', (req, res) => {
   //       payload = req.body.payload,
   //       svnrSignature = crypto.createHmac('sha256', appSignatureSecret).update(payload.patient.svnr).digest('hex');
   //
-  //   if (crypto.createHmac('sha256', appSignatureSecret).update(svnr).digest('hex') === signature) {
-  //
+  //   if (svnrSignature === signature) {
+  //     // TODO: Update patient in database
+  //     DB.addOrUpdatePatient()
   //   } else {
-  //
+  //     // TODO: Send back 403 error
+  //     res.sendStatus(403).end();
   //   }
   //
   // } else {
@@ -489,6 +515,9 @@ app.use('/', express.static('./webfiles/webroot', { index: '/public/login.html',
 // 	//	Patient plugged his card.
 // 	//	Add patient to the database
 // 	//	if he/she does not exist.
+//   // TODO: Test for patient data and gina module
+//   //console.log(JSON.stringify(patient));
+//
 // 	DB.addPatient(patient)
 // 		.then((result) => {
 // 			//	After adding the patient,
@@ -516,9 +545,11 @@ app.use('/', express.static('./webfiles/webroot', { index: '/public/login.html',
 // });
 //
 // ginaInformation.on('error', (error) => {
+//   console.error(error);
 // 	ginaErrorLogger.log('error', error, logMetaData);
 // });
 //
 // ginaInformation.on('procerror', (error) => {
+//   console.error(error);
 // 	ginaErrorLogger.log('fatal', error, logMetaData);
 // });

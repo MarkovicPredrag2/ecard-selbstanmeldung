@@ -20,52 +20,30 @@ public class Client {
 	
 	public static void main(String[] args) {
 		GinaCallerWrapper session;
-		args = new String[4];
-		args[0] = "https://10.196.2.18";
-		args[1] = "Test-03 (02:94:93)";
-		args[2] = "Test-02 (02:81:7c)";
-		args[3] = "0000";
  		if((session = init(args)) == null) {
 			System.exit(-1);
 		}
 		
-		try {
-			System.out.println(session.getCardReaderStatus(10000));
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
+		System.out.print("{ \"init\": true }");
+		
+		try (InputStreamReader cin = new InputStreamReader(System.in)) {
+			while (true) switch ((char) cin.read()) {
+				case CARD_READER_STATUS_REQUEST:
+					System.out.print(session.getCardReaderStatus(10000));
+					break;
+				case PATIENT_INFORMATION_REQUEST:
+					System.out.print(session.getPatientInformation());
+					break;
+				case 'Q':
+					cin.close();
+					System.exit(-1);
+					break;
+				default:
+					System.err.print("Wrong command code");
+			}
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		try {
-			System.out.println(session.getPatientInformation());
-		} catch (ServiceExceptionContent e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (CardExceptionContent e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-//		System.out.print("{ init: true }");
-//		try (InputStreamReader cin = new InputStreamReader(System.in)) {
-//			while (true) switch ((char) cin.read()) {
-//				case CARD_READER_STATUS_REQUEST:
-//					System.out.print(session.getCardReaderStatus(10000));
-//					break;
-//				case PATIENT_INFORMATION_REQUEST:
-//					System.out.print(session.getPatientInformation());
-//					break;
-//				case 'Q':
-//					cin.close();
-//					System.exit(-1);
-//					break;
-//				default:
-//					System.err.print("Wrong command code");
-//			}
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 	}
 	
 	private static GinaCallerWrapper init(String[] args) {

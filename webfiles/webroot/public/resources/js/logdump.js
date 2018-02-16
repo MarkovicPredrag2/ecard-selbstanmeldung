@@ -1,37 +1,101 @@
+var datenTabelle;
+
 function logdump(logart) {
   $.ajax({
     url: '/role/arzt/logdata',
-    data: { logart: this.logart },
+    data: { "logart": logart },
     success: function loadDataIntoView(logdata) {
-      // Table to log into
-      var logTable = document.getElementById(logart);
 
-      // Clear table before dumping log
-      while (logTable.firstChild) {
-			  logTable.removeChild(logTable.firstChild);
+      // TODO: Read through API to delete/add rows
+      // NOTE: https://datatables.net/reference/api/
+
+      // Table elements
+      var logtable = document.getElementById('logtable');
+      var tablebody = document.getElementById('tablebody');
+      var tableHead = document.getElementById('tabletop');
+
+      // Clear table body before dumping log
+      while (tablebody.firstChild) {
+			  tablebody.removeChild(tablebody.firstChild);
 			}
 
-      alert("Hello");
-      // Load data into table
-      logTable.payload.forEach(function (log) {
-        document.getElementById("logArtEins").innerHTML +=
-          "<tr>" +
-              "<td>" + log.id + "</td>" +
-              "<td>2018-02-10</td>" +
-              "<td>1234567890</td>" +
-              "<td>Max</td>" +
-              "<td>Mustermann</td>" +
-          "</tr>"
-      });
+      // Clear table head before dumping log
+      while (tableHead.firstChild) {
+			  tableHead.removeChild(tableHead.firstChild);
+			}
+
+      // General header
+      var generalHeader =
+        "<th>Id</th>" +
+        "<th>Datum</th>";
+
+      // Choose the right table with the right method to load
+      switch (logart) {
+        case "1": // Neuer Patient
+          // Dataformat:
+          // {
+          //   sozialversicherungsnummer: 1234 010101,
+          //   vorname: max,
+          //   nachnamne: musterpatien
+          // }
+          // Load table head
+          break;
+        case "2": // Patientendaten Änderung
+        //ToDo;Änderungsquerry anpassen (im Moment kann nur ein Datenfeld bearbeitet werden!!!!1!!!11!!!elf!!)
+          // Dataformat:
+          // {
+          //   sozialversicherungsnummer: 1234 010101,
+          //   vorname: max,
+          //   nachname musterpatien_neu,
+          //   änderungen: array
+          // }
+          // Load table head
+          break;
+        case "3": // Patienteneinschreibung
+          // Dataformat:
+          // {
+          //   sozialversicherungsnummer: 1234 010101,
+          //   vorname: max,
+          //   nachnamne: musterpatien,
+          //   grund: rezept
+          // }
+          // Load table head
+          break;
+        case "4": // Wartelistenaufruf
+          // Dataformat:
+          // {
+          //   sozialversicherungsnummer: 1234 010101,
+          //   vorname: max,
+          //   nachnamne: musterpatien,
+          //   arzt: dr. hofbauer,
+          //   (raum: ordination 1)
+          // }
+          // Load table head
+          break;
+        case "5": // Webapplikationsanmeldung (Benutzer)
+          // Dataformat:
+          // {
+          //   username: muncan,
+          // }
+          // Load data into head
+          tableHead.innerHTML += generalHeader + "<th>Username</th>";
+
+          // Load data into body
+          logdata.forEach(function (log) {
+            var payload = JSON.parse(log.daten);
+
+            tablebody.innerHTML +=
+              "<tr>" +
+                "<td>" + log.id + "</td>" +
+                "<td>" + log.timestamp + "</td>" +
+                "<td>" + payload.username + "</td>" +
+              "</tr>";
+          });
+          break;
+      }
+
+      $('#logtable').DataTable();
+
     }
   });
 }
-
-
-/*"<li class='list' onclick='requestPatientData(this)' id='" + person.svnr + "'>" +
-  "<i class='fa " + iconResolver(person.grund) + " fa-5x' aria-hidden='true' style='float:left; margin: 0 15px 0 0;'></i>" +
-  "<i class='fa fa-bars fa-3x' aria-hidden='true' style='float:right; padding-top:27.5px'></i>" +
-  "<h3 style='text-align: left'>" + person.grund + "</h3>" +
-  "<p>".concat(person.anrede, " ", person.nachname, " ", person.vorname, " (", person.alter, " Jahre alt)","</p>") +
-"</li>";
-*/

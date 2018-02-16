@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>e-card Selbstanmeldungstool</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <link href="./public/resources/styles/sidebar-links.css" rel="stylesheet">
+    <link href="./public/resources/styles/sortablestyle.css" rel="stylesheet">
+    <link href="./public/resources/styles/sidebar-rechts.css" rel="stylesheet">
+    <link rel="stylesheet" href="./public/resources/styles/font-awesome-4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="./public/resources/scripts/time.js"></script>
+    <script src='./public/resources/scripts/jquery-sortable.js'></script>
+  </head>
+
+  <body onload="startTime()">
+
+    <nav class="navbar navbar-dark bg-dark">
+      <a class="navbar-item dropdown"><!--<img src="./img/user.png" style="float:left;">-->
+        <font color="white">
+          <!--Template: h3= user-->
+          <b><h3>&nbsp; Dr. Musterarzt</h3></b>
+        </font>
+      </a>
+      <a class="active">
+        <font color="white">
+          <b>
+            <h3>
+              <p id="clock"></p>
+            </h3>
+          </b>
+        </font>
+      </a>
+    </nav>
+
+    <div id="wrappersr">
+        <div id="sidebar-wrappersr">
+          <ul id="columns">
+            <ol class="sidebar-navr example">
+              <!--Template: for patient in patients
+                li(id= patient.svnr onclick= ) #{patient.name} - #{patient.reason}-->
+            </ol>
+          </ul>
+        </div>
+    </div>
+
+    <div id="wrappers">
+        <div id="sidebar-wrappers">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                  <a style="font-size: 16px; color: #199bd8;" data-toggle="tooltip" title="Patienten aufrufen" href="#">
+                    <span style="content:" class="fa fa-arrow-left" aria-hidden="true"></span>
+                  </a>
+                </li>
+                <li class="sidebar-brand">
+                  <a href="#" data-toggle="tooltip" title="Patienten entlassen">
+                    <span style="color: #1ad85f" class="fa fa-check" aria-hidden="true"></span>
+                  </a>
+                </li>
+                <li class="sidebar-brand">
+                  <a data-toggle="tooltip" title="Ausloggen" href="/public/logout">
+                    <!--style="color: #dd2a1a; font-size: 50px"-->
+                    <span style="color: #d32317" class="fa fa-power-off" aria-hidden="true"></span>
+                  </a>
+                </li>
+            </ul>
+        </div>
+        <div id="page-content-wrappers">
+            <div class="container-fluid">
+                <h1 id="name">Hr. Max Mustermann</h1>
+                <h2><small><span>SVNR: </span><span id="svnr"></span></small></h2>
+                <h2><small><span>Grund: </span><span id="grund"></span></small></html>
+                <!-- <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
+                <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p> -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script>
+    $(document).ready(function(){
+      $(function  () {
+        $("ol.example").sortable();
+      });
+      $(function requestPatientData(patient) {
+        $.ajax({
+          url: "/role/arzt/patientendata",
+          type: "GET",
+          data: JSON.stringify({ svnr: patient.getAttribute('id'))),
+          contentType: "application/json",
+          complete: callback
+      });
+      })
+    });
+    </script>
+  </body>
+</html>
