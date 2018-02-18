@@ -114,7 +114,7 @@ CREATE TABLE `l_log` (
   PRIMARY KEY (`l_id`),
   KEY `fk_l_log_la_logart1_idx` (`l_la_art`),
   CONSTRAINT `fk_l_log_la_logart1` FOREIGN KEY (`l_la_art`) REFERENCES `la_logart` (`la_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,7 +123,7 @@ CREATE TABLE `l_log` (
 
 LOCK TABLES `l_log` WRITE;
 /*!40000 ALTER TABLE `l_log` DISABLE KEYS */;
-INSERT INTO `l_log` VALUES (25,'2018-02-14 12:02:17',5,'{\"username\":\"drmuncan\"}'),(26,'2018-02-14 12:24:34',5,'{\"username\":\"drmuncan\"}'),(27,'2018-02-14 12:28:05',5,'{\"username\":\"drmuncan\"}'),(28,'2018-02-14 14:07:19',5,'{\"username\":\"drmuncan\"}'),(29,'2018-02-14 15:56:01',5,'{\"username\":\"drmuncan\"}'),(30,'2018-02-14 16:57:27',5,'{\"username\":\"drmuncan\"}'),(31,'2018-02-14 18:02:49',5,'{\"username\":\"drmuncan\"}'),(32,'2018-02-14 19:14:50',5,'{\"username\":\"drmuncan\"}'),(33,'2018-02-14 21:02:50',5,'{\"username\":\"bernhard\"}'),(34,'2018-02-14 21:17:11',5,'{\"username\":\"drmuncan\"}'),(35,'2018-02-14 21:20:21',5,'{\"username\":\"drmuncan\"}'),(36,'2018-02-14 21:23:19',5,'{\"username\":\"drmuncan\"}'),(37,'2018-02-14 21:33:26',5,'{\"username\":\"bernhard\"}'),(38,'2018-02-14 21:36:07',5,'{\"username\":\"drmuncan\"}');
+INSERT INTO `l_log` VALUES (25,'2018-02-14 12:02:17',5,'{\"username\":\"drmuncan\"}'),(26,'2018-02-14 12:24:34',5,'{\"username\":\"drmuncan\"}'),(27,'2018-02-14 12:28:05',5,'{\"username\":\"drmuncan\"}'),(28,'2018-02-14 14:07:19',5,'{\"username\":\"drmuncan\"}'),(29,'2018-02-14 15:56:01',5,'{\"username\":\"drmuncan\"}'),(30,'2018-02-14 16:57:27',5,'{\"username\":\"drmuncan\"}'),(31,'2018-02-14 18:02:49',5,'{\"username\":\"drmuncan\"}'),(32,'2018-02-14 19:14:50',5,'{\"username\":\"drmuncan\"}'),(33,'2018-02-14 21:02:50',5,'{\"username\":\"bernhard\"}'),(34,'2018-02-14 21:17:11',5,'{\"username\":\"drmuncan\"}'),(35,'2018-02-14 21:20:21',5,'{\"username\":\"drmuncan\"}'),(36,'2018-02-14 21:23:19',5,'{\"username\":\"drmuncan\"}'),(37,'2018-02-14 21:33:26',5,'{\"username\":\"bernhard\"}'),(38,'2018-02-14 21:36:07',5,'{\"username\":\"drmuncan\"}'),(39,'2018-02-16 21:16:04',5,'{\"username\":\"drmuncan\"}'),(40,'2018-02-17 17:57:25',5,'{\"username\":\"drmuncan\"}');
 /*!40000 ALTER TABLE `l_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -291,6 +291,7 @@ CREATE TABLE `r_raum` (
 
 LOCK TABLES `r_raum` WRITE;
 /*!40000 ALTER TABLE `r_raum` DISABLE KEYS */;
+INSERT INTO `r_raum` VALUES ('Raum 1',1),('Raum 2',3),('Raum 3',5),('Raum 4',2),('Raum 5',4);
 /*!40000 ALTER TABLE `r_raum` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -495,4 +496,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-14 22:52:25
+-- Dump completed on 2018-02-17 19:35:09

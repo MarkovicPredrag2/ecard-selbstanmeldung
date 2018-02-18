@@ -18,7 +18,7 @@ html
     link(rel='stylesheet', type='text/css', href='/public/resources/css/style_tabelle.css', media='screen')
     // Tabelle - Sortierung
     // <link rel="stylesheet" type="text/css" href="/public/resources/css/style_tabelle_dms.css" media="screen" />
-  body(onload="openTab(event, '5'); startTime(); ")
+  body(onload="startTime()")
     // ======= Navbar =======
     nav.navbar.navbar-inverse.navbar-static-top(style='position:fixed; width:100%;')
       .container-fluid(style='font-size: 20px')
@@ -35,7 +35,7 @@ html
             // Template: username p= user
             li
               p.navbar-text.fa.fa-user-md.fa-2x(style='color: orange', aria-hidden='true')
-                | &nbsp
+                | &nbsp 
                 span#user Hofbauer
             // Navigation
             li
@@ -61,20 +61,23 @@ html
         button.tablinks(onclick="openTab(event, '4')") Patienten Warteliste aufrufe
         button.tablinks(onclick="openTab(event, '5')") Login-Aktiviäten
       // Log Table
-      table#logtable.display(cellspacing='0', width='100%')
-        thead
-          tr#tabletop
-            th Hello
-        tbody#tablebody
+      div#logtablecontainer
+        table#logtable.display(cellspacing='0', width='100%')
+          thead
+            tr#tabletop
+              th ID
+              th Datum
+              th Username
+          tbody#tablebody
       // ======= Footer =======
       div
         hr.featurette-divider
         footer
           p
-            | © 2018 Five4U, Diplomprojekt ·
+            | © 2018 Five4U, Diplomprojekt · 
             a(href='/public/impressum.html') Impressum
             span(style='float: right;')
-              | E-Card Selbstanmeldungs Tool ·
+              | E-Card Selbstanmeldungs Tool · 
               a(href='/public/info.html') Info
     // ======= JS Dependencies =======
     // jQuery library
@@ -91,9 +94,10 @@ html
     script(src='/public/resources/js/logdump.js', charset='utf-8')
     // Tab Script
     script(type='text/javascript').
-      // Initialise DataTable
+      // Initialize DataTable
       $(document).ready(function() {
-      //$('#logtable').DataTable();
+      initDataTable();
+      //openTab(event, '5');
       });
       // Tab Function
       function openTab(evt, logArt) {

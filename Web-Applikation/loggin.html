@@ -24,7 +24,7 @@
     <!-- <link rel="stylesheet" type="text/css" href="./public/resources/css/style_tabelle_dms.css" media="screen" /> -->
   </head>
 
-  <body onload="openTab(event, '5'); startTime(); ">
+  <body onload="startTime()">
 
     <!-- ======= Navbar ======= -->
 
@@ -72,15 +72,19 @@
       </div>
 
       <!-- Log Table -->
-      <table id="logtable" class="display" cellspacing="0" width="100%">
-        <thead>
-          <tr id="tabletop">
-            <th>Hello</th>
-          </tr>
-        </thead>
-        <tbody id="tablebody">
-        </tbody>
-      </table>
+      <div id="logtablecontainer">
+        <table id="logtable" class="display" cellspacing="0" width="100%">
+          <thead>
+            <tr id="tabletop">
+              <th>ID</th>
+              <th>Datum</th>
+              <th>Username</th>
+            </tr>
+          </thead>
+          <tbody id="tablebody">
+          </tbody>
+        </table>
+      </div>
 
       <!-- ======= Footer ======= -->
 
@@ -112,9 +116,10 @@
     <!-- Tab Script -->
     <script type="text/javascript">
 
-      // Initialise DataTable
+      // Initialize DataTable
       $(document).ready(function() {
-        //$('#logtable').DataTable();
+        initDataTable();
+        openTab(event, '5');
       });
 
       // Tab Function
@@ -133,7 +138,6 @@
         // Set current tab-item to active
         evt.currentTarget.className += " active";
       }
-
     </script>
   </body>
 

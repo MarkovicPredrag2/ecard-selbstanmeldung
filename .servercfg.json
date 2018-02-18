@@ -28,7 +28,7 @@
 	"dbsettings": {
 		"host":	"localhost",
 		"user": "root",
-		"password": "v2tJ)Jjt=NS!F<%",
+		"password": "",
 		"dbname": "ordination"
 	},
 	"logsettings": {
@@ -37,10 +37,5 @@
 	"ports": {
 	  "port_1": 8080,
 	  "port_2": 8081
-	},
-	"rooms": {
-		"Warteraum_1": 5,
-		"Warteraum_2": 2,
-		"Warteraum_3": 3
 	}
 }

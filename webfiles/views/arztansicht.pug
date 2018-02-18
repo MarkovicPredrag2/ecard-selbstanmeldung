@@ -88,7 +88,7 @@ html
     div(align='right', style='padding-top:71px')
       ul#patientlist.list.example
         for patient in patients
-          li.list(onclick='requestPatientData(this)' id= patient.svnr)
+          li.list(onclick='requestPatientData(this)' id= patient.svnr)#callin
             if patient.grundid == 2
               i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
             else if patient.grundid == 3
@@ -121,6 +121,10 @@ html
       _super($item, container);
       }
       });
+      $(".callin").click(function() {
+      $(".callin").css("border", "none");
+      $(this).css("border", "2px solid green");
+      })
       });
       // Get patient data for a patient.
       function requestPatientData(dom) {

@@ -132,6 +132,11 @@
             _super($item, container);
           }
         });
+
+        $(".callin").click(function() {
+          $(".callin").css("border", "none");
+          $(this).css("border", "2px solid green");
+        })
       });
 
       // Get patient data for a patient.
@@ -142,7 +147,7 @@
             $("#t_vorname").html(patient.vorname);
             $("#t_nachname").html(patient.nachname);
             $("#t_grund").html(patient.grund);
-        });
+          });
       }
 
     </script>

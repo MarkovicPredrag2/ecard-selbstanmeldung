@@ -1,33 +1,25 @@
-var datenTabelle;
+// Data Table Object
+var logTable;
 
+
+function initDataTable() {
+  logTable = $('#logtable').DataTable();
+}
+
+// Function to dump the log into the table
 function logdump(logart) {
   $.ajax({
     url: '/role/arzt/logdata',
     data: { "logart": logart },
     success: function loadDataIntoView(logdata) {
 
-      // TODO: Read through API to delete/add rows
       // NOTE: https://datatables.net/reference/api/
+      var logColumns;
+      var logUnits = [];
+      var logTableContent;
 
-      // Table elements
-      var logtable = document.getElementById('logtable');
-      var tablebody = document.getElementById('tablebody');
-      var tableHead = document.getElementById('tabletop');
-
-      // Clear table body before dumping log
-      while (tablebody.firstChild) {
-			  tablebody.removeChild(tablebody.firstChild);
-			}
-
-      // Clear table head before dumping log
-      while (tableHead.firstChild) {
-			  tableHead.removeChild(tableHead.firstChild);
-			}
-
-      // General header
-      var generalHeader =
-        "<th>Id</th>" +
-        "<th>Datum</th>";
+      // Destory total table with true and re-init
+      logTable.destroy(true);
 
       // Choose the right table with the right method to load
       switch (logart) {
@@ -38,10 +30,44 @@ function logdump(logart) {
           //   vorname: max,
           //   nachnamne: musterpatien
           // }
-          // Load table head
+          // Load template into log
+          logTableContent =
+            "<table id='logtable' class='display' cellspacing='0' width='100%'>" +
+              "<thead>" +
+                "<tr id='tabletop'>" +
+                  "<th>ID</th>" +
+                  "<th>Datum</th>" +
+                  "<th>SVNR</th>" +
+                  "<th>Vorname</th>" +
+                  "<th>Nachname</th>" +
+                "</tr>" +
+              "</thead>" +
+              "<tbody id='tablebody'>" +
+              "</tbody>" +
+            "</table>";
+
+          // Init table-columns
+          logColumns = [
+            { data: 'ID' },
+            { data: 'Datum' },
+            { data: 'SVNR' },
+            { data: 'Vorname' },
+            { data: 'Nachname' }
+          ];
+
+          // Init table-rows
+          logdata.forEach(function (log) {
+            var payload = JSON.parse(log.daten);
+            logUnits.push({
+              "ID": log.id,
+              "Datum": log.timestamp,
+              "SVNR": payload.sozialversicherungsnummer,
+              "Vorname": payload.vorname,
+              "Nachname": payload.nachname
+            });
+          });
           break;
         case "2": // Patientendaten Änderung
-        //ToDo;Änderungsquerry anpassen (im Moment kann nur ein Datenfeld bearbeitet werden!!!!1!!!11!!!elf!!)
           // Dataformat:
           // {
           //   sozialversicherungsnummer: 1234 010101,
@@ -49,7 +75,52 @@ function logdump(logart) {
           //   nachname musterpatien_neu,
           //   änderungen: array
           // }
-          // Load table head
+          // Load template into log
+          logTableContent =
+            "<table id='logtable' class='display' cellspacing='0' width='100%'>" +
+              "<thead>" +
+                "<tr id='tabletop'>" +
+                  "<th>ID</th>" +
+                  "<th>Datum</th>" +
+                  "<th>SVNR</th>" +
+                  "<th>Vorname</th>" +
+                  "<th>Nachname</th>" +
+                  "<th>Aenderungen</th>" +
+                "</tr>" +
+              "</thead>" +
+              "<tbody id='tablebody'>" +
+              "</tbody>" +
+            "</table>";
+
+          // Init table-columns
+          logColumns = [
+            { data: 'ID' },
+            { data: 'Datum' },
+            { data: 'SVNR' },
+            { data: 'Vorname' },
+            { data: 'Nachname' },
+            { data: 'Aenderungen' }
+          ];
+
+          // Init table-rows
+          logdata.forEach(function (log) {
+            var payload = JSON.parse(log.daten);
+            var aenderungen = "";
+            if (payload.änderungen.length != 0) {
+              aenderungen += "'" + payload.änderungen[0].alt + "' geändert zu '" + payload.änderungen[0].neu + "'" + ",";
+              for (var i = 1; i < payload.änderungen.length; i++) {
+                  aenderung += "\n" + "'" + payload.änderungen[i].alt + "' geändert zu '" + payload.änderungen[i].neu + "'" + ",";
+              }
+            }
+            logUnits.push({
+              "ID": log.id,
+              "Datum": log.timestamp,
+              "SVNR": payload.sozialversicherungsnummer,
+              "Vorname": payload.vorname,
+              "Nachname": payload.nachname,
+              "Aenderungen": aenderungen
+            });
+          });
           break;
         case "3": // Patienteneinschreibung
           // Dataformat:
@@ -59,7 +130,45 @@ function logdump(logart) {
           //   nachnamne: musterpatien,
           //   grund: rezept
           // }
-          // Load table head
+          // Load template into log
+          logTableContent =
+            "<table id='logtable' class='display' cellspacing='0' width='100%'>" +
+              "<thead>" +
+                "<tr id='tabletop'>" +
+                  "<th>ID</th>" +
+                  "<th>Datum</th>" +
+                  "<th>SVNR</th>" +
+                  "<th>Vorname</th>" +
+                  "<th>Nachname</th>" +
+                  "<th>Grund</th>" +
+                "</tr>" +
+              "</thead>" +
+              "<tbody id='tablebody'>" +
+              "</tbody>" +
+            "</table>";
+
+          // Init table-columns
+          logColumns = [
+            { data: 'ID' },
+            { data: 'Datum' },
+            { data: 'SVNR' },
+            { data: 'Vorname' },
+            { data: 'Nachname' },
+            { data: 'Grund' }
+          ];
+
+          // Init table-rows
+          logdata.forEach(function (log) {
+            var payload = JSON.parse(log.daten);
+            logUnits.push({
+              "ID": log.id,
+              "Datum": log.timestamp,
+              "SVNR": payload.sozialversicherungsnummer,
+              "Vorname": payload.vorname,
+              "Nachname": payload.nachname,
+              "Grund": payload.grund
+            });
+          });
           break;
         case "4": // Wartelistenaufruf
           // Dataformat:
@@ -70,32 +179,93 @@ function logdump(logart) {
           //   arzt: dr. hofbauer,
           //   (raum: ordination 1)
           // }
-          // Load table head
+          // Init table template
+          logTableContent =
+            "<table id='logtable' class='display' cellspacing='0' width='100%'>" +
+              "<thead>" +
+                "<tr id='tabletop'>" +
+                  "<th>ID</th>" +
+                  "<th>Datum</th>" +
+                  "<th>SVNR</th>" +
+                  "<th>Vorname</th>" +
+                  "<th>Nachname</th>" +
+                  "<th>Arzt</th>" +
+                "</tr>" +
+              "</thead>" +
+              "<tbody id='tablebody'>" +
+              "</tbody>" +
+            "</table>";
+
+          // Init table-columns
+          logColumns = [
+            { data: 'ID' },
+            { data: 'Datum' },
+            { data: 'SVNR' },
+            { data: 'Vorname' },
+            { data: 'Nachname' },
+            { data: 'Arzt' }
+          ];
+
+          // Init table-rows
+          logdata.forEach(function (log) {
+            var payload = JSON.parse(log.daten);
+            logUnits.push({
+              "ID": log.id,
+              "Datum": log.timestamp,
+              "SVNR": payload.sozialversicherungsnummer,
+              "Vorname": payload.vorname,
+              "Nachname": payload.nachname,
+              "Arzt": payload.arzt
+            });
+          });
           break;
         case "5": // Webapplikationsanmeldung (Benutzer)
           // Dataformat:
           // {
           //   username: muncan,
           // }
-          // Load data into head
-          tableHead.innerHTML += generalHeader + "<th>Username</th>";
 
-          // Load data into body
+          // Load template into log
+          logTableContent =
+            "<table id='logtable' class='display' cellspacing='0' width='100%'>" +
+              "<thead>" +
+                "<tr id='tabletop'>" +
+                  "<th>ID</th>" +
+                  "<th>Datum</th>" +
+                  "<th>Username</th>" +
+                "</tr>" +
+              "</thead>" +
+              "<tbody id='tablebody'>" +
+              "</tbody>" +
+            "</table>";
+
+          // Init table-columns
+          logColumns = [
+            { data: 'ID' },
+            { data: 'Datum' },
+            { data: 'Username' }
+          ];
+
+          // Init table-rows
           logdata.forEach(function (log) {
             var payload = JSON.parse(log.daten);
-
-            tablebody.innerHTML +=
-              "<tr>" +
-                "<td>" + log.id + "</td>" +
-                "<td>" + log.timestamp + "</td>" +
-                "<td>" + payload.username + "</td>" +
-              "</tr>";
+            logUnits.push({
+              "ID": log.id,
+              "Datum": log.timestamp,
+              "Username": payload.username
+            });
           });
           break;
       }
 
-      $('#logtable').DataTable();
+      // Load table template into logcontainer
+      document.getElementById('logtablecontainer').innerHTML = logTableContent;
 
+      // Re-initialize table
+      logTable = $('#logtable').DataTable({
+        "data": logUnits,
+        "columns" : logColumns
+      });
     }
   });
 }
