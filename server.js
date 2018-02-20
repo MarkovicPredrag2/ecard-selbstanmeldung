@@ -197,12 +197,12 @@ https.createServer(//keys,
 });
 
 //	Starting gina listerner
-const ginaInformation =
-        ginaListener.listen(ginacfg.ipaddress, ginacfg.reader, ginacfg.ocardreader, ginacfg.pin, ginacfg.interval, ginacfg.testCardsAllowed);
-
-ginaInformation.on('connection', () => {
-  console.log('Verbunden mit der GINA');
-})
+// const ginaInformation =
+//         ginaListener.listen(ginacfg.ipaddress, ginacfg.reader, ginacfg.ocardreader, ginacfg.pin, ginacfg.interval, ginacfg.testCardsAllowed);
+//
+// ginaInformation.on('connection', () => {
+//   console.log('Verbunden mit der GINA');
+// })
 
 // ===========  public routes ===========
 
@@ -369,30 +369,128 @@ arzt.put('/warteliste', (req, res) => {
 // Test Stub, to simulate "plug"-process
 arzt.get('/plug', (req, res) => {
 
-  var svnr = "3048280984";
+  var patient = {
+    person: {
+      svnr: "6032060899",
+      geschlecht: "M",
+      titel: "Mag.",
+      vorname: "Anton",
+      nachname: "Tobolka",
+      geburtsdatum: "06.08.1999"
+    },
+    versicherung: {
+      anspruchsdaten: [
+        {
+          svtCode: "11"
+        },
+        {
+          svtCode: "28"
+        },
+        {
+          svtCode: "8D"
+        }
+      ],
 
-  DB.getPatientForTestPurpose(svnr)
-    .then((result) => {
-      var patientData = {
-        signature: crypto.createHmac('sha256', appSignatureSecret)
-                    .update(svnr)
-                    .digest('hex'),
-        patient: result
-      };
+    }
+  };
 
-      console.log("Patientdata final >>> " + JSON.stringify(patientData));
-      res.send("Data was send to the ipadapp clients");
-      ipadapp.locals.subscriptions.forEach((subscriber) => {
-        subscriber.connection.write(`id: patient`);
-        subscriber.connection.write('\n');
-        subscriber.connection.write(`data: ${ JSON.stringify(patientData) }`);
-        subscriber.connection.write('\n\n');
-      });
-    })
-    .catch((error) => {
-      console.error(error);
-    })
+  DB.addPatientIfNotExists(patient)
+      .then((result) => {
+         DB.getAllPatientData(patient.svnr)
+          .then((patientDataResult) => {
+            //  After adding the patient,
+           	//	send the patient data along
+           	//	with all of his data in the DB
+           	//	to the subscribed iPad-apps.
+
+            // Add signature
+            var patientData = {
+              signature: crypto.createHmac('sha256', appSignatureSecret)
+                          .update(patient.svnr)
+                          .digest('hex'),
+              payload: patientDataResult
+            };
+
+           	ipadapp.locals.subscriptions.forEach((subscriber) => {
+                subscriber.write(`id: patient`);
+                subscriber.write('\n');
+                subscriber.write(`data: ${ JSON.stringify(patientData) }`);
+                subscriber.write('\n\n');
+           	});
+           })
+           .catch((error) => {
+             serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
+             console.error(error);
+           })
+       })
+       .catch((error) => {
+         serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
+         console.error(error);
+       })
+  });
+
+  // var svnr = "3048280984";
+
+  // DB.getAllPatientData(svnr)
+  //   .then((result) => {
+  //     var patientData = {
+  //       signature: crypto.createHmac('sha256', appSignatureSecret)
+  //                   .update(svnr)
+  //                   .digest('hex'),
+  //       patient: result
+  //     };
+  //     patientData.patient.svnr = String(patientData.patient.svnr);
+  //     console.log("Patientdata final >>> " + JSON.stringify(patientData));
+  //     res.send("Data was send to the ipadapp clients");
+  //     ipadapp.locals.subscriptions.forEach((subscriber) => {
+  //       subscriber.connection.write(`id: patient`);
+  //       subscriber.connection.write('\n');
+  //       subscriber.connection.write(`data: ${ JSON.stringify(patientData) }`);
+  //       subscriber.connection.write('\n\n');
+  //     });
+  //   })
+  //   .catch((error) => {
+  //     console.error(error);
+  //   })
 });
+
+// Test stub, to simulate app-send process
+arzt.get('/appsend', (req, res) => {
+
+  var testDaten = {
+  	"signature":"997340a1ffa8d1aed8442092f91ac9c0920cb093f883f1c2ca6ad670bf285a07",
+  	"patient": {
+  		"svnr": "3048280984",
+  		"hausnummer":"15",
+  		"ort":"Perchtoldsdorf",
+  		"postleitzahl":"2380",
+  		"stock":"20",
+  		"strasse":"Marktplatz",
+  		"versicherung": "BVA",
+  		"telefonnummer": "43036097816",
+  		"email": "bushwookie@debil.com",
+  		"grund": "1"
+  	}
+  };
+
+  var svnrSignature = crypto.createHmac('sha256', appSignatureSecret).update(testDaten.patient.svnr).digest('hex');
+
+  // Check for signature
+  if (testDaten.signature === crypto.createHmac('sha256', appSignatureSecret)
+                              .update(testDaten.patient.svnr)
+                              .digest('hex')) {
+                                DB.updatePatient(testDaten.patient)
+                                  .then((result) => {
+                                     console.log("Patient should be inserted ...");
+                                   })
+                                   .catch((error) => {
+                                     console.error(error);
+                                   })
+  } else {
+    res.status(403).send("Gefaelschtes Datenpaket");
+  }
+
+})
 
 // =========== ipadapp routes ===========
 
@@ -513,47 +611,55 @@ app.use('/', express.static('./webfiles/webroot', { index: '/public/login.html',
 		the process itself occur.
 	==========================================
 */
-ginaInformation.on('data', (patient) => {
-	//	Patient plugged his card.
-	//	Add patient to the database
-	//	if he/she does not exist.
-  // TODO: Test for patient data and gina module
-  console.log(JSON.stringify(patient));
-
-	// DB.addPatient(patient)
-	// 	.then((result) => {
-	// 		//	After adding the patient,
-	// 		//	send the patient data along
-	// 		//	with all of his data in the DB
-	// 		//	to the subscribed iPad-apps.
-  //
-  //     var patientData = {
-  //       signature: crypto.createHmac('sha256', appSignatureSecret)
-  //                  .update(patient.svnr)
-  //                  .digest('hex'),
-  //       payload: result[0]
-  //     };
-  //
-	// 		ipadapp.locals.subscriptions.forEach((subscriber) => {
-  //       subscriber.write(`id: patient`);
-  //       subscriber.write('\n');
-  //       subscriber.write(`data: ${ JSON.stringify(patientData) }`);
-  //       subscriber.write('\n\n');
-	// 		});
-	// 	})
-	// 	.catch((error) => {
-	// 		serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
-	// 	});
-});
-
-ginaInformation.on('error', (error) => {
-  console.log("Es ist ein Fehler in der GINA aufgetreten: (error)");
-  console.error(error);
-	ginaErrorLogger.log('error', error, logMetaData);
-});
-
-ginaInformation.on('procerror', (error) => {
-  console.log("Es ist ein Fehler in der GINA aufgetreten: (procerror)");
-  console.error(error);
-	ginaErrorLogger.log('fatal', error, logMetaData);
-});
+// ginaInformation.on('data', (patient) => {
+// 	//	Patient plugged his card.
+// 	//	Add patient to the database
+// 	//	if he/she does not exist.
+//   console.log(JSON.stringify(patient));
+//
+//   DB.addPatientIfNotExists(patient)
+//     .then((result) => {
+//        DB.getAllPatientData(patient.svnr)
+//         .then((patientDataResult) => {
+//           //  After adding the patient,
+//          	//	send the patient data along
+//          	//	with all of his data in the DB
+//          	//	to the subscribed iPad-apps.
+//
+//           // Add signature
+//           var patientData = {
+//             signature: crypto.createHmac('sha256', appSignatureSecret)
+//                         .update(patient.svnr)
+//                         .digest('hex'),
+//             payload: patientDataResult
+//           };
+//
+//          	ipadapp.locals.subscriptions.forEach((subscriber) => {
+//               subscriber.write(`id: patient`);
+//               subscriber.write('\n');
+//               subscriber.write(`data: ${ JSON.stringify(patientData) }`);
+//               subscriber.write('\n\n');
+//          	});
+//          })
+//          .catch((error) => {
+//            serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
+//            console.error(error);
+//          })
+//      })
+//      .catch((error) => {
+//        serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
+//        console.error(error);
+//      })
+// });
+//
+// ginaInformation.on('error', (error) => {
+//   console.log("Es ist ein Fehler in der GINA aufgetreten: (error)");
+//   console.error(error);
+// 	ginaErrorLogger.log('error', error, logMetaData);
+// });
+//
+// ginaInformation.on('procerror', (error) => {
+//   console.log("Es ist ein Fehler in der GINA aufgetreten: (procerror)");
+//   console.error(error);
+// 	ginaErrorLogger.log('fatal', error, logMetaData);
+// });

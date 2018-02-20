@@ -104,7 +104,7 @@ public class GinaCallerWrapper {
 		cardinfo.put("ecardinfo", ecardstatus);
 
 		ecardstatus.put("state", statusResult[0].getCardReaderState());
-		ecardstatus.put("type", statusResult[0].getCardType());
+		ecardstatus.put("type", statusResult[0].getCardType().replaceAll("ü", "ue"));
 
 		// OCard status
 //		JSONObject ocardstatus = new JSONObject();
