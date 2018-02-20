@@ -12,7 +12,6 @@ function logdump(logart) {
     url: '/role/arzt/logdata',
     data: { "logart": logart },
     success: function loadDataIntoView(logdata) {
-
       // NOTE: https://datatables.net/reference/api/
       var logColumns;
       var logUnits = [];

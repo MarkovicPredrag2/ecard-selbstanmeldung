@@ -197,12 +197,12 @@ https.createServer(//keys,
 });
 
 //	Starting gina listerner
-// const ginaInformation =
-//         ginaListener.listen(ginacfg.ipaddress, ginacfg.reader, ginacfg.ocardreader, ginacfg.pin, ginacfg.interval, ginacfg.testCardsAllowed);
-//
-// ginaInformation.on('connection', () => {
-//   console.log('Verbunden mit der GINA');
-// })
+const ginaInformation =
+        ginaListener.listen(ginacfg.ipaddress, ginacfg.reader, ginacfg.ocardreader, ginacfg.pin, ginacfg.interval, ginacfg.testCardsAllowed);
+
+ginaInformation.on('connection', () => {
+  console.log('Verbunden mit der GINA');
+})
 
 // ===========  public routes ===========
 
@@ -240,7 +240,7 @@ public.post('/login', (req, res) => {
 			//	send back a rendered html view
 			//	with a credentials error.
 			serverTrafficLogger.log('error', `${req.ip}@${req.originalUrl}: ${error}`, logMetaData);
-			res.render('login', { warning: 'Invalide eingabe. User konnte nicht gefunden werden.' });
+			res.status(403).render('login', { warning: 'Invalide eingabe. User konnte nicht gefunden werden.' });
 		});
 });
 
@@ -513,45 +513,47 @@ app.use('/', express.static('./webfiles/webroot', { index: '/public/login.html',
 		the process itself occur.
 	==========================================
 */
-// ginaInformation.on('data', (patient) => {
-// 	//	Patient plugged his card.
-// 	//	Add patient to the database
-// 	//	if he/she does not exist.
-//   // TODO: Test for patient data and gina module
-//   //console.log(JSON.stringify(patient));
-//
-// 	DB.addPatient(patient)
-// 		.then((result) => {
-// 			//	After adding the patient,
-// 			//	send the patient data along
-// 			//	with all of his data in the DB
-// 			//	to the subscribed iPad-apps.
-//
-//       var patientData = {
-//         signature: crypto.createHmac('sha256', appSignatureSecret)
-//                    .update(patient.svnr)
-//                    .digest('hex'),
-//         payload: result[0]
-//       };
-//
-// 			ipadapp.locals.subscriptions.forEach((subscriber) => {
-//         subscriber.write(`id: patient`);
-//         subscriber.write('\n');
-//         subscriber.write(`data: ${ JSON.stringify(patientData) }`);
-//         subscriber.write('\n\n');
-// 			});
-// 		})
-// 		.catch((error) => {
-// 			serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
-// 		});
-// });
-//
-// ginaInformation.on('error', (error) => {
-//   console.error(error);
-// 	ginaErrorLogger.log('error', error, logMetaData);
-// });
-//
-// ginaInformation.on('procerror', (error) => {
-//   console.error(error);
-// 	ginaErrorLogger.log('fatal', error, logMetaData);
-// });
+ginaInformation.on('data', (patient) => {
+	//	Patient plugged his card.
+	//	Add patient to the database
+	//	if he/she does not exist.
+  // TODO: Test for patient data and gina module
+  console.log(JSON.stringify(patient));
+
+	// DB.addPatient(patient)
+	// 	.then((result) => {
+	// 		//	After adding the patient,
+	// 		//	send the patient data along
+	// 		//	with all of his data in the DB
+	// 		//	to the subscribed iPad-apps.
+  //
+  //     var patientData = {
+  //       signature: crypto.createHmac('sha256', appSignatureSecret)
+  //                  .update(patient.svnr)
+  //                  .digest('hex'),
+  //       payload: result[0]
+  //     };
+  //
+	// 		ipadapp.locals.subscriptions.forEach((subscriber) => {
+  //       subscriber.write(`id: patient`);
+  //       subscriber.write('\n');
+  //       subscriber.write(`data: ${ JSON.stringify(patientData) }`);
+  //       subscriber.write('\n\n');
+	// 		});
+	// 	})
+	// 	.catch((error) => {
+	// 		serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
+	// 	});
+});
+
+ginaInformation.on('error', (error) => {
+  console.log("Es ist ein Fehler in der GINA aufgetreten: (error)");
+  console.error(error);
+	ginaErrorLogger.log('error', error, logMetaData);
+});
+
+ginaInformation.on('procerror', (error) => {
+  console.log("Es ist ein Fehler in der GINA aufgetreten: (procerror)");
+  console.error(error);
+	ginaErrorLogger.log('fatal', error, logMetaData);
+});
