@@ -38,15 +38,15 @@
             <!--Template: username p= user-->
             <li><p style="color: orange" class="navbar-text fa fa-user-md fa-2x" aria-hidden="true">&nbsp <span id="user">Hofbauer</span></p></li>
             <!-- Navigation -->
-            <li><a href="/public/role/arzt/ansicht/warteraumansicht" style="margin-top: 5%">Warteraumansicht</a></li>
-            <li><a href="/public/role/arzt/ansicht/arztansicht" style="margin-top: 7%">Arztansicht</a></li>
-            <li><a href="/public/role/arzt/ansicht/logs" style="margin-top: 5%">Logging Historie</a></li>
+            <li><a href="/role/arzt/ansicht/warteraumansicht" style="margin-top: 5%">Warteraumansicht</a></li>
+            <li><a href="/role/arzt/ansicht/arztansicht" style="margin-top: 7%">Arztansicht</a></li>
+            <li><a href="/role/arzt/ansicht/logs" style="margin-top: 5%">Logging Historie</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <!-- Time -->
             <li><p id="clock" class="navbar-text" style="margin-top: 15.5%;"></p></li>
             <!-- Logout button -->
-            <li data-toggle="tooltip" title="Logout"><a style="color: red; margin-top: 17%;" href="/public/role/logout" class="fa fa-power-off fa-2x" aria-hidden="true"></a></li>
+            <li data-toggle="tooltip" title="Logout"><a style="color: red; margin-top: 17%;" href="/role/logout" class="fa fa-power-off fa-2x" aria-hidden="true"></a></li>
           </ul>
         </div>
       </div>
@@ -59,32 +59,18 @@
         <a href="#" class="w3-bar-item w3-button"><i class="fa fa-check" style="color:#20c40d" title="Patient-Fertig"></i></a>
         <a href="#" class="w3-bar-item w3-button"><i class="fa fa-sign-in" style="color:#20c40d" title="Patient hereinholen"></i></a>
       </div>
+
       <!-- Patienten-Stammdaten -->
       <div style="margin-left:100px; position:fixed; margin-top:72px">
         <div class="W3-container">
-          <h2 id="h_vorname">Hr. Christopher Neuberger</h2>
-          <h3 id="h_versicherung">1234567890 - WGKK</h3>
-      </div>
-        <div class="w3-container">
-          <table class="anzeigetable">
-            <!-- TO-DO:Richtige Felder zum Anzeigen -->
-            <tr>
-              <td><label>Vorname:</label></td>
-              <td><label id="t_vorname">Christopher</label></td>
-              <td><label>SVNR:</label></td>
-              <td><label>1234567890</label></td>
-            </tr>
-            <tr>
-              <td><label>Nachname:</label></td>
-              <td><label id="t_nachname">Neuberger</label></td>
-              <td><label>Adresse:</label></td>
-              <td><label>Sattstraße 7</label></td>
-            </tr>
-            <tr>
-              <td><label>Grund:</label></td>
-              <td><label id="t_grund">Untersuchung</label></td>
-            </tr>
-          </table>
+          <h1 id="h_vorname"><b>Dr. Max Musterpatient, Msc. - männlich</b></h1>
+          <h2 id="h_svnr"><b>1003280738 - WGKK</b></h2>
+          <h2 id="h_versicherung"><b>Wiener Gebietskrankenkassa</b></h2>
+          <h2 id="h_grund"><b>Grund: Behandlung</b></h2>
+          <h3 id="h_geburtsdatum" style="margin-top: 50px; margin-left:40px;">Geburtsdatum: 01.01.1980 - 38 Jahre alt<h3>
+          <h3 id="h_adresse" style="margin-left:40px;">Adresse: 1010 Wien, Kärnterstraße 10<h3>
+          <h3 id="h_mail" style="margin-left:40px;">Email: STO16372@spengergasse.at<h3>
+          <h3 id="h_telefon" style="margin-left:40px;">Telefon: +436641234567<h3>
         </div>
       </div>
 
