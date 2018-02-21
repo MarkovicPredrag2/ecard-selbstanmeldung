@@ -16,6 +16,7 @@ import at.chipkarte.client.vdas.soap.VdasServiceLocator;
 import at.chipkarte.client.vdas.soap.VersichertendatenAbfrage;
 import at.chipkarte.client.vdas.soap.VersichertendatenAbfrageErgebnis;
 import at.chipkarte.client.vdas.soap.VersichertendatenAbfragePerStichtag;
+import at.chipkarte.client.vdas.soap.VersichertendatenSvPerson;
 import at.chipkarte.client.vdas.soap.exceptions.InvalidParameterVdasExceptionContent;
 import at.chipkarte.client.vdas.soap.exceptions.VdasExceptionContent;
 
@@ -104,7 +105,7 @@ public class GinaCallerWrapper {
 		cardinfo.put("ecardinfo", ecardstatus);
 
 		ecardstatus.put("state", statusResult[0].getCardReaderState());
-		ecardstatus.put("type", statusResult[0].getCardType().replaceAll("ü", "ue"));
+		ecardstatus.put("type", statusResult[0].getCardType().replaceAll("Ã¼", "ue"));
 
 		// OCard status
 //		JSONObject ocardstatus = new JSONObject();
@@ -125,15 +126,15 @@ public class GinaCallerWrapper {
 		Card cardData = ibs.getCardData(cardReader[0]);
 
 		// Personal information of the patient
-		JSONObject person = new JSONObject();
-		
-		patient.put("person", person);
-		person.put("svnr", cardData.getNummer());
-		person.put("geschlecht", cardData.getGeschlechtCode());
-		person.put("titel", cardData.getTitel());
-		person.put("vorname", cardData.getVorname());
-		person.put("nachname", cardData.getNachname());
-		person.put("geburtsdatum", cardData.getGeburtsdatum());
+//		JSONObject person = new JSONObject();
+//		
+//		patient.put("person", person);
+//		person.put("svnr", cardData.getNummer());
+//		person.put("geschlecht", cardData.getGeschlechtCode());
+//		person.put("titel", cardData.getTitel());
+//		person.put("vorname", cardData.getVorname());
+//		person.put("nachname", cardData.getNachname());
+//		person.put("geburtsdatum", cardData.getGeburtsdatum());
 
 		// Address data of the patient
 //		JSONObject address = new JSONObject();
@@ -154,14 +155,32 @@ public class GinaCallerWrapper {
 
 		// Insurance data of the patient
 		JSONObject insurance = new JSONObject();
+		
+		// Set search criteria
 		VersichertendatenAbfrage suchKriterium = new VersichertendatenAbfrage();
 		suchKriterium.setAbteilungsFunktionsCode("false");
 		suchKriterium.setForceExecution(false);
 		suchKriterium.setSvNummer(cardData.getNummer());
+		
+		// Request insurance data
 		VersichertendatenAbfrageErgebnis versicherung = ivdas.getVersichertenDaten(this.dialogId, suchKriterium, this.cardReader[0]);
-
+		
+		// Request patient data
+		VersichertendatenSvPerson patientenDaten = ivdas.getVersichertenDaten(this.dialogId, suchKriterium, this.cardReader[0]).getVersichertenDaten();
 		patient.put("versicherung", insurance);
-
+		
+		// Load patient data into patient json object
+		JSONObject person = new JSONObject();
+		
+		patient.put("person", person);
+		person.put("svnr", patientenDaten.getSvNummer());
+		person.put("geschlecht", patientenDaten.getGeschlecht());
+		person.put("titel", patientenDaten.getDruckTitelVorne());
+		person.put("vorname", patientenDaten.getVorname());
+		person.put("nachname", patientenDaten.getNachname());
+		person.put("geburtsdatum", patientenDaten.getGeburtsdatum());
+		
+		// Load insurance data into patient JSON object
 		JSONArray claimdata = new JSONArray();
 		for (Anspruchsdaten anspruch : versicherung.getAnspruchsDaten()) {
 			JSONObject claim = new JSONObject();

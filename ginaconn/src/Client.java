@@ -26,34 +26,6 @@ public class Client {
 		AxisProperties.setProperty("axis.socketSecureFactory",
 				"org.apache.axis.components.net.SunFakeTrustSocketFactory");
 		
-//		GinaCallerWrapper session = init(new String[] {
-//		"https://10.196.2.18",
-//		"Test-03 (02:94:93)",
-//		"Test-02 (02:81:7c)",
-//		"0000"
-//	});
-//	try (InputStreamReader cin = new InputStreamReader(System.in)) {
-//		while(true) {
-//			switch (1) {
-//			case 1:
-//				try {
-//					System.out.println(session.getCardReaderStatus(10000));
-//				} catch (RemoteException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//				break;
-//
-//			default:
-//				break;
-//			}
-//		}
-//	} catch (IOException e) {
-//		// TODO Auto-generated catch block
-//		System.out.println("Loop vorbei ...");
-//		e.printStackTrace();
-//	}
-		
 		GinaCallerWrapper session;
  		if((session = init(args)) == null) {
 			System.exit(-1);

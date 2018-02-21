@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.21, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.21, for Linux (x86_64)
 --
 -- Host: localhost    Database: ordination
 -- ------------------------------------------------------
--- Server version	5.7.21
+-- Server version	5.7.21-0ubuntu0.17.10.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -114,7 +114,7 @@ CREATE TABLE `l_log` (
   PRIMARY KEY (`l_id`),
   KEY `fk_l_log_la_logArt_idx` (`l_la_art`),
   CONSTRAINT `fk_l_log_la_logArt` FOREIGN KEY (`l_la_art`) REFERENCES `la_logart` (`la_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,7 +123,7 @@ CREATE TABLE `l_log` (
 
 LOCK TABLES `l_log` WRITE;
 /*!40000 ALTER TABLE `l_log` DISABLE KEYS */;
-INSERT INTO `l_log` VALUES (10,'2018-02-20 19:50:18','{\"username\":\"drmuncan\"}',5),(11,'2018-02-20 21:37:01','{\"username\":\"bernhard\"}',5),(12,'2018-02-20 21:37:02','{\"username\":\"bernhard\"}',5),(13,'2018-02-20 21:38:08','{\"username\":\"bernhard\"}',5),(14,'2018-02-20 21:38:08','{\"username\":\"bernhard\"}',5),(15,'2018-02-20 21:39:25','{\"username\":\"bernhard\"}',5),(16,'2018-02-20 21:39:26','{\"username\":\"bernhard\"}',5),(17,'2018-02-20 21:43:26','{\"username\":\"bernhard\"}',5),(18,'2018-02-20 21:43:27','{\"username\":\"bernhard\"}',5),(19,'2018-02-20 21:44:46','{\"username\":\"bernhard\"}',5),(20,'2018-02-20 21:44:47','{\"username\":\"bernhard\"}',5),(21,'2018-02-20 21:46:17','{\"username\":\"bernhard\"}',5),(22,'2018-02-20 21:46:17','{\"username\":\"bernhard\"}',5),(23,'2018-02-20 21:48:36','{\"username\":\"bernhard\"}',5),(24,'2018-02-20 21:48:36','{\"username\":\"bernhard\"}',5),(25,'2018-02-20 21:51:50','{\"username\":\"bernhard\"}',5),(26,'2018-02-20 21:51:50','{\"username\":\"bernhard\"}',5),(27,'2018-02-20 21:56:31','{\"username\":\"bernhard\"}',5),(28,'2018-02-20 21:56:32','{\"username\":\"bernhard\"}',5),(29,'2018-02-20 21:58:23','{\"username\":\"bernhard\"}',5),(30,'2018-02-20 21:58:24','{\"username\":\"bernhard\"}',5),(31,'2018-02-20 22:01:32','{\"username\":\"bernhard\"}',5),(32,'2018-02-20 22:01:32','{\"username\":\"bernhard\"}',5),(33,'2018-02-20 22:04:33','{\"username\":\"bernhard\"}',5),(34,'2018-02-20 22:04:34','{\"username\":\"bernhard\"}',5),(35,'2018-02-20 22:08:19','{\"username\":\"bernhard\"}',5),(36,'2018-02-20 22:08:19','{\"username\":\"bernhard\"}',5),(37,'2018-02-20 22:10:04','{\"username\":\"bernhard\"}',5),(38,'2018-02-20 22:10:05','{\"username\":\"bernhard\"}',5),(40,'2018-02-20 22:48:00',NULL,2),(41,'2018-02-20 22:51:20',NULL,2);
+INSERT INTO `l_log` VALUES (10,'2018-02-20 19:50:18','{\"username\":\"drmuncan\"}',5),(11,'2018-02-20 21:37:01','{\"username\":\"bernhard\"}',5),(12,'2018-02-20 21:37:02','{\"username\":\"bernhard\"}',5),(13,'2018-02-20 21:38:08','{\"username\":\"bernhard\"}',5),(14,'2018-02-20 21:38:08','{\"username\":\"bernhard\"}',5),(15,'2018-02-20 21:39:25','{\"username\":\"bernhard\"}',5),(16,'2018-02-20 21:39:26','{\"username\":\"bernhard\"}',5),(17,'2018-02-20 21:43:26','{\"username\":\"bernhard\"}',5),(18,'2018-02-20 21:43:27','{\"username\":\"bernhard\"}',5),(19,'2018-02-20 21:44:46','{\"username\":\"bernhard\"}',5),(20,'2018-02-20 21:44:47','{\"username\":\"bernhard\"}',5),(21,'2018-02-20 21:46:17','{\"username\":\"bernhard\"}',5),(22,'2018-02-20 21:46:17','{\"username\":\"bernhard\"}',5),(23,'2018-02-20 21:48:36','{\"username\":\"bernhard\"}',5),(24,'2018-02-20 21:48:36','{\"username\":\"bernhard\"}',5),(25,'2018-02-20 21:51:50','{\"username\":\"bernhard\"}',5),(26,'2018-02-20 21:51:50','{\"username\":\"bernhard\"}',5),(27,'2018-02-20 21:56:31','{\"username\":\"bernhard\"}',5),(28,'2018-02-20 21:56:32','{\"username\":\"bernhard\"}',5),(29,'2018-02-20 21:58:23','{\"username\":\"bernhard\"}',5),(30,'2018-02-20 21:58:24','{\"username\":\"bernhard\"}',5),(31,'2018-02-20 22:01:32','{\"username\":\"bernhard\"}',5),(32,'2018-02-20 22:01:32','{\"username\":\"bernhard\"}',5),(33,'2018-02-20 22:04:33','{\"username\":\"bernhard\"}',5),(34,'2018-02-20 22:04:34','{\"username\":\"bernhard\"}',5),(35,'2018-02-20 22:08:19','{\"username\":\"bernhard\"}',5),(36,'2018-02-20 22:08:19','{\"username\":\"bernhard\"}',5),(37,'2018-02-20 22:10:04','{\"username\":\"bernhard\"}',5),(38,'2018-02-20 22:10:05','{\"username\":\"bernhard\"}',5),(40,'2018-02-20 22:48:00',NULL,2),(41,'2018-02-20 22:51:20',NULL,2),(42,'2018-02-21 09:32:57','{\"username\":\"bernhard\"}',5),(43,'2018-02-21 09:32:57','{\"username\":\"bernhard\"}',5),(44,'2018-02-21 09:33:26','{\"username\":\"bernhard\"}',5),(45,'2018-02-21 09:33:26','{\"username\":\"bernhard\"}',5),(46,'2018-02-21 09:33:39','{\"username\":\"drmuncan\"}',5),(47,'2018-02-21 09:38:38','{\"username\":\"bernhard\"}',5),(48,'2018-02-21 09:38:38','{\"username\":\"bernhard\"}',5),(49,'2018-02-21 09:39:41','{\"username\":\"bernhard\"}',5),(50,'2018-02-21 09:39:41','{\"username\":\"bernhard\"}',5),(51,'2018-02-21 09:41:57','{\"username\":\"bernhard\"}',5),(52,'2018-02-21 09:41:57','{\"username\":\"bernhard\"}',5),(53,'2018-02-21 09:44:08','{\"username\":\"bernhard\"}',5),(54,'2018-02-21 09:44:09','{\"username\":\"bernhard\"}',5),(55,'2018-02-21 09:45:52','{\"username\":\"bernhard\"}',5),(56,'2018-02-21 09:45:52','{\"username\":\"bernhard\"}',5),(57,'2018-02-21 09:49:03','{\"username\":\"bernhard\"}',5),(58,'2018-02-21 09:49:04','{\"username\":\"bernhard\"}',5),(59,'2018-02-21 09:50:00','{\"username\":\"bernhard\"}',5),(60,'2018-02-21 09:50:00','{\"username\":\"bernhard\"}',5),(61,'2018-02-21 09:57:22','{\"username\":\"bernhard\"}',5),(62,'2018-02-21 09:57:23','{\"username\":\"bernhard\"}',5),(63,'2018-02-21 09:58:08','{\"username\":\"bernhard\"}',5),(64,'2018-02-21 09:58:08','{\"username\":\"bernhard\"}',5),(65,'2018-02-21 09:59:58','{\"username\":\"bernhard\"}',5),(66,'2018-02-21 09:59:58','{\"username\":\"bernhard\"}',5),(67,'2018-02-21 10:02:59','{\"username\":\"bernhard\"}',5),(68,'2018-02-21 10:02:59','{\"username\":\"bernhard\"}',5),(69,'2018-02-21 10:04:54','{\"username\":\"bernhard\"}',5),(70,'2018-02-21 10:04:54','{\"username\":\"bernhard\"}',5),(71,'2018-02-21 10:09:18','{\"username\":\"bernhard\"}',5),(72,'2018-02-21 10:09:18','{\"username\":\"bernhard\"}',5),(73,'2018-02-21 10:12:53','{\"username\":\"bernhard\"}',5),(74,'2018-02-21 10:12:54','{\"username\":\"bernhard\"}',5),(75,'2018-02-21 10:14:26','{\"username\":\"bernhard\"}',5),(76,'2018-02-21 10:14:27','{\"username\":\"bernhard\"}',5);
 /*!40000 ALTER TABLE `l_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -491,4 +491,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-20 23:36:41
+-- Dump completed on 2018-02-21 19:41:46
