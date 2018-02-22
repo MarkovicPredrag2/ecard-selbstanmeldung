@@ -166,7 +166,7 @@ public class GinaCallerWrapper {
 		VersichertendatenAbfrageErgebnis versicherung = ivdas.getVersichertenDaten(this.dialogId, suchKriterium, this.cardReader[0]);
 		
 		// Request patient data
-		VersichertendatenSvPerson patientenDaten = ivdas.getVersichertenDaten(this.dialogId, suchKriterium, this.cardReader[0]).getVersichertenDaten();
+		VersichertendatenSvPerson patientenDaten = versicherung.getVersichertenDaten();
 		patient.put("versicherung", insurance);
 		
 		// Load patient data into patient json object

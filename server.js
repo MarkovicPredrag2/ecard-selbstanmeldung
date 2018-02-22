@@ -153,7 +153,6 @@ function startSSE(req, res, user, timeout) {
 		'Connection': 'keep-alive'
 	});
 	res.write('\n');
-
   // Push the user to the subscriptions
   user.push({ user: req[cookieName].user, connection: res});
 
@@ -398,6 +397,27 @@ arzt.get('/plug', (req, res) => {
 
 // Test Stub, to simulate the "real" plug-process
 arzt.get('/realisticplug', (req, res) => {
+  // {
+  //   "versicherung": {
+  //     "anspruchsdaten": [
+  //       {
+  //         "kostenteilbefreit":false,
+  //         "anspruchsart":"S",
+  //         "rezeptbefreit":false,
+  //         "svtCode":"11",
+  //         "versichertenArtCode":null
+  //       }
+  //     ]
+  //   },
+  //   "person": {
+  //     "svnr":"1003250229",
+  //     "titel":"Dr.-Ing.",
+  //     "geburtsdatum":"16.02.1988",
+  //     "vorname":"Ake",
+  //     "geschlecht":"M",
+  //     "nachname":"Soren-Test"
+  //   }
+  // }
   var patient = {
     person: {
       svnr: "6032060899",
@@ -421,6 +441,7 @@ arzt.get('/realisticplug', (req, res) => {
       ],
     }
   };
+  console.log("Ipadapps atm: " + ipadapp.locals.subscriptions.length);
 
   DB.isPatientAlreadyInWarteliste(patient.person.svnr)
     .then((answer) => {
@@ -428,7 +449,7 @@ arzt.get('/realisticplug', (req, res) => {
       // the patient has not to be in the warteliste
       // in order to send data to the ipadapp
       // Otherwise, ignore the prank.
-      if (answer && ipadapp.locals.subscriptions.length != 0) {
+      if (answer && ipadapp.locals.subscriptions.length > 0) {
 
         DB.addPatientIfNotExists(patient)
             .then((result) => {
@@ -448,12 +469,13 @@ arzt.get('/realisticplug', (req, res) => {
                  	//	send the patient data along
                  	//	with all of his data in the DB
                  	//	to the subscribed iPad-apps.
-                 	// ipadapp.locals.subscriptions.forEach((subscriber) => {
-                  //     subscriber.write(`id: patient`);
-                  //     subscriber.write('\n');
-                  //     subscriber.write(`data: ${ JSON.stringify(patientData) }`);
-                  //     subscriber.write('\n\n');
-                 	// });
+                 	ipadapp.locals.subscriptions.forEach((subscriber) => {
+                      subscriber.connection.write(`id: patient`);
+                      subscriber.connection.write('\n');
+                      subscriber.connection.write(`data: ${ JSON.stringify(patientData) }`);
+                      subscriber.connection.write('\n\n');
+                 	});
+                  res.send("Patientdata was send: " + JSON.stringify(patientData));
                  })
                  .catch((error) => {
                    serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
@@ -467,6 +489,7 @@ arzt.get('/realisticplug', (req, res) => {
       } else {
         // Ignore the case
         console.log("Patient is already in warteliste or there ain't an ipadapp");
+        res.send("Patient is already in warteliste or there ain't an ipadapp");
       }
      })
      .catch((error) => {

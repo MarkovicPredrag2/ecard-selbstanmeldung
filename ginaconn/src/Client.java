@@ -50,6 +50,7 @@ public class Client {
 						} catch (Exception e) {
 							System.err.print(
 									"Versicherungsdaten wurden bereits von dieser Karte empfangen.");
+//							e.printStackTrace();
 						}
 						break;
 					case 'Q':
