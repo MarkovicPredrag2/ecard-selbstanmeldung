@@ -14,7 +14,7 @@ html
     link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
     // Wateliste CSS + sonstiges
     link(rel='stylesheet', type='text/css', href='/public/resources/css/style.css', media='screen')
-  body(onload='startTime()')
+  body(onload='startTime(); focusPatientOnStartup();')
     // ======= Navbar =======
     nav.navbar.navbar-inverse.navbar-static-top(style='position:fixed; width:100%;')
       .container-fluid(style='font-size: 20px')
@@ -24,71 +24,60 @@ html
             span.icon-bar
             span.icon-bar
           // Home Icon
-          a.navbar-brand.fa.fa-home.fa-2x(data-toggle='tooltip', title='Home', aria-hidden='true', href='#')
+          a.navbar-brand.fa.fa-home.fa-2x(data-toggle='tooltip', title='Home', aria-hidden='true', href='/role/arzt/ansicht/homepage')
         #myNavbar.collapse.navbar-collapse
           ul.nav.navbar-nav
             // User
             // Template: username p= user
             li
               p.navbar-text.fa.fa-user-md.fa-2x(style='color: orange', aria-hidden='true')
-                | &nbsp
-                span#user Hofbauer
+                | &nbsp 
+                span#user= user
             // Navigation
             li
-              a(href='/public/role/arzt/ansicht/warteraumansicht', style='margin-top: 5%') Warteraumansicht
+              a(href='/role/arzt/ansicht/warteraumansicht', style='margin-top: 5%') Warteraumansicht
             li
-              a(href='/public/role/arzt/ansicht/arztansicht', style='margin-top: 7%') Arztansicht
+              a(href='/role/arzt/ansicht/arztansicht', style='margin-top: 7%') Arztansicht
             li
-              a(href='/public/role/arzt/ansicht/logs', style='margin-top: 5%') Logging Historie
+              a(href='/role/arzt/ansicht/logs', style='margin-top: 5%') Logging Historie
           ul.nav.navbar-nav.navbar-right
             // Time
             li
               p#clock.navbar-text(style='margin-top: 15.5%;')
             // Logout button
             li(data-toggle='tooltip', title='Logout')
-              a.fa.fa-power-off.fa-2x(style='color: red; margin-top: 17%;', href='/public/role/logout', aria-hidden='true')
+              a.fa.fa-power-off.fa-2x(style='color: red; margin-top: 17%;', href='/role/logout', aria-hidden='true')
     // ======= Mid-Section =======
-    // Linke Nav-Bar
+    // Left Nav-Bar
     .w3-sidebar.w3-bar-block.w3-black.w3-xxlarge(style='width:70px; margin-top:71px;')
-      a.w3-bar-item.w3-button(href='#')
-        i.fa.fa-check(style='color:#20c40d', title='Patient-Fertig')
-      a.w3-bar-item.w3-button(href='#')
+      a#callin.w3-bar-item.w3-button.w3-disabled(onclick='callInPatient()')
         i.fa.fa-sign-in(style='color:#20c40d', title='Patient hereinholen')
+      a#dismiss.w3-bar-item.w3-button.w3-disabled(onclick='dismissPatient()')
+        i.fa.fa-check(style='color:#20c40d', title='Patient-Fertig')
     // Patienten-Stammdaten
     div(style='margin-left:100px; position:fixed; margin-top:72px')
       .W3-container
-        h2#h_vorname Hr. Christopher Neuberger
-        h3#h_versicherung 1234567890 - WGKK
-      .w3-container
-        table.anzeigetable
-          // TO-DO:Richtige Felder zum Anzeigen
-          tr
-            td
-              label Vorname:
-            td
-              label#t_vorname Christopher
-            td
-              label SVNR:
-            td
-              label 1234567890
-          tr
-            td
-              label Nachname:
-            td
-              label#t_nachname Neuberger
-            td
-              label Adresse:
-            td
-              label Sattstraße 7
-          tr
-            td
-              label Grund:
-            td
-              label#t_grund Untersuchung
+        h1
+          b#h_name
+        h2
+          b#h_svnr
+        h2
+          b#h_versicherung
+        h2
+          b#h_grund
+        h3#h_geburtsdatum(style='margin-top: 50px; margin-left:40px;')
+          h3
+            h3#h_adresse(style='margin-left:40px;')
+              h3
+                h3#h_mail(style='margin-left:40px;')
+                  h3
+                    h3#h_telefon(style='margin-left:40px;')
+                      h3
+    // Warteliste
     div(align='right', style='padding-top:71px')
       ul#patientlist.list.example
-        for patient in patients
-          li.list(onclick='requestPatientData(this)' id= patient.svnr)
+        for patient in patients 
+          li.list(onclick='focusPatientOnSelect(this)' id= patient.svnr class= patient.behandlung != null ? "behandlung" : "")
             if patient.grundid == 2
               i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
             else if patient.grundid == 3
@@ -108,31 +97,15 @@ html
     // Sortable Library
     script(src='/public/resources/js/jquery-sortable.js')
     // Client to Server Response logic
-    script(src='/public/resources/js/backend.js', charset='utf-8')
-    // SSE Event Receiver script
-    script(src='/public/resources/js/ssereceiver.js', charset='utf-8')
-    // Code to get patient data and rank patients
+    script(src='/public/resources/js/arztansichtagent.js', charset='utf-8')
+    // OnDrop Eventhandler to send ranking requests
     script.
       // Rank patients after dropping a list-element
       $(document).ready(function() {
       $("ul.example").sortable({
       onDrop: function ($item, container, _super) {
-      $.post("/role/arzt/warteliste", rankPatientBefore($item.attr("id")));
+      $.post("/role/arzt/rank", rankPatientBefore($item.attr("id")));
       _super($item, container);
       }
       });
-      $(".callin").click(function() {
-      $(".callin").css("border", "none");
-      $(this).css("border", "2px solid green");
-      })
       });
-      // Get patient data for a patient.
-      function requestPatientData(dom) {
-      $.post("/role/arzt/patientdata", { "patient": JSON.stringify(dom.getAttribute('id')) },
-      function(data, status) {
-      var patient = data[0];
-      $("#t_vorname").html(patient.vorname);
-      $("#t_nachname").html(patient.nachname);
-      $("#t_grund").html(patient.grund);
-      });
-      }

@@ -26,7 +26,7 @@
 
     <!-- ======= Navbar ======= -->
 
-    <nav class="navbar navbar-inverse navbar-static-top" style="position:fixed; width:100%;">
+    <nav class="navbar navbar-inverse navbar-static-top hide" style="position:fixed; width:100%;">
       <div style="font-size: 20px" class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -60,28 +60,18 @@
 
     <div class="container">
       <!-- Logos oben links bzw. rechts -->
-      <span><img src="./public/resources/img/ecs.png" style="margin-top: 10%; flaot:left; width: 5%; height: 5%"/></span>
       <span><img src="./public/resources/img/svc.png" style="margin-top: 10%; float:right; width: 10%; height: 7.5%"/></span>
 
-      <!-- Warteliste Name + Raum mit Bildern -->
-      <!-- <font size="11"><i class="fa fa-user-plus fa-4x" style="margin-left:10%; margin-top: 5%" aria-hidden="true"><font size="12" style="margin-left:20px"><b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Christopher Neuberger</b></font></i></font>
-      <font size="11"><img src="./public/resources/img/door.png" style="margin-left:8%; width: 20%; height:25%; margin-top: 2.5%" aria-hidden="true"><font size="12" style="margin-left:20px">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Ordination: 2</font></img></font> -->
+      <!-- Warteliste Name-->
 
-      <font size="100"><i class="fa fa-user-plus fa-5x" style="margin-top: 25%"></i>&nbspDr. Christopher Neuebrger</font>
+      <div class="patientGreen" id="patientCall"><font size="80"><i class="fa fa-user-plus fa-3x" style="margin-top: 10%; display:none"></i>&nbspDr. Christopher Neuebrger</font></div>
+      <div id="patientCalled" style=""><font size="80"><i class="fa fa-user-plus fa-3x" style="margin-top: 10%"></i></font></div>
 
 
-      <!-- ======= Footer ======= -->
+      <!-- Nachrichten-Feed  -->
+      <div style="margin-top:50px"><script type="text/javascript" src="https://feed.mikle.com/js/fw-loader.js" data-fw-param="66253/"></script></script> </div>
 
-      <!-- <div>
-        <hr class="featurette-divider">
-        <footer>
-          <p>
-            &copy; 2018 Five4U, Diplomprojekt &middot; <a href="/public/impressum.html">Impressum</a>
-            <span style="float: right;">E-Card Selbstanmeldungs Tool &middot; <a href="/public/info.html">Info &nbsp &nbsp</a></span>
-          </p>
-        </footer>
-      </div>
-    </div> -->
+    </div>
 
     <!-- ======= JS Dependencies ======= -->
 
@@ -90,7 +80,50 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <!-- Voice Library -->
+    <script src="http://code.responsivevoice.org/responsivevoice.js"></script>
+    <!-- SSE Receiver -->
+    <script type="text/javascript" src="./public/resources/js/warteraumssereceiver.js"></script>
     <!-- Time Script -->
     <script type="text/javascript" src="./public/resources/js/time.js"></script>
+    <script>
+
+    function fullscreen() {
+        var isInFullScreen = (document.fullscreenElement && document.fullscreenElement !== null) ||
+            (document.webkitFullscreenElement && document.webkitFullscreenElement !== null) ||
+            (document.mozFullScreenElement && document.mozFullScreenElement !== null) ||
+            (document.msFullscreenElement && document.msFullscreenElement !== null);
+
+        var docElm = document.documentElement;
+        if (!isInFullScreen) {
+            if (docElm.requestFullscreen) {
+                docElm.requestFullscreen();
+            } else if (docElm.mozRequestFullScreen) {
+                docElm.mozRequestFullScreen();
+            } else if (docElm.webkitRequestFullScreen) {
+                docElm.webkitRequestFullScreen();
+            } else if (docElm.msRequestFullscreen) {
+                docElm.msRequestFullscreen();
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        }
+    }
+
+    $(document).keydown(function (event) {
+      if (event.keyCode == 13) {
+        fullscreen();
+        $(".hide").toggle();
+      }
+    });
+    </script>
   </body>
 </html>

@@ -18,7 +18,7 @@ html
     link(rel='stylesheet', type='text/css', href='/public/resources/css/style_tabelle.css', media='screen')
     // Tabelle - Sortierung
     // <link rel="stylesheet" type="text/css" href="/public/resources/css/style_tabelle_dms.css" media="screen" />
-  body(onload="startTime()")
+  body(onload='startTime()')
     // ======= Navbar =======
     nav.navbar.navbar-inverse.navbar-static-top(style='position:fixed; width:100%;')
       .container-fluid(style='font-size: 20px')
@@ -28,22 +28,20 @@ html
             span.icon-bar
             span.icon-bar
           // Home Icon
-          a.navbar-brand.fa.fa-home.fa-2x(data-toggle='tooltip', title='Home', aria-hidden='true', href='#')
+          a.navbar-brand.fa.fa-home.fa-2x(data-toggle='tooltip', title='Home', aria-hidden='true', href='/role/arzt/ansicht/homepage')
         #myNavbar.collapse.navbar-collapse
           ul.nav.navbar-nav
-            // User
-            // Template: username p= user
             li
               p.navbar-text.fa.fa-user-md.fa-2x(style='color: orange', aria-hidden='true')
                 | &nbsp 
-                span#user Hofbauer
+                span#user= user
             // Navigation
             li
-              a(href='/public/role/arzt/ansicht/warteraumansicht', style='margin-top: 5%') Warteraumansicht
+              a(href='/role/arzt/ansicht/warteraumansicht', style='margin-top: 5%') Warteraumansicht
             li
-              a(href='/public/role/arzt/ansicht/arztansicht', style='margin-top: 7%') Arztansicht
+              a(href='/role/arzt/ansicht/arztansicht', style='margin-top: 7%') Arztansicht
             li
-              a(href='/public/role/arzt/ansicht/logs', style='margin-top: 5%') Logging Historie
+              a(href='/role/arzt/ansicht/logs', style='margin-top: 5%') Logging Historie
           ul.nav.navbar-nav.navbar-right
             // Time
             li
@@ -61,7 +59,7 @@ html
         button.tablinks(onclick="openTab(event, '4')") Patienten Warteliste aufrufe
         button.tablinks(onclick="openTab(event, '5')") Login-Aktiviäten
       // Log Table
-      div#logtablecontainer
+      #logtablecontainer
         table#logtable.display(cellspacing='0', width='100%')
           thead
             tr#tabletop
@@ -97,7 +95,7 @@ html
       // Initialize DataTable
       $(document).ready(function() {
       initDataTable();
-      //openTab(event, '5');
+      openTab(event, '5');
       });
       // Tab Function
       function openTab(evt, logArt) {

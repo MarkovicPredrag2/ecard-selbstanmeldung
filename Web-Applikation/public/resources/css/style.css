@@ -96,11 +96,17 @@ ul.example li.placeholder {
   /** More li styles **/
   background-color: white;
 }
+
 ul.example li {
   background-color: white;
 }
+
 ul.example li.placeholder:before {
   position: absolute;
   /** Define arrowhead **/
   background-color: white;
+}
+
+#patientlist li.active {
+  background-color: #eee;
 }

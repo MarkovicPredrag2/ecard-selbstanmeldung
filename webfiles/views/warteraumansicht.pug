@@ -18,7 +18,7 @@ html
     link(rel='stylesheet', type='text/css', href='/public/resources/css/style_tabelle_dms.css', media='screen')
   body(onload='startTime()')
     // ======= Navbar =======
-    nav.navbar.navbar-inverse.navbar-static-top(style='position:fixed; width:100%;')
+    nav.navbar.navbar-inverse.navbar-static-top.hide(style='position:fixed; width:100%;')
       .container-fluid(style='font-size: 20px')
         .navbar-header
           button.navbar-toggle(type='button', data-toggle='collapse', data-target='#myNavbar')
@@ -31,9 +31,7 @@ html
           ul.nav.navbar-nav
             // Template: username p= user
             li
-              p#user.navbar-text.fa.fa-user-md.fa-2x(style='color: orange', aria-hidden='true')
-                | &nbsp
-                span#user= user
+              p#user.navbar-text.fa.fa-user-md.fa-2x(style='color: orange', aria-hidden='true')= user
             // Navigation
             li
               a(href='/role/arzt/ansicht/warteraumansicht', style='margin-top: 5%') Warteraumansicht
@@ -55,29 +53,61 @@ html
         img(src='/public/resources/img/ecs.png', style='margin-top: 10%; flaot:left; width: 5%; height: 5%')
       span
         img(src='/public/resources/img/svc.png', style='margin-top: 10%; float:right; width: 10%; height: 7.5%')
-      // Warteliste Name + Raum mit Bildern
-      font(size='11')
-        i.fa.fa-user-plus.fa-4x(style='margin-left:10%; margin-top: 5%', aria-hidden='true')
-          font(size='12', style='margin-left:20px')
-            b &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Christopher Neuberger
-      font(size='11')
-        img(src='/public/resources/img/door.png', style='margin-left:8%; width: 20%; height:25%; margin-top: 2.5%', aria-hidden='true')
-        font(size='12', style='margin-left:20px') &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Ordination: 2
-      // ======= Footer =======
-      div
-        hr.featurette-divider
-        footer
-          p
-            | © 2018 Five4U, Diplomprojekt ·
-            a(href='/public/impressum.html') Impressum
-            span(style='float: right;')
-              | E-Card Selbstanmeldungs Tool ·
-              a(href='/public/info.html') Info &nbsp &nbsp
+      // Warteliste Name
+      #patientCall.patientGreen
+        font(size='80')
+          i.fa.fa-user-plus.fa-3x(style='margin-top: 10%; display:none')
+          | &nbspDr. Christopher Neuebrger
+      #patientCalled(style='')
+        font(size='80')
+          i.fa.fa-user-plus.fa-3x(style='margin-top: 10%')
+      // Nachrichten-Feed
+      div(style='margin-top:50px')
+        script(type='text/javascript', src='https://feed.mikle.com/js/fw-loader.js', data-fw-param='66253/')
     // ======= JS Dependencies =======
     // jQuery library
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
     // Latest compiled JavaScript
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
     script(src='https://code.jquery.com/jquery-1.12.4.js')
+    // Voice Library
+    script(src='http://code.responsivevoice.org/responsivevoice.js')
+    // SSE Receiver
+    script(type='text/javascript', src='/public/resources/js/warteraumssereceiver.js')
     // Time Script
     script(type='text/javascript', src='/public/resources/js/time.js')
+    script.
+      function fullscreen() {
+      var isInFullScreen = (document.fullscreenElement && document.fullscreenElement !== null) ||
+      (document.webkitFullscreenElement && document.webkitFullscreenElement !== null) ||
+      (document.mozFullScreenElement && document.mozFullScreenElement !== null) ||
+      (document.msFullscreenElement && document.msFullscreenElement !== null);
+      var docElm = document.documentElement;
+      if (!isInFullScreen) {
+      if (docElm.requestFullscreen) {
+      docElm.requestFullscreen();
+      } else if (docElm.mozRequestFullScreen) {
+      docElm.mozRequestFullScreen();
+      } else if (docElm.webkitRequestFullScreen) {
+      docElm.webkitRequestFullScreen();
+      } else if (docElm.msRequestFullscreen) {
+      docElm.msRequestFullscreen();
+      }
+      } else {
+      if (document.exitFullscreen) {
+      document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+      } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+      }
+      }
+      }
+      $(document).keydown(function (event) {
+      if (event.keyCode == 13) {
+      fullscreen();
+      $(".hide").toggle();
+      }
+      });

@@ -1,4 +1,4 @@
-// ===========	Imports	===========
+// =========== Imports ===========
 
 // Third party modules
 const express = require('express');
@@ -15,7 +15,7 @@ const crypto = require('crypto');
 const ginaListener = require('./lib/ginaBaseService.js');
 const SelbstanmeldungsDB = require('./lib/dbqueries.js');
 
-// ===========	Configuration ===========
+// =========== SSL, Logging and config-file Configuration ===========
 
 // Reading the config file.
 const cfg = JSON.parse(fs.readFileSync('./.servercfg.json', 'utf8'));
@@ -66,25 +66,27 @@ const logMetaData = {
 //   cert: fs.readFileSync(cfg.ssl.cert)
 // };
 
-// ===========	Express configuration ===========
+// =========== Express configuration ===========
 
-//	Initialize app instances.
-//	The intendation corresponds to the
-//	order in the inhertiance tree.
+// Initialize app instances inclusive
+// the inheritance tree.
 const app 		= express(),
-				public 			= express(),
-				role			 	= express(),
-					arzt 				= express(),
-					benutzer		= express(),
-					ipadapp			=	express();
+			public 			= express(),
+			role			 	= express(),
+			arzt 				= express(),
+			benutzer		= express(),
+			ipadapp			=	express();
 
-//	Template engine settings.
+// Template engine settings
+// In this case, every app
+// is using pug (Jade).
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '/webfiles/views/'));
 public.set('view engine', 'pug');
 public.set('views', path.join(__dirname, '/webfiles/views/'));
 arzt.set('view engine', 'pug');
 arzt.set('views', path.join(__dirname, '/webfiles/views/'));
+
 //	Third party middle-ware.
 app.use(favicon(path.join(__dirname, '/webfiles/favicon/ec_logo.ico')));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -98,10 +100,11 @@ app.use('/role', role);
 
 //	SSE subscription list for each app
 arzt.locals.subscriptionsArzt	= [];
-arzt.locals.subscriptionsWarteliste	= [];
+arzt.locals.subscriptionsWarteRaum	= [];
 ipadapp.locals.subscriptions = [];
 
-// Authentication function:
+// =========== Authentication function ===========
+
 // Every app within the restricted route will use this function.
 role.use((req, res, next) => {
   if (req.path === '/logout' && req[cookieName].user) {
@@ -131,6 +134,8 @@ role.use('/arzt', arzt);
 role.use('/benutzer', benutzer);
 role.use('/ipadapp', ipadapp);
 
+// =========== Global functions	===========
+
 // Redirection function.
 // Used to redirect users
 // who provide valid cookies.
@@ -154,25 +159,63 @@ function startSSE(req, res, user, timeout) {
 	});
 	res.write('\n');
   // Push the user to the subscriptions
-  user.push({ user: req[cookieName].user, connection: res});
-
+  user.push({ user: req[cookieName].user.username, connection: res});
+  console.log("User got SSE ...");
 	req.on('close', () => {
 		//	Pop closed connection
 		//	from the stack.
     user.splice(
   		user.findIndex(x => x.connection == res), 1);
+    console.log("User removed from SSE ... (req)");
 	});
 }
 
-// ===========	Starting server	===========
+// Function to inform the other aerzte
+function informOtherAertzteOnChange(sendingArzt) {
+  DB.getWartelistePatients()
+    .then((wartelistePatients) => {
+      // Inform all arzt subscribers except the requesting arzt
+      arzt.locals.subscriptionsArzt.filter(x => x.user != sendingArzt).forEach((subscriber) => {
+        subscriber.connection.write('id: patient');
+        subscriber.connection.write('\n');
+        subscriber.connection.write('data: ${ JSON.stringify(wartelistePatients) }');
+        subscriber.connection.write('\n\n');
+      });
+     })
+     .catch((error) => {
+       serverTrafficLogger.log('error', `@Informing other Aerzte: ${error}`, logMetaData);
+       console.error("Inform other aerzte error: " + error);
+     })
+}
 
-const dbconf 	= cfg.dbsettings;
+// Function to inform the sending arzt on error
+function informSendingArztOnError(req, res) {
+  // Only inform the subscriber who send the request
+  DB.getWartelistePatients()
+    .then((result) => {
+      var data = {};
+      data.payload = result;
+      res.status(500).json(data);
+     })
+     .catch((error) => {
+      serverTrafficLogger.log('error', `@${req.originalUrl}: ${error}`, logMetaData);
+      console.error("Error at informSendingArztOnError: " + error);
+     });
+}
+
+// =========== Starting server	===========
+
+// Initilizing config variables
+const dbconf = cfg.dbsettings;
 const ginacfg = cfg.gina;
 const portcfg = cfg.ports;
 const cookieName = cfg.cookiesettings.cookieName;
 const appSignatureSecret = cfg.appsignature.secret;
 
+// Initialize DB
 const DB = new SelbstanmeldungsDB(dbconf.host, dbconf.user, dbconf.password, dbconf.dbname);
+
+// Establish connection to database
 DB.connect()
 	.then((result) => {
 		console.log('Verbunden mit der DB ...');
@@ -189,7 +232,6 @@ https.createServer(//keys,
   app).listen(portcfg.port_1, () => {
 	console.log(`Verbunden auf Port ${portcfg.port_1}`);
 });
-
 https.createServer(//keys,
   app).listen(portcfg.port_2, () => {
 	console.log(`Verbunden auf Port ${portcfg.port_2}`);
@@ -203,7 +245,7 @@ https.createServer(//keys,
 //   console.log('Verbunden mit der GINA');
 // })
 
-// ===========  public routes ===========
+// =========== public routes ===========
 
 public.post('/login', (req, res) => {
 	serverTrafficLogger.log('info', `${req.ip} accessed ${req.originalUrl}`, logMetaData);
@@ -243,27 +285,14 @@ public.post('/login', (req, res) => {
 		});
 });
 
-public.post('/ipadappdata', (req, res) => {
-  var payload = req.body;
-  console.log(req.body);
-  payload.testflag = true;
-  arzt.locals.subscriptionsArzt.forEach((subscriber) => {
-    subscriber.connection.write(`id: patient`);
-    subscriber.connection.write('\n');
-    subscriber.connection.write(`data: ${ JSON.stringify(req.body) }`);
-    subscriber.connection.write('\n\n');
-  });
-  res.sendStatus(200);
-});
-
-// ===========  role routes ===========
+// =========== role routes ===========
 
 role.get('/logout', (req, res) => {
   req[cookieName].reset();
   res.redirect('/');
 });
 
-// ===========	arzt routes	===========
+// =========== arzt routes ===========
 
 // Serve the templates
 arzt.get('/ansicht/:ansicht', (req, res) => {
@@ -279,11 +308,13 @@ arzt.get('/ansicht/:ansicht', (req, res) => {
     if (ansicht == 'arztansicht') {
       DB.getWartelistePatients()
     		.then((result) => {
+          console.log("Patientendaten: >>> " + JSON.stringify(result));
     		 	template.patients = result;
           res.render(ansicht, template);
     		 })
     		 .catch((error) => {
           serverTrafficLogger.log('error', `@${req.originalUrl}: ${error}`, logMetaData);
+          console.error(error);
     		 	res.sendStatus(500).end();
     		 })
     } else {
@@ -291,6 +322,7 @@ arzt.get('/ansicht/:ansicht', (req, res) => {
     }
 });
 
+// Return logdata to specific log-art
 arzt.get('/logdata', (req, res) => {
   console.log(req.query.logart);
   if (req.query.logart) {
@@ -323,124 +355,349 @@ arzt.get('/warteraumsse', (req, res) => {
   serverTrafficLogger.log('info',
 		`User ${req[cookieName].user.username} (${req.ip}) accessed ${req.originalUrl}`,
 		logMetaData);
-  startSSE(req, res, arzt.locals.subscriptionsWarteliste, 2147483647);
+  startSSE(req, res, arzt.locals.subscriptionsWarteRaum, 2147483647);
+})
+
+// Provide patient data
+arzt.post('/patientdata', (req, res) => {
+  if (req.body.svnr) {
+    // TODO: Send back the patient data to the corresponding patient
+    DB.getPatientData(req.body.svnr)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((error) => {
+        serverTrafficLogger.log('error', `@${req.originalUrl}: ${error}`, logMetaData);
+        console.error(error);
+        res.send(500).end();
+      })
+  } else {
+    console.log("Forbidden request at /patientdata ...");
+    res.send(403).end();
+  }
+});
+
+// Function to call in patients
+arzt.post('/callin', (req, res) => {
+  // TODO: Notify warteraum agents
+  if (req.body.svnr) {
+    DB.callInPatientIntoBehandlungsZimmer(req.body.svnr, req[cookieName].user)
+      .then((wartelistePatients) => {
+        //informOtherAertzteOnChange(req[cookieName].user);
+        // Notify the warteraum agents via SSE
+        arzt.locals.subscriptionsWarteRaum.forEach((subscriber) => {
+          subscriber.connection.write('id: patient');
+          subscriber.connection.write('\n');
+          subscriber.connection.write('data: ${ JSON.stringify(wartelistePatients) }');
+          subscriber.connection.write('\n\n');
+        });
+        res.send(200).end();
+       })
+      .catch((error) => {
+        serverTrafficLogger.log('error', `@${req.originalUrl}: ${error}`, logMetaData);
+        console.error("At /callin: " + error);
+        informSendingArztOnError(req, res);
+      })
+  } else {
+    console.log("Forbidden request at /callin ...");
+    res.send(403).end();
+  }
+});
+
+// Function to dismiss the patients
+arzt.post('/dismiss', (req, res) => {
+  if (req.body.svnr) {
+    DB.dismissPatient(req.body.svnr)
+      .then((result) => {
+        //informOtherAertzteOnChange(req[cookieName].user);
+        res.send(200).end();
+       })
+       .catch((error) => {
+         serverTrafficLogger.log('error', `@${req.originalUrl}: ${error}`, logMetaData);
+         console.error("At /dismiss: " + error);
+         informSendingArztOnError(req, res);
+       })
+  } else {
+    console.log("Forbidden request at /dismiss ...");
+    res.send(403).end();
+  }
 })
 
 // Warteliste ranking logic
 arzt.post('/rank', (req, res) => {
-  console.log("Received data at /rank");
-  console.log(JSON.stringify(req.body));
   // Dataformat: { from: '5050060985', before: '4075081055'}
-  if (ranking.from && ranking.before) {
+  if (req.body.from && req.body.before) {
     var payload = req.body;
     // It's a ranking request
     // Dataformat: { from: '5050060985', before: '4075081055'}
     DB.rankWarteliste(payload.from, payload.before)
       .then((result) => {
-        arzt.locals.subscriptionsArzt.filter(x => x.user != req[cookieName].user).forEach((subscriber) => {
-          // Inform all arzt subscribers except the requesting arzt.
-          subscriber.connection.write('id: patient');
-          subscriber.connection.write('\n');
-          subscriber.connection.write('data: ${ JSON.stringify(result) }');
-          subscriber.connection.write('\n\n');
-        });
+        // informOtherAertzteOnChange(req[cookieName].user);
+        res.send(200).end();
       })
       .catch((error) => {
         serverTrafficLogger.log('error', `@${req.originalUrl}: ${error}`, logMetaData);
-        // Only inform the subscriber who send the request
-        var connection = arzt.locals.subscriptionsArzt
-          .find(x => x.user == req[cookieName].user).connection;
-        DB.getWartelistePatients()
-          .then((result) => {
-            var data = { replace: true };
-						data.payload = result;
-						res.json(data);
-           })
-           .catch((error) => {
-             console.error(error);
-             serverTrafficLogger.log('error', `@${req.originalUrl}: ${error}`, logMetaData);
-           });
+        informSendingArztOnError(req, res);
       });
     } else {
     //  Bad request from the user
-    res.sendStatus(400).end();
+    res.send(403).end();
   }
 });
 
 // Test Stub, to simulate "plug"-process (Bernhard)
-arzt.get('/plug', (req, res) => {
-  var svnr = "3048280984";
+// arzt.get('/plug', (req, res) => {
+//   var svnr = "3048280984";
+//
+//   DB.getAllPatientData(svnr)
+//     .then((result) => {
+//       var patientData = {
+//         signature: crypto.createHmac('sha256', appSignatureSecret)
+//                     .update(svnr)
+//                     .digest('hex'),
+//         patient: result
+//       };
+//       patientData.patient.svnr = String(patientData.patient.svnr);
+//       console.log(JSON.stringify(patientData));
+//       res.send("Data was send to the ipadapp clients");
+//       ipadapp.locals.subscriptions.forEach((subscriber) => {
+//         subscriber.connection.write(`id: patient`);
+//         subscriber.connection.write('\n');
+//         subscriber.connection.write(`data: ${ JSON.stringify(patientData) }`);
+//         subscriber.connection.write('\n\n');
+//       });
+//       console.log("Patientdata sent ...");
+//     })
+//     .catch((error) => {
+//       console.error(error);
+//     })
+// });
 
-  DB.getAllPatientData(svnr)
-    .then((result) => {
-      var patientData = {
-        signature: crypto.createHmac('sha256', appSignatureSecret)
-                    .update(svnr)
-                    .digest('hex'),
-        patient: result
-      };
-      patientData.patient.svnr = String(patientData.patient.svnr);
-      console.log(JSON.stringify(patientData));
-      res.send("Data was send to the ipadapp clients");
-      ipadapp.locals.subscriptions.forEach((subscriber) => {
-        subscriber.connection.write(`id: patient`);
-        subscriber.connection.write('\n');
-        subscriber.connection.write(`data: ${ JSON.stringify(patientData) }`);
-        subscriber.connection.write('\n\n');
-      });
-      console.log("Patientdata sent ...");
-    })
-    .catch((error) => {
-      console.error(error);
-    })
-});
+function loadTestPatients() {
+  var testPatients = [
+    {
+      "versicherung": {
+        "anspruchsdaten": [
+          {
+            "kostenteilbefreit":false,
+            "anspruchsart":"S",
+            "rezeptbefreit":false,
+            "svtCode":"11",
+            "versichertenArtCode":null
+          }
+        ]
+      },
+      "person": {
+        "svnr":"1003250229",
+        "titel":"Dr.-Ing.",
+        "geburtsdatum":"16.02.1988",
+        "vorname":"Ake",
+        "geschlecht":"M",
+        "nachname":"Soren-Test"
+      }
+    },
+    {
+      "versicherung": {
+        "anspruchsdaten": [
+          {
+            "kostenteilbefreit":false,
+            "anspruchsart":"S",
+            "rezeptbefreit":false,
+            "svtCode":"12",
+            "versichertenArtCode":null
+          }
+        ]
+      },
+      "person": {
+        "svnr":"1234567890",
+        "titel":"",
+        "geburtsdatum":"11.11.2011",
+        "vorname":"kevin",
+        "geschlecht":"M",
+        "nachname":"Askan"
+      }
+    },
+    {
+      "versicherung": {
+        "anspruchsdaten": [
+          {
+            "kostenteilbefreit":false,
+            "anspruchsart":"S",
+            "rezeptbefreit":false,
+            "svtCode":"11",
+            "versichertenArtCode":null
+          }
+        ]
+      },
+      "person": {
+        "svnr":"2469180576",
+        "titel":"Mag.",
+        "geburtsdatum":"01.05.1990",
+        "vorname":"manfred",
+        "geschlecht":"M",
+        "nachname":"Reuchelt"
+      }
+    },
+    {
+      "versicherung": {
+        "anspruchsdaten": [
+          {
+            "kostenteilbefreit":false,
+            "anspruchsart":"S",
+            "rezeptbefreit":false,
+            "svtCode":"05",
+            "versichertenArtCode":null
+          },
+          {
+            "kostenteilbefreit":false,
+            "anspruchsart":"S",
+            "rezeptbefreit":false,
+            "svtCode":"40",
+            "versichertenArtCode":null
+          }
+        ]
+      },
+      "person": {
+        "svnr":"6529837019",
+        "titel":"Ing.",
+        "geburtsdatum":"20.07.2000",
+        "vorname":"Eugen",
+        "geschlecht":"M",
+        "nachname":"Klein"
+      }
+    },
+    {
+      "versicherung": {
+        "anspruchsdaten": [
+          {
+            "kostenteilbefreit":false,
+            "anspruchsart":"S",
+            "rezeptbefreit":false,
+            "svtCode":"7A",
+            "versichertenArtCode":null
+          },
+          {
+            "kostenteilbefreit":false,
+            "anspruchsart":"S",
+            "rezeptbefreit":false,
+            "svtCode":"25",
+            "versichertenArtCode":null
+          },
+          {
+            "kostenteilbefreit":false,
+            "anspruchsart":"S",
+            "rezeptbefreit":false,
+            "svtCode":"17",
+            "versichertenArtCode":null
+          }
+        ]
+      },
+      "person": {
+        "svnr":"663782916",
+        "titel":"",
+        "geburtsdatum":"01.09.1960",
+        "vorname":"Lara",
+        "geschlecht":"W",
+        "nachname":"Kraut"
+      }
+    },
+    {
+      "versicherung": {
+        "anspruchsdaten": [
+          {
+            "kostenteilbefreit":false,
+            "anspruchsart":"S",
+            "rezeptbefreit":false,
+            "svtCode":"19",
+            "versichertenArtCode":null
+          },
+          {
+            "kostenteilbefreit":false,
+            "anspruchsart":"S",
+            "rezeptbefreit":false,
+            "svtCode":"8B",
+            "versichertenArtCode":null
+          }
+        ]
+      },
+      "person": {
+        "svnr":"7724091276",
+        "titel":"Ing.",
+        "geburtsdatum":"01.04.1987",
+        "vorname":"Olga",
+        "geschlecht":"W",
+        "nachname":"Babushka"
+      }
+    },
+    {
+      "versicherung": {
+        "anspruchsdaten": [
+          {
+            "kostenteilbefreit":false,
+            "anspruchsart":"S",
+            "rezeptbefreit":false,
+            "svtCode":"8D",
+            "versichertenArtCode":null
+          }
+        ]
+      },
+      "person": {
+        "svnr":"0987654328",
+        "titel":"",
+        "geburtsdatum":"07.01.2003",
+        "vorname":"Hans",
+        "geschlecht":"M",
+        "nachname":"Schiff"
+      }
+    },
+    {
+      "versicherung": {
+        "anspruchsdaten": [
+          {
+            "kostenteilbefreit":false,
+            "anspruchsart":"S",
+            "rezeptbefreit":false,
+            "svtCode":"50",
+            "versichertenArtCode":null
+          },
+          {
+            "kostenteilbefreit":false,
+            "anspruchsart":"S",
+            "rezeptbefreit":false,
+            "svtCode":"28",
+            "versichertenArtCode":null
+          },
+          {
+            "kostenteilbefreit":false,
+            "anspruchsart":"S",
+            "rezeptbefreit":false,
+            "svtCode":"07",
+            "versichertenArtCode":null
+          }
+        ]
+      },
+      "person": {
+        "svnr":"6523980167",
+        "titel":"",
+        "geburtsdatum":"22.03.2007",
+        "vorname":"Uganda",
+        "geschlecht":"M",
+        "nachname":"knuckls"
+      }
+    }
+  ];
+
+  // TODO: Add test patients
+
+  return testPatients;
+}
 
 // Test Stub, to simulate the "real" plug-process
-arzt.get('/realisticplug', (req, res) => {
-  // {
-  //   "versicherung": {
-  //     "anspruchsdaten": [
-  //       {
-  //         "kostenteilbefreit":false,
-  //         "anspruchsart":"S",
-  //         "rezeptbefreit":false,
-  //         "svtCode":"11",
-  //         "versichertenArtCode":null
-  //       }
-  //     ]
-  //   },
-  //   "person": {
-  //     "svnr":"1003250229",
-  //     "titel":"Dr.-Ing.",
-  //     "geburtsdatum":"16.02.1988",
-  //     "vorname":"Ake",
-  //     "geschlecht":"M",
-  //     "nachname":"Soren-Test"
-  //   }
-  // }
-  var patient = {
-    person: {
-      svnr: "6032060899",
-      geschlecht: "M",
-      titel: "Mag.",
-      vorname: "Anton",
-      nachname: "Tobolka",
-      geburtsdatum: "06.08.1999"
-    },
-    versicherung: {
-      anspruchsdaten: [
-        {
-          svtCode: "11"
-        },
-        {
-          svtCode: "28"
-        },
-        {
-          svtCode: "8D"
-        }
-      ],
-    }
-  };
+arzt.get('/plugsimulation', (req, res) => {
+
+  var testPatients = loadTestPatients();
+  var patient = testPatients[req.query.pat];
+
   console.log("Ipadapps atm: " + ipadapp.locals.subscriptions.length);
 
   DB.isPatientAlreadyInWarteliste(patient.person.svnr)
@@ -449,7 +706,9 @@ arzt.get('/realisticplug', (req, res) => {
       // the patient has not to be in the warteliste
       // in order to send data to the ipadapp
       // Otherwise, ignore the prank.
-      if (answer && ipadapp.locals.subscriptions.length > 0) {
+      // In Production Statement: answer && ipadapp.locals.subscriptions.length > 0
+      // In test statement:
+      if (!answer) {
 
         DB.addPatientIfNotExists(patient)
             .then((result) => {
@@ -498,42 +757,165 @@ arzt.get('/realisticplug', (req, res) => {
      })
 })
 
-// Test stub, to simulate app-send process
-arzt.get('/appsend', (req, res) => {
+function loadAppResponses() {
+  var appResponses = [
+    {
+    	"signature":"cfa86b457cb3acb037be1bed18e7b58263d33bd699722a2b57c2f143a03aa395",
+    	"patient": {
+    		"svnr": "1003250229",
+    		"hausnummer":"7",
+    		"ort":"ohrstadt",
+    		"postleitzahl":"11245",
+    		"stock":"3",
+    		"strasse":"Marktplatz",
+    		"versid": "11",
+    		"telefonnummer": "43036097816",
+    		"email": "marwin1998@gmail.com",
+    		"grund": "2"
+    	}
+    },
+    {
+    	"signature":"fc4631bc30c2cfb303939df74cda7a5c69dbc463b1a6c946dacbfd737668483d",
+    	"patient": {
+    		"svnr": "1234567890",
+    		"hausnummer":"15",
+    		"ort":"aal",
+    		"postleitzahl":"2380",
+    		"stock":"20",
+    		"strasse":"Marktplatz",
+    		"versid": "12",
+    		"telefonnummer": "43036097816",
+    		"email": "bushwookie@gmail.com",
+    		"grund": "1"
+    	}
+    },
+    {
+    	"signature":"5a7ea11be12e345e65ad474070d7b027f1975db5806e89a413b00f699b2e61e3",
+    	"patient": {
+    		"svnr": "2469180576",
+    		"hausnummer":"15",
+    		"ort":"Perchtoldsdorf",
+    		"postleitzahl":"2380",
+    		"stock":"20",
+    		"strasse":"Marktplatz",
+    		"versid": "11",
+    		"telefonnummer": "43036097816",
+    		"email": "bushwookie@gmail.com",
+    		"grund": "3"
+    	}
+    },
+    {
+    	"signature":"bdae6ae25223daade20b48cc4c65d73d59641dfad0541fbc333185a12b81685c",
+    	"patient": {
+    		"svnr": "6529837019",
+    		"hausnummer":"15",
+    		"ort":"Perchtoldsdorf",
+    		"postleitzahl":"2380",
+    		"stock":"20",
+    		"strasse":"Marktplatz",
+    		"versid": "40",
+    		"telefonnummer": "43036097816",
+    		"email": "bushwookie@gmail.com",
+    		"grund": "2"
+    	}
+    },
+    {
+    	"signature":"8e216e870471600dbda5d6a9ecaa1fbd61194de9f3a04ef48ace4cc45269bc27",
+    	"patient": {
+    		"svnr": "663782916",
+    		"hausnummer":"15",
+    		"ort":"Perchtoldsdorf",
+    		"postleitzahl":"2380",
+    		"stock":"20",
+    		"strasse":"Marktplatz",
+    		"versid": "7A",
+    		"telefonnummer": "43036097816",
+    		"email": "neuberger@gmail.com",
+    		"grund": "1"
+    	}
+    },
+    {
+    	"signature":"ccac33265c6404e38d371112f6875e4cefe3f1b185737a3d10940be5849ee9f3",
+    	"patient": {
+    		"svnr": "7724091276",
+    		"hausnummer":"66",
+    		"ort":"Sodorf",
+    		"postleitzahl":"1245",
+    		"stock":"300",
+    		"strasse":"larnstrasse",
+    		"versid": "19",
+    		"telefonnummer": "43036097816",
+    		"email": "chuxxl@gmail.com",
+    		"grund": "3"
+    	}
+    },
+    {
+    	"signature":"fcd63945282dc2796d60def7ab6fa3a1a67f3e120d014ea455be264077e6cf6b",
+    	"patient": {
+    		"svnr": "0987654328",
+    		"hausnummer":"15",
+    		"ort":"Perchtoldsdorf",
+    		"postleitzahl":"2380",
+    		"stock":"20",
+    		"strasse":"Marktplatz",
+    		"versid": "05",
+    		"telefonnummer": "43036097816",
+    		"email": "hhfsuiujnlil@gmail.com",
+    		"grund": "2"
+    	}
+    },
+    {
+    	"signature":"5101b5a3a37f1b8e4889a9d4f6d00caa6e9a18f180330b1a204528e1b0fbcdac",
+    	"patient": {
+    		"svnr": "6523980167",
+    		"hausnummer":"12",
+    		"ort":"Perchtoldsdorf",
+    		"postleitzahl":"2380",
+    		"stock":"20",
+    		"strasse":"Marktplatz",
+    		"versid": "07",
+    		"telefonnummer": "43036097816",
+    		"email": "bushwookie@gmail.com",
+    		"grund": "1"
+    	}
+    }
+  ];
+  return appResponses;
+}
 
-  var testDaten = {
-  	"signature":"997340a1ffa8d1aed8442092f91ac9c0920cb093f883f1c2ca6ad670bf285a07",
-  	"patient": {
-  		"svnr": "3048280984",
-  		"hausnummer":"15",
-  		"ort":"Perchtoldsdorf",
-  		"postleitzahl":"2380",
-  		"stock":"20",
-  		"strasse":"Marktplatz",
-  		"versicherung": "BVA",
-  		"telefonnummer": "43036097816",
-  		"email": "bushwookie@debil.com",
-  		"grund": "1"
-  	}
-  };
+// Test stub, to simulate app-send process
+arzt.get('/appsendsimulation', (req, res) => {
+  var testDaten = loadAppResponses()[req.query.pat];
 
   var svnrSignature = crypto.createHmac('sha256', appSignatureSecret).update(testDaten.patient.svnr).digest('hex');
 
   // Check for signature
-  if (testDaten.signature === crypto.createHmac('sha256', appSignatureSecret)
-                              .update(testDaten.patient.svnr)
-                              .digest('hex')) {
-                                DB.updatePatient(testDaten.patient)
-                                  .then((result) => {
-                                    console.log("Patient should be inserted ...");
-                                  })
-                                  .catch((error) => {
-                                    console.error(error);
-                                  });
+  if (testDaten.signature == svnrSignature) {
+    DB.updatePatient(testDaten.patient)
+      .then((result) => {
+        DB.addPatientToWarteliste()
+          .then((patientData) => {
+             // Notify ärzte
+             arztansicht.locals.subscriptionsArzt.forEach((subscriber) => {
+                subscriber.connection.write(`id: patient`);
+                subscriber.connection.write('\n');
+                subscriber.connection.write(`data: ${ JSON.stringify(patientData) }`);
+                subscriber.connection.write('\n\n');
+             });
+             res.send("Ärzte wurden notifiziert");
+           })
+           .catch((error) => {
+             console.error("At /appsendsimulation: " + error);
+             res.send(500);
+           })
+      })
+      .catch((error) => {
+        console.error(error);
+        res.send(500);
+      });
   } else {
     res.status(403).send("Gefaelschtes Datenpaket");
   }
-
 });
 
 // =========== ipadapp routes ===========
@@ -545,16 +927,6 @@ ipadapp.get('/sse', (req, res) => {
 
 	startSSE(req, res, ipadapp.locals.subscriptions, 2147483647);
 });
-
-//
-// setInterval(() => {
-//   ipadapp.locals.subscriptions.forEach((subscriber) => {
-//     subscriber.connection.write(`id: patient`);
-//     subscriber.connection.write('\n');
-//     subscriber.connection.write(`data: hello test`);
-//     subscriber.connection.write('\n\n');
-//   });
-// }, 2000);
 
 ipadapp.post('/patientdata', (req, res) => {
 	/*
@@ -569,22 +941,8 @@ ipadapp.post('/patientdata', (req, res) => {
 	*/
   console.log("Patientdata received:");
   console.log(req.body);
+  // TODO: Implement the ipadapp receiver logic
   // if (req.body) {
-  //   // TODO: Receive correct data and update patient in the database
-  //   // Also check signature before inserting into database
-  //
-  //   // Signature & Payload
-  //   var signature = req.body.signature,
-  //       payload = req.body.payload,
-  //       svnrSignature = crypto.createHmac('sha256', appSignatureSecret).update(payload.patient.svnr).digest('hex');
-  //
-  //   if (svnrSignature === signature) {
-  //     // TODO: Update patient in database
-  //     DB.addOrUpdatePatient()
-  //   } else {
-  //     // TODO: Send back 403 error
-  //     res.sendStatus(403).end();
-  //   }
   //
   // } else {
   //   // Send bad request message back
@@ -592,13 +950,11 @@ ipadapp.post('/patientdata', (req, res) => {
   // }
 });
 
-// ===========	app routes ===========
+// =========== app routes ===========
 
-/*
-	If the user already had a recent session
-	but tabbed out and re-requested /
-	then redirect him back to his page.
-*/
+// If the user already had a recent session
+// but tabbed out and re-requested
+// then redirect him back to his page.
 app.get('/', (req, res, next) => {
 	serverTrafficLogger.log('info', `${req.ip} accessed ${req.originalUrl}`, logMetaData);
 	if (req[cookieName].user) {
@@ -617,8 +973,9 @@ app.get('/', (req, res, next) => {
 	}
 });
 
-//	Serves all files from the
-//	webroot directory statically
+// =========== Static file serving & 404 Handling ===========
+
+// Serves all files from the webroot directory statically
 app.use('/', express.static('./webfiles/webroot', { index: '/public/login.html', fallthrough: false }));
 
 // // Return 404 not found html file
@@ -627,7 +984,7 @@ app.use('/', express.static('./webfiles/webroot', { index: '/public/login.html',
 // 	res.status(404).sendFile(path.join(__dirname, '/webfiles/misc/404.html'));
 // });
 
-// ===========	Gina Section ===========
+// =========== Gina Section ===========
 
 /*
 	Establish the gina connection.

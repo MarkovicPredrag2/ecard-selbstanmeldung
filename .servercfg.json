@@ -28,7 +28,7 @@
 	"dbsettings": {
 		"host":	"localhost",
 		"user": "root",
-		"password": "v2tJ)Jjt=NS!F<%",
+		"password": "",
 		"dbname": "ordination"
 	},
 	"logsettings": {

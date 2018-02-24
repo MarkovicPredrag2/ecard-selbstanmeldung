@@ -104,3 +104,11 @@ ul.example li.placeholder:before {
   /** Define arrowhead **/
   background-color: white;
 }
+
+#patientlist li.active {
+  background-color: #eee;
+}
+
+.behandlung {
+  border: 2px solid green;
+}
