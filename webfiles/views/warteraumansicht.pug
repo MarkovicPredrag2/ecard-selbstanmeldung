@@ -50,17 +50,15 @@ html
     .container
       // Logos oben links bzw. rechts
       span
-        img(src='/public/resources/img/ecs.png', style='margin-top: 10%; flaot:left; width: 5%; height: 5%')
-      span
         img(src='/public/resources/img/svc.png', style='margin-top: 10%; float:right; width: 10%; height: 7.5%')
       // Warteliste Name
-      #patientCall.patientGreen
-        font(size='80')
-          i.fa.fa-user-plus.fa-3x(style='margin-top: 10%; display:none')
-          | &nbspDr. Christopher Neuebrger
-      #patientCalled(style='')
+      span#patientCalled(style='')
         font(size='80')
           i.fa.fa-user-plus.fa-3x(style='margin-top: 10%')
+      span#patientCall.patientGreen
+        font(size='80')
+          i.fa.fa-user-plus.fa-3x(style='margin-top: 10%; display:none')
+          | &nbspDr. Christopher Neuberger
       // Nachrichten-Feed
       div(style='margin-top:50px')
         script(type='text/javascript', src='https://feed.mikle.com/js/fw-loader.js', data-fw-param='66253/')

@@ -1,3 +1,10 @@
+// Patientlist DOM
+var patientList = document.getElementById('patientlist');
+// Callin Button DOM
+var callInButton = document.getElementById('callin');
+// Dismiss Button DOM
+var dismissButton = document.getElementById('dismiss');
+
 // SSE Receiver function
 //	Checkt, ob der Browser die Klasse EventSource kennt
 //	Die EventSource Klasse wird von fast allen modernen
@@ -10,21 +17,22 @@ if( typeof(EventSource) !== "undefined" ) {
   // Sobald ein Event erhalten wurde, wird diese Funktion
   // samt der Daten im Parameter ausgeführt.
 	source.onmessage = function(event) {
-
-		alert("Patient over SSE received: " + event.data);
-
     // Parse the JSON data
   	var patient = JSON.parse(event.data);
-
     // Otherwise, add a new patient to the list
-		document.getElementById("patientlist").innerHTML +=
+		patientList.innerHTML +=
 	  	"<li class='list' onclick='requestPatientData(this)' id='" + patient.svnr + "'>" +
 	  		"<i class='fa " + iconResolver(patient.grundid) + " fa-5x' aria-hidden='true' style='float:left; margin: 0 15px 0 0;'></i>" +
 	  		"<i class='fa fa-bars fa-3x' aria-hidden='true' style='float:right; padding-top:27.5px'></i>" +
 	  		"<h3 style='text-align: left'>" + patient.grund + "</h3>" +
-	      "<p>".concat(patient.anrede, " ", patient.nachname, " ", patient.vorname, " (", patient.alter, " Jahre alt)","</p>") +
+	      "<p>".concat(patient.geschlecht == "M" ? "Hr." : "Fr.", " ", patient.titel, " ", patient.nachname, " ", patient.vorname, " (", patient.alter, " Jahre alt)","</p>") +
 	  	"</li>";
 
+    // If the patient is the first in the list,
+    // focus him and refresh the button state.
+		if (patientList.firstElementChild.getAttribute('id') == patient.svnr) {
+			focusPatientOnSelect(patientList.firstElementChild);
+		}
 	};
 } else {
 	alert("Browser unterstützt kein SSE. Patientendaten können somit nicht empfangen werden. Benutzen sie bitte einen anderen Browser.");
@@ -32,13 +40,12 @@ if( typeof(EventSource) !== "undefined" ) {
 
 // Focus the first patient on page load
 function focusPatientOnStartup() {
-  if (document.getElementById('patientlist').firstChild) {
-		focusPatientOnSelect(document.getElementById('patientlist').firstElementChild);
+  if (patientList.firstChild) {
+		focusPatientOnSelect(patientList.firstElementChild);
 
     // If the first patient is in behandlung,
     // disable the entire list.
-		if (document.getElementById('patientlist').firstElementChild.classList.contains('behandlung')) {
-			alert("On Startup: Yeah, he does");
+		if (patientList.firstElementChild.classList.contains('behandlung')) {
 			$("ul.example").sortable("disable");
 		}
   }
@@ -47,8 +54,8 @@ function focusPatientOnStartup() {
 // Function to add "focus-selection"
 // behviour to the patient-elements in the list
 function focusPatientOnSelect(dom) {
-  // Get the patients
-  var patients = document.getElementById('patientlist').childNodes;
+	// Get the patients
+  var patients = patientList.childNodes;
 
   // Unfocus all the other patients in the list
   for (var i = 0; i < patients.length; i++) {
@@ -58,46 +65,47 @@ function focusPatientOnSelect(dom) {
   // Set the selected element to active
 	dom.classList.add("active");
 
-  // Check, if the callin-button should be enabled or disabled
-  // This button is only enabled, if the selected element
-  // is either in behandlungs-status or the first element
-	if (document.getElementById('patientlist').firstElementChild.getAttribute('id') == dom.getAttribute('id') || dom.classList.contains('behandlung')) {
-		document.getElementById('callin').classList.remove("w3-disabled");
-	} else {
-		document.getElementById('callin').classList.add("w3-disabled");
-	}
+  // Set buttons clickable depending on the
+  // selected item.
+	setButtonsClickable(dom);
 
-  // Check, if the dismiss-button should be enabled or disabled
-  // The dismiss-button is only enabled, if the selected patient
-  // is already in behandlung.
-	if (dom.classList.contains('behandlung')) {
-		document.getElementById('dismiss').classList.remove("w3-disabled");
-	} else {
-		document.getElementById('dismiss').classList.add("w3-disabled");
-	}
-
-  // Get Patient data for the patient
+	// Get Patient data for the patient
   requestPatientData(dom);
 }
 
 // Function to dismiss the selected patient
 function dismissPatient() {
 	var selectedElement = document.getElementsByClassName("active")[0];
-	alert("Dismissing patient ...");
-	alert("SVNR: " + selectedElement.getAttribute('id'));
   // First off, dismiss the patient in the persistance layer
 	$.post("/role/arzt/dismiss", { "svnr": selectedElement.getAttribute('id') },
     function(data, status) {
-      alert(status);
       if (status == "success") {
-				alert("Success!");
         // On success, delete the current element
         selectedElement.remove();
+        // Eventually, select the new first element underneath if he exists
+				if (patientList.firstChild) {
+					focusPatientOnSelect(patientList.firstElementChild);
+				} else {
+          // Clear the display,
+          // if there ain't a patient anymore
+					$("#h_name").html("Kein Patient in der Warteliste.");
+					$("#h_svnr").html("");
+					$("#h_versicherung").html("");
+	        $("#h_grund").html("");
+					$("#h_geburtsdatum").html("");
+					$("#h_adresse").html("");
+					$("#h_email").html("");
+					$("#h_telefon").html("");
+
+          // And disable all the buttons
+					callInButton.classList.add("w3-disabled");
+					dismissButton.classList.add("w3-disabled");
+				}
+
 				// And enable the list again
 				$("ul.example").sortable("enable");
       } else {
         console.error("Couldn't dismiss patient");
-
         // Reset patient table
 				resetPatientTable(data);
       }
@@ -107,16 +115,15 @@ function dismissPatient() {
 
 // Function to call-in the selected patient
 function callInPatient() {
-	alert("Calling in patient ...");
+	var selectedElement = document.getElementsByClassName("active")[0];
 	// First off, call in the patient in the persistance layer
-	$.post("/role/arzt/callin", { "svnr": document.getElementsByClassName("active")[0].getAttribute('id') },
+	$.post("/role/arzt/callin", { "svnr": selectedElement.getAttribute('id') },
     function(data, status) {
       if (status == "success") {
-				alert("Success!");
-        // On success, add a green border to the selcted element
-				$(".active").css("border", "2px solid green");
         // Mark element as 'behandlung'
 				document.getElementsByClassName("active")[0].classList.add("behandlung");
+        // Refresh button state
+				setButtonsClickable(selectedElement);
         // Disable the entire list
 				$("ul.example").sortable("disable");
       } else {
@@ -134,13 +141,13 @@ function iconResolver(reason) {
   var icon = "";
 
   switch (reason) {
-    case "Untersuchung":
+    case 2:
       icon = "fa-stethoscope";
       break;
-    case "Rezept":
+    case 1:
       icon = "fa-file-text-o";
       break;
-    case "AUM":
+    case 3:
       icon = "fa-briefcase";
       break;
   }
@@ -150,7 +157,7 @@ function iconResolver(reason) {
 
 // Function to rank the warteliste within the persistance layer
 function rankPatientBefore(svnrbelow) {
-  var patients = document.getElementById("patientlist").children;
+  var patients = patientList.children;
   for(var n = 0; n < patients.length; n++) {
     if (patients[n].id == svnrbelow) {
       //  Get the svnr above.
@@ -208,7 +215,7 @@ function requestPatientData(dom) {
 // Function to reset the patient table
 function resetPatientTable(patients) {
 	// Reset the entire list if an error occured
-	var patientlist = document.getElementById("patientlist");
+	var patientlist = patientList;
 
   // Remove all patients from the list
 	while (patientlist.firstChild) {
@@ -229,7 +236,29 @@ function resetPatientTable(patients) {
 
   // Ask, if the first patient is in behandlung
   // to disable the entire list.
-	if (document.getElementById('patientlist').firstElementChild.classList.contains('behandlung')) {
+	if (patientList.firstElementChild.classList.contains('behandlung')) {
 		$("ul.example").sortable("disable");
+	}
+}
+
+function setButtonsClickable(dom) {
+  // Callin-Button:
+	// Check, if the callin-button should be enabled or disabled
+  // This button is only enabled, if the selected element
+  // is either in behandlungs-status or the first element
+	if (patientList.firstElementChild.getAttribute('id') == dom.getAttribute('id') && !dom.classList.contains('behandlung')) {
+		callInButton.classList.remove("w3-disabled");
+	} else {
+		callInButton.classList.add("w3-disabled");
+	}
+
+  // Dismiss-Button:
+  // Check, if the dismiss-button should be enabled or disabled
+  // The dismiss-button is only enabled, if the selected patient
+  // is already in behandlung.
+	if (dom.classList.contains('behandlung')) {
+		dismissButton.classList.remove("w3-disabled");
+	} else {
+		dismissButton.classList.add("w3-disabled");
 	}
 }

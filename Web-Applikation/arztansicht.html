@@ -66,7 +66,7 @@
 
     <div style="margin-left:100px; position:fixed; margin-top:72px">
       <div class="W3-container">
-        <h1><b id="h_name"></b></h1>
+        <h1><b id="h_name">Keine Patienten in der Warteliste</b></h1>
         <h2><b id="h_svnr"></b></h2>
         <h2><b id="h_versicherung"></b></h2>
         <h2><b id="h_grund"></b></h2>
@@ -83,7 +83,7 @@
       <ul class="list example" id="patientlist">
         <!--
         for patient in patients
-          li.list(onclick='focusPatientOnSelect(this)' id= patient.svnr)
+          li.list(onclick='focusPatientOnSelect(this)' id= patient.svnr class= patient.behandlung != null ? "behandlung" : "")
             if patient.grundid == 2
               i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
             else if patient.grundid == 3
@@ -92,7 +92,7 @@
               i.fa.fa-file-text-o.fa-4x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
             i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
             h3(style='text-align: left') #{patient.grund}
-            p #{patient.anrede} #{patient.nachname} #{patient.vorname} (#{patient.alter} Jahre alt)
+            p #{patient.geschlecht} #{patient.anrede} #{patient.nachname} #{patient.vorname} (#{patient.alter} Jahre alt)
          -->
       </ul>
     </div>
@@ -115,7 +115,18 @@
       $(document).ready(function() {
         $("ul.example").sortable({
           onDrop: function ($item, container, _super) {
-            $.post("/role/arzt/rank", rankPatientBefore($item.attr("id")));
+            // Rank the patient for the patient
+            $.post("/role/arzt/rank", rankPatientBefore($item.attr("id")),
+            function(data, status) {
+              if (status == "success") {
+                // Refresh the patient list
+                focusPatientOnSelect($item.get(0));
+              } else {
+                console.error("Couldn't sort the list");
+                // Restore the list
+                resetPatientTable(data);
+              }
+            });
             _super($item, container);
           }
         });

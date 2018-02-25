@@ -110,5 +110,6 @@ ul.example li.placeholder:before {
 }
 
 .behandlung {
-  border: 2px solid green;
+  border-bottom: 1px solid #2dc226 !important;
+  border-left: 5px solid #2dc226 !important;
 }

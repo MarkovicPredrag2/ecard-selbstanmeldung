@@ -58,7 +58,7 @@ html
     div(style='margin-left:100px; position:fixed; margin-top:72px')
       .W3-container
         h1
-          b#h_name
+          b#h_name Kein Patient in der Warteliste.
         h2
           b#h_svnr
         h2
@@ -76,7 +76,7 @@ html
     // Warteliste
     div(align='right', style='padding-top:71px')
       ul#patientlist.list.example
-        for patient in patients 
+        for patient in patients
           li.list(onclick='focusPatientOnSelect(this)' id= patient.svnr class= patient.behandlung != null ? "behandlung" : "")
             if patient.grundid == 2
               i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
@@ -86,7 +86,7 @@ html
               i.fa.fa-file-text-o.fa-4x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
             i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
             h3(style='text-align: left') #{patient.grund}
-            p #{patient.anrede} #{patient.nachname} #{patient.vorname} (#{patient.alter} Jahre alt)
+            p #{patient.geschlecht == "M" ? "Hr." : "Fr."} #{patient.anrede} #{patient.nachname} #{patient.vorname} (#{patient.alter} Jahre alt)
     // ======= JS Dependencies =======
     // jQuery library
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
@@ -104,7 +104,18 @@ html
       $(document).ready(function() {
       $("ul.example").sortable({
       onDrop: function ($item, container, _super) {
-      $.post("/role/arzt/rank", rankPatientBefore($item.attr("id")));
+      // Rank the patient for the patient
+      $.post("/role/arzt/rank", rankPatientBefore($item.attr("id")),
+      function(data, status) {
+      if (status == "success") {
+      // Refresh the patient list
+      focusPatientOnSelect($item.get(0));
+      } else {
+      console.error("Couldn't sort the list");
+      // Restore the list
+      resetPatientTable(data);
+      }
+      });
       _super($item, container);
       }
       });
