@@ -28,7 +28,7 @@
 	"dbsettings": {
 		"host":	"localhost",
 		"user": "root",
-		"password": "selbstanmeldungstool",
+		"password": "",
 		"dbname": "ordination"
 	},
 	"logsettings": {

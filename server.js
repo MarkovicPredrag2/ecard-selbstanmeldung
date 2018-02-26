@@ -466,7 +466,6 @@ arzt.get('/plug', (req, res) => {
                     .digest('hex'),
         patient: result
       };
-      patientData.patient.svnr = String(patientData.patient.svnr);
       console.log(JSON.stringify(patientData));
       res.send("Data was send to the ipadapp clients");
       ipadapp.locals.subscriptions.forEach((subscriber) => {
