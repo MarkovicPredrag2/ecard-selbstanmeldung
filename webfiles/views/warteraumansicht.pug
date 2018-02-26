@@ -18,7 +18,7 @@ html
     link(rel='stylesheet', type='text/css', href='/public/resources/css/style_tabelle_dms.css', media='screen')
   body(onload='startTime()')
     // ======= Navbar =======
-    nav.navbar.navbar-inverse.navbar-static-top.hide(style='position:fixed; width:100%;')
+    nav.navbar.navbar-inverse.navbar-static-top.fullscreenhide(style='position:fixed; width:100%;')
       .container-fluid(style='font-size: 20px')
         .navbar-header
           button.navbar-toggle(type='button', data-toggle='collapse', data-target='#myNavbar')
@@ -54,10 +54,10 @@ html
       // Warteliste Name
       span#patientCalled(style='')
         font(size='80')
-          i.fa.fa-user-plus.fa-3x(style='margin-top: 10%')
+          i.fa.fa-user-plus.fa-3x(style='margin-top: 10%; display:none')
       span#patientCall.patientGreen
         font(size='80')
-          i.fa.fa-user-plus.fa-3x(style='margin-top: 10%; display:none')
+          i.fa.fa-user-plus.fa-3x(style='margin-top: 10%;')
           | &nbspDr. Christopher Neuberger
       // Nachrichten-Feed
       div(style='margin-top:50px')
@@ -69,7 +69,7 @@ html
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
     script(src='https://code.jquery.com/jquery-1.12.4.js')
     // Voice Library
-    script(src='http://code.responsivevoice.org/responsivevoice.js')
+    script(src='https://code.responsivevoice.org/responsivevoice.js')
     // SSE Receiver
     script(type='text/javascript', src='/public/resources/js/warteraumssereceiver.js')
     // Time Script
@@ -106,6 +106,6 @@ html
       $(document).keydown(function (event) {
       if (event.keyCode == 13) {
       fullscreen();
-      $(".hide").toggle();
+      $(".fullscreenhide").toggle();
       }
       });

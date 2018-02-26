@@ -26,7 +26,7 @@
 
     <!-- ======= Navbar ======= -->
 
-    <nav class="navbar navbar-inverse navbar-static-top hide" style="position:fixed; width:100%;">
+    <nav class="navbar navbar-inverse navbar-static-top fullscreenhide" style="position:fixed; width:100%;">
       <div style="font-size: 20px" class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -63,8 +63,8 @@
       <span><img src="./public/resources/img/svc.png" style="margin-top: 10%; float:right; width: 10%; height: 7.5%"/></span>
 
       <!-- Warteliste Name-->
-      <span id="patientCalled" style=""><font size="80"><i class="fa fa-user-plus fa-3x" style="margin-top: 10%"></i></font></span>
-      <span class="patientGreen" id="patientCall"><font size="80"><i class="fa fa-user-plus fa-3x" style="margin-top: 10%; display:none"></i>&nbspDr. Christopher Neuberger</font></span>
+      <span id="patientCalled"><font size="80"><i class="fa fa-user-plus fa-3x" style="margin-top: 10%"></i></font></span>
+      <span class="patientGreen" id="patientCall"><font size="80"><i class="fa fa-user-plus fa-3x" style="margin-top: 10%; dislay:none"></i>&nbspDr. Christopher Neuberger</font></span>
 
       <!-- Nachrichten-Feed  -->
 
@@ -80,7 +80,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <!-- Voice Library -->
-    <script src="http://code.responsivevoice.org/responsivevoice.js"></script>
+    <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
     <!-- SSE Receiver -->
     <script type="text/javascript" src="./public/resources/js/warteraumssereceiver.js"></script>
     <!-- Time Script -->
@@ -119,7 +119,7 @@
     $(document).keydown(function (event) {
       if (event.keyCode == 13) {
         fullscreen();
-        $(".hide").toggle();
+        $(".fullscreenhide").toggle();
       }
     });
     </script>

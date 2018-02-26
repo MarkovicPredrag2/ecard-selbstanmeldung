@@ -21,10 +21,10 @@ if( typeof(EventSource) !== "undefined" ) {
   	var patient = JSON.parse(event.data);
     // Otherwise, add a new patient to the list
 		patientList.innerHTML +=
-	  	"<li class='list' onclick='requestPatientData(this)' id='" + patient.svnr + "'>" +
+	  	"<li class='list' onclick='focusPatientOnSelect(this)' id='" + patient.svnr + "'>" +
 	  		"<i class='fa " + iconResolver(patient.grundid) + " fa-5x' aria-hidden='true' style='float:left; margin: 0 15px 0 0;'></i>" +
 	  		"<i class='fa fa-bars fa-3x' aria-hidden='true' style='float:right; padding-top:27.5px'></i>" +
-	  		"<h3 style='text-align: left'>" + patient.grund + "</h3>" +
+	  		"<h3 style='text-align: left;'>" + patient.grund + "</h3>" +
 	      "<p>".concat(patient.geschlecht == "M" ? "Hr." : "Fr.", " ", patient.titel, " ", patient.nachname, " ", patient.vorname, " (", patient.alter, " Jahre alt)","</p>") +
 	  	"</li>";
 

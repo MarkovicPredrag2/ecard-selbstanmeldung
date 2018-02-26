@@ -252,6 +252,7 @@ public.post('/login', (req, res) => {
 	//	Check the credentials
 	//	the user provided within
 	//	the http body.
+  console.log(JSON.stringify(req.body));
   DB.lookUpUser(req.body)
 		.then((user) => {
       // if (req[cookieName].user) {
@@ -271,6 +272,7 @@ public.post('/login', (req, res) => {
 			//	url (depending on his role),
 			//	where he receives a
 			//	(eventually rendered) html file.
+      console.log("Logged in: " + JSON.stringify(req[cookieName].user));
 			redirectUser(user.rolle, res);
 		})
 		.catch((error) => {
@@ -321,7 +323,6 @@ arzt.get('/ansicht/:ansicht', (req, res) => {
 
 // Return logdata to specific log-art
 arzt.get('/logdata', (req, res) => {
-  console.log(req.query.logart);
   if (req.query.logart) {
     DB.dumpLog(req.query.logart)
       .then((result) => {
@@ -376,7 +377,6 @@ arzt.post('/patientdata', (req, res) => {
 
 // Function to call in patients
 arzt.post('/callin', (req, res) => {
-  // TODO: Notify warteraum agents
   if (req.body.svnr) {
     DB.callInPatientIntoBehandlungsZimmer(req.body.svnr, req[cookieName].user.username)
       .then((wartelistePatients) => {
@@ -385,7 +385,7 @@ arzt.post('/callin', (req, res) => {
         arzt.locals.subscriptionsWarteRaum.forEach((subscriber) => {
           subscriber.connection.write('id: patient');
           subscriber.connection.write('\n');
-          subscriber.connection.write('data: ${ JSON.stringify(wartelistePatients) }');
+          subscriber.connection.write(`data: ${ JSON.stringify(wartelistePatients) }`);
           subscriber.connection.write('\n\n');
         });
         res.sendStatus(200).end();
@@ -425,16 +425,28 @@ arzt.post('/rank', (req, res) => {
   // Dataformat: { from: '5050060985', before: '4075081055'}
   if (req.body.from && req.body.before) {
     var payload = req.body;
-    // It's a ranking request
-    // Dataformat: { from: '5050060985', before: '4075081055'}
-    DB.rankWarteliste(payload.from, payload.before)
-      .then((result) => {
-        // informOtherAertzteOnChange(req[cookieName].user);
-        res.sendStatus(200).end();
+    // TODO: Ask, if the first patient is in behandlung
+    DB.isFirstPatientInBehandlung()
+      .then((answer) => {
+        if (answer) {
+          console.log("Ranking allowed!");
+          DB.rankWarteliste(payload.from, payload.before)
+            .then((result) => {
+              // informOtherAertzteOnChange(req[cookieName].user);
+              res.sendStatus(200).end();
+            })
+            .catch((error) => {
+              serverTrafficLogger.log('error', `@${req.originalUrl}: ${error}`, logMetaData);
+              informSendingArztOnError(req, res);
+            });
+        } else {
+          res.sendStatus(403).end("List cant be ranked");
+        }
       })
       .catch((error) => {
         serverTrafficLogger.log('error', `@${req.originalUrl}: ${error}`, logMetaData);
-        informSendingArztOnError(req, res);
+        console.error(error);
+        res.sendStatus(403).end();
       });
     } else {
     //  Bad request from the user
@@ -443,32 +455,32 @@ arzt.post('/rank', (req, res) => {
 });
 
 // Test Stub, to simulate "plug"-process (Bernhard)
-// arzt.get('/plug', (req, res) => {
-//   var svnr = "3048280984";
-//
-//   DB.getAllPatientData(svnr)
-//     .then((result) => {
-//       var patientData = {
-//         signature: crypto.createHmac('sha256', appSignatureSecret)
-//                     .update(svnr)
-//                     .digest('hex'),
-//         patient: result
-//       };
-//       patientData.patient.svnr = String(patientData.patient.svnr);
-//       console.log(JSON.stringify(patientData));
-//       res.send("Data was send to the ipadapp clients");
-//       ipadapp.locals.subscriptions.forEach((subscriber) => {
-//         subscriber.connection.write(`id: patient`);
-//         subscriber.connection.write('\n');
-//         subscriber.connection.write(`data: ${ JSON.stringify(patientData) }`);
-//         subscriber.connection.write('\n\n');
-//       });
-//       console.log("Patientdata sent ...");
-//     })
-//     .catch((error) => {
-//       console.error(error);
-//     })
-// });
+arzt.get('/plug', (req, res) => {
+  var svnr = "3048280984";
+
+  DB.getAllPatientData(svnr)
+    .then((result) => {
+      var patientData = {
+        signature: crypto.createHmac('sha256', appSignatureSecret)
+                    .update(svnr)
+                    .digest('hex'),
+        patient: result
+      };
+      patientData.patient.svnr = String(patientData.patient.svnr);
+      console.log(JSON.stringify(patientData));
+      res.send("Data was send to the ipadapp clients");
+      ipadapp.locals.subscriptions.forEach((subscriber) => {
+        subscriber.connection.write(`id: patient`);
+        subscriber.connection.write('\n');
+        subscriber.connection.write(`data: ${ JSON.stringify(patientData) }`);
+        subscriber.connection.write('\n\n');
+      });
+      console.log("Patientdata sent ...");
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+});
 
 function loadTestPatients() {
   var testPatients = [
@@ -937,54 +949,54 @@ ipadapp.post('/patientdata', (req, res) => {
   console.log("Patientdata received:");
   console.log(req.body);
 
-  if (req.body) {
-    // Wrap data
-    var appData = req.body;
-
-    // Create signature of provided svnr
-    var svnrSignature = crypto.createHmac('sha256', appSignatureSecret).update(appData.patient.svnr).digest('hex');
-
-    // Check for signature
-    if (appData.signature == svnrSignature) {
-      DB.isPatientAlreadyInWarteliste(appData.patient.svnr)
-        .then((answer) => {
-          if (!answer) {
-            DB.updatePatient(appData.patient)
-              .then((result) => {
-                DB.addPatientToWarteliste(appData.patient)
-                  .then((patientData) => {
-                    // Notify ärzte
-                    arzt.locals.subscriptionsArzt.forEach((subscriber) => {
-                      subscriber.connection.write(`id: patient`);
-                      subscriber.connection.write('\n');
-                      subscriber.connection.write(`data: ${ JSON.stringify(patientData) }`);
-                      subscriber.connection.write('\n\n');
-                    });
-                    res.send("Ärzte wurden notifiziert");
-                    })
-                  .catch((error) => {
-                    console.error("At /appsendsimulation (addPatientToWarteliste): " + error);
-                    res.send(500);
-                  })
-              })
-              .catch((error) => {
-                console.error("At /appsendsimulation (updatePatient): " + error);
-                res.send(500);
-              });
-          } else {
-            res.send("Patient is already in warteliste");
-          }
-        })
-        .catch((error) => {
-          console.error("At /appsendsimulation: " + error);
-        })
-    } else {
-      res.status(403).send("Gefaelschtes Datenpaket");
-    }
-  } else {
-    // Send bad request message back
-    res.sendStatus(403).end();
-  }
+  // if (req.body) {
+  //   // Wrap data
+  //   var appData = req.body;
+  //
+  //   // Create signature of provided svnr
+  //   var svnrSignature = crypto.createHmac('sha256', appSignatureSecret).update(appData.patient.svnr).digest('hex');
+  //
+  //   // Check for signature
+  //   if (appData.signature == svnrSignature) {
+  //     DB.isPatientAlreadyInWarteliste(appData.patient.svnr)
+  //       .then((answer) => {
+  //         if (!answer) {
+  //           DB.updatePatient(appData.patient)
+  //             .then((result) => {
+  //               DB.addPatientToWarteliste(appData.patient)
+  //                 .then((patientData) => {
+  //                   // Notify ärzte
+  //                   arzt.locals.subscriptionsArzt.forEach((subscriber) => {
+  //                     subscriber.connection.write(`id: patient`);
+  //                     subscriber.connection.write('\n');
+  //                     subscriber.connection.write(`data: ${ JSON.stringify(patientData) }`);
+  //                     subscriber.connection.write('\n\n');
+  //                   });
+  //                   res.send("Ärzte wurden notifiziert");
+  //                   })
+  //                 .catch((error) => {
+  //                   console.error("At /appsendsimulation (addPatientToWarteliste): " + error);
+  //                   res.send(500);
+  //                 })
+  //             })
+  //             .catch((error) => {
+  //               console.error("At /appsendsimulation (updatePatient): " + error);
+  //               res.send(500);
+  //             });
+  //         } else {
+  //           res.send("Patient is already in warteliste");
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.error("At /appsendsimulation: " + error);
+  //       })
+  //   } else {
+  //     res.status(403).send("Gefaelschtes Datenpaket");
+  //   }
+  // } else {
+  //   // Send bad request message back
+  //   res.sendStatus(403).end();
+  // }
 });
 
 // =========== app routes ===========
@@ -1055,6 +1067,7 @@ app.use((err, req, res, next) => {
 // 	//	Add patient to the database
 // 	//	if he/she does not exist.
 //   console.log(JSON.stringify(patient));
+//   console.log("Ipadapps atm: " + ipadapp.locals.subscriptions.length);
 //
 //   DB.isPatientAlreadyInWarteliste(patient.person.svnr)
 //     .then((answer) => {
@@ -1062,7 +1075,8 @@ app.use((err, req, res, next) => {
 //       // the patient has not to be in the warteliste
 //       // in order to send data to the ipadapp
 //       // Otherwise, ignore the prank.
-//       if (!answer && ipadapp.locals.subscriptions.length > 0) {
+//       //  && ipadapp.locals.subscriptions.length > 0
+//       if (!answer) {
 //
 //         DB.addPatientIfNotExists(patient)
 //             .then((result) => {
@@ -1077,7 +1091,7 @@ app.use((err, req, res, next) => {
 //                                 .digest('hex'),
 //                     patient: patientDataResult
 //                   };
-//
+//                   console.log("Daten zur App: " + JSON.stringify(patientData));
 //                   //  After adding the patient,
 //                  	//	send the patient data along
 //                  	//	with all of his data in the DB
@@ -1098,7 +1112,7 @@ app.use((err, req, res, next) => {
 //                serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
 //              })
 //       } else {
-//         console.log("Patient ist bereits in der Warteliste.");
+//         console.log("Patientdata ignored. App doesn't listen or patient is already in warteliste.");
 //       }
 //      })
 //      .catch((error) => {
@@ -1107,11 +1121,11 @@ app.use((err, req, res, next) => {
 // });
 //
 // ginaInformation.on('error', (error) => {
-//   console.error("Error: " + error);
+//   // console.error("Error: " + error);
 // 	ginaErrorLogger.log('error', error, logMetaData);
 // });
 //
 // ginaInformation.on('procerror', (error) => {
-//   console.error("ProcError: " + error);
+//   // console.error("ProcError: " + error);
 // 	ginaErrorLogger.log('fatal', error, logMetaData);
 // });
