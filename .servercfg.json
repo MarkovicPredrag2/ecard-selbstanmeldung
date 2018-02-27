@@ -5,7 +5,7 @@
 	},
 	"gina": {
 		"ipaddress": "10.196.2.18",
-		"reader": "Test-03 (02:94:93)",
+		"reader": "Test-01 (02:b5:21)",
 		"ocardreader": "Test-02 (02:81:7c)",
 		"pin": "0000",
 		"interval": 400,
