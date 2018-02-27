@@ -1,7 +1,8 @@
 {
 	"ssl": {
 		"key": "/home/ecard/ssl-cert/five4u_spengergasse_at.key",
-		"cert": "/home/ecard/ssl-cert/five4u_spengergasse_at_2246905/five4u_spengergasse_at.crt"
+		"cert": "/home/ecard/ssl-cert/five4u_spengergasse_at_2246905/five4u_spengergasse_at.crt",
+		"ca": "/home/ecard/ssl-cert/five4u_spengergasse_at_2246905/DigiCertCA.crt"
 	},
 	"gina": {
 		"ipaddress": "10.196.2.18",

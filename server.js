@@ -63,7 +63,8 @@ const logMetaData = {
 //	ca: Path to the chaining file.
 const keys = {
 	key: fs.readFileSync(cfg.ssl.key),
-  cert: fs.readFileSync(cfg.ssl.cert)
+  cert: fs.readFileSync(cfg.ssl.cert),
+  ca: fs.readFileSync(cfg.ssl.ca)
 };
 
 // =========== Express configuration ===========
@@ -952,10 +953,10 @@ ipadapp.post('/patientdata', (req, res) => {
    if (req.body) {
      // Wrap data
      var appData = req.body;
-  
+
      // Create signature of provided svnr
      var svnrSignature = crypto.createHmac('sha256', appSignatureSecret).update(appData.patient.svnr).digest('hex');
-  
+
   //   // Check for signature
      if (appData.signature == svnrSignature) {
        DB.isPatientAlreadyInWarteliste(appData.patient.svnr)
@@ -1067,69 +1068,66 @@ app.use((err, req, res, next) => {
 		the process itself occur.
 	==========================================
 */
- ginaInformation.on('data', (patient) => {
+ginaInformation.on('data', (patient) => {
  	//	Patient plugged his card.
-// 	//	Add patient to the database
-// 	//	if he/she does not exist.
-   console.log(JSON.stringify(patient));
-   console.log("Ipadapps atm: " + ipadapp.locals.subscriptions.length);
+	//	Add patient to the database
+	//	if he/she does not exist.
+  console.log(JSON.stringify(patient));
+  console.log("Ipadapps atm: " + ipadapp.locals.subscriptions.length);
 
-   DB.isPatientAlreadyInWarteliste(patient.person.svnr)
-     .then((answer) => {
-       // There must be at least 1 ipadapp available AND
+  DB.isPatientAlreadyInWarteliste(patient.person.svnr)
+    .then((answer) => {
+      // There must be at least 1 ipadapp available AND
        // the patient has not to be in the warteliste
        // in order to send data to the ipadapp
        // Otherwise, ignore the prank.
-       //  && ipadapp.locals.subscriptions.length > 0      
-	 if (!answer && ipadapp.locals.subscriptions.length > 0) {
-
+       //  && ipadapp.locals.subscriptions.length > 0
+	    if (!answer && ipadapp.locals.subscriptions.length > 0) {
          DB.addPatientIfNotExists(patient)
-             .then((result) => {
-
-                DB.getAllPatientData(patient.person.svnr)
-                 .then((patientDataResult) => {
-//                   // Add signature
-                   var patientData = {
-                     signature: crypto.createHmac('sha256', appSignatureSecret)
-                                 .update(patient.person.svnr)
-                                 .digest('hex'),
-                     patient: patientDataResult
-                   };
-                   console.log("Daten zur App: " + JSON.stringify(patientData));
-                   //  After adding the patient,
-//                  	//	send the patient data along
-//                  	//	with all of his data in the DB
-//                  	//	to the subscribed iPad-apps.
-                  	ipadapp.locals.subscriptions.forEach((subscriber) => {
-                       subscriber.connection.write(`id: patient`);
-                       subscriber.connection.write('\n');
-                       subscriber.connection.write(`data: ${ JSON.stringify(patientData) }`);
-                       subscriber.connection.write('\n\n');
-                  	});
-
-                  })
-                  .catch((error) => {
-                    serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
-                  })
+            .then((result) => {
+              DB.getAllPatientData(patient.person.svnr)
+                .then((patientDataResult) => {
+                  // Add signature
+                  var patientData = {
+                               signature: crypto.createHmac('sha256', appSignatureSecret)
+                                           .update(patient.person.svnr)
+                                           .digest('hex'),
+                               patient: patientDataResult
+                             };
+                  console.log("Daten zur App: " + JSON.stringify(patientData));
+                  //  After adding the patient,
+          //                  	//	send the patient data along
+          //                  	//	with all of his data in the DB
+          //                  	//	to the subscribed iPad-apps.
+                  ipadapp.locals.subscriptions.forEach((subscriber) => {
+                    subscriber.connection.write(`id: patient`);
+                    subscriber.connection.write('\n');
+                    subscriber.connection.write(`data: ${ JSON.stringify(patientData) }`);
+                    subscriber.connection.write('\n\n');
+                  });
               })
               .catch((error) => {
                 serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
               })
-       } else {
-         console.log("Patientdata ignored. App doesn't listen or patient is already in warteliste.");
-       }
-      })
+          })
+          .catch((error) => {
+            serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
+          })
+      } else {
+          console.log("Patientdata ignored. App doesn't listen or patient is already in warteliste.");
+      }
+    })
       .catch((error) => {
         serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
       })
  });
 
  ginaInformation.on('error', (error) => {
-    console.error("Error: " + error);
+  // console.error("Error: " + error);
  	ginaErrorLogger.log('error', error, logMetaData);
  });
 
  ginaInformation.on('procerror', (error) => {
-    console.error("ProcError: " + error);
+  // console.error("ProcError: " + error);
  	ginaErrorLogger.log('fatal', error, logMetaData);
  });

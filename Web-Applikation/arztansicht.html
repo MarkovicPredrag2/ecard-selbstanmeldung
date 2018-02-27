@@ -18,7 +18,7 @@
     <!-- Wateliste CSS + sonstiges  -->
     <link rel="stylesheet" type="text/css" href="./public/resources/css/style.css" media="screen" />
   </head>
-  <body onload="startTime(); focusPatientOnStartup();">
+  <body onload="startTime()">
 
     <!-- ======= Navbar ======= -->
 
@@ -114,6 +114,7 @@
       // Rank patients after dropping a list-element
       $(document).ready(function() {
         $("ul.example").sortable({
+          focusPatientOnStartup();
           onDrop: function ($item, container, _super) {
             // Rank the patient for the patient
             $.post("/role/arzt/rank", rankPatientBefore($item.attr("id")),
