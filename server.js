@@ -4,7 +4,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
-const https = require('https');
+const https = require('http');
 const winston = require('winston');
 const cookieSession = require('client-sessions');
 const path = require('path');
@@ -61,11 +61,11 @@ const logMetaData = {
 //	key: Path to the private key.
 //	crt: Path to the certificate.
 //	ca: Path to the chaining file.
-const keys = {
-	key: fs.readFileSync(cfg.ssl.key),
-  cert: fs.readFileSync(cfg.ssl.cert),
-  ca: fs.readFileSync(cfg.ssl.ca)
-};
+// const keys = {
+// 	key: fs.readFileSync(cfg.ssl.key),
+//   cert: fs.readFileSync(cfg.ssl.cert),
+//   ca: fs.readFileSync(cfg.ssl.ca)
+// };
 
 // =========== Express configuration ===========
 
@@ -229,23 +229,23 @@ DB.connect()
 	});
 
 //	Starting the server
-https.createServer(keys,
+https.createServer(//keys,
   app).listen(portcfg.port_1, () => {
 	console.log(`Verbunden auf Port ${portcfg.port_1}`);
 });
-https.createServer(keys,
+https.createServer(//keys,
   app).listen(portcfg.port_2, () => {
 	console.log(`Verbunden auf Port ${portcfg.port_2}`);
 });
 
 
 //	Starting gina listerner
- const ginaInformation =
-         ginaListener.listen(ginacfg.ipaddress, ginacfg.reader, ginacfg.ocardreader, ginacfg.pin, ginacfg.interval, ginacfg.testCardsAllowed);
-
- ginaInformation.on('connection', () => {
-   console.log('Verbunden mit der GINA');
- })
+// const ginaInformation =
+//          ginaListener.listen(ginacfg.ipaddress, ginacfg.reader, ginacfg.ocardreader, ginacfg.pin, ginacfg.interval, ginacfg.testCardsAllowed);
+//
+// ginaInformation.on('connection', () => {
+//    console.log('Verbunden mit der GINA');
+//  })
 
 // =========== public routes ===========
 
@@ -1068,66 +1068,66 @@ app.use((err, req, res, next) => {
 		the process itself occur.
 	==========================================
 */
-ginaInformation.on('data', (patient) => {
- 	//	Patient plugged his card.
-	//	Add patient to the database
-	//	if he/she does not exist.
-  console.log(JSON.stringify(patient));
-  console.log("Ipadapps atm: " + ipadapp.locals.subscriptions.length);
-
-  DB.isPatientAlreadyInWarteliste(patient.person.svnr)
-    .then((answer) => {
-      // There must be at least 1 ipadapp available AND
-       // the patient has not to be in the warteliste
-       // in order to send data to the ipadapp
-       // Otherwise, ignore the prank.
-       //  && ipadapp.locals.subscriptions.length > 0
-	    if (!answer && ipadapp.locals.subscriptions.length > 0) {
-         DB.addPatientIfNotExists(patient)
-            .then((result) => {
-              DB.getAllPatientData(patient.person.svnr)
-                .then((patientDataResult) => {
-                  // Add signature
-                  var patientData = {
-                               signature: crypto.createHmac('sha256', appSignatureSecret)
-                                           .update(patient.person.svnr)
-                                           .digest('hex'),
-                               patient: patientDataResult
-                             };
-                  console.log("Daten zur App: " + JSON.stringify(patientData));
-                  //  After adding the patient,
-          //                  	//	send the patient data along
-          //                  	//	with all of his data in the DB
-          //                  	//	to the subscribed iPad-apps.
-                  ipadapp.locals.subscriptions.forEach((subscriber) => {
-                    subscriber.connection.write(`id: patient`);
-                    subscriber.connection.write('\n');
-                    subscriber.connection.write(`data: ${ JSON.stringify(patientData) }`);
-                    subscriber.connection.write('\n\n');
-                  });
-              })
-              .catch((error) => {
-                serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
-              })
-          })
-          .catch((error) => {
-            serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
-          })
-      } else {
-          console.log("Patientdata ignored. App doesn't listen or patient is already in warteliste.");
-      }
-    })
-      .catch((error) => {
-        serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
-      })
- });
-
- ginaInformation.on('error', (error) => {
-  // console.error("Error: " + error);
- 	ginaErrorLogger.log('error', error, logMetaData);
- });
-
- ginaInformation.on('procerror', (error) => {
-  // console.error("ProcError: " + error);
- 	ginaErrorLogger.log('fatal', error, logMetaData);
- });
+// ginaInformation.on('data', (patient) => {
+//  	//	Patient plugged his card.
+// 	//	Add patient to the database
+// 	//	if he/she does not exist.
+//   console.log(JSON.stringify(patient));
+//   console.log("Ipadapps atm: " + ipadapp.locals.subscriptions.length);
+//
+//   DB.isPatientAlreadyInWarteliste(patient.person.svnr)
+//     .then((answer) => {
+//       // There must be at least 1 ipadapp available AND
+//        // the patient has not to be in the warteliste
+//        // in order to send data to the ipadapp
+//        // Otherwise, ignore the prank.
+//        //  && ipadapp.locals.subscriptions.length > 0
+// 	    if (!answer && ipadapp.locals.subscriptions.length > 0) {
+//          DB.addPatientIfNotExists(patient)
+//             .then((result) => {
+//               DB.getAllPatientData(patient.person.svnr)
+//                 .then((patientDataResult) => {
+//                   // Add signature
+//                   var patientData = {
+//                                signature: crypto.createHmac('sha256', appSignatureSecret)
+//                                            .update(patient.person.svnr)
+//                                            .digest('hex'),
+//                                patient: patientDataResult
+//                              };
+//                   console.log("Daten zur App: " + JSON.stringify(patientData));
+//                   //  After adding the patient,
+//           //                  	//	send the patient data along
+//           //                  	//	with all of his data in the DB
+//           //                  	//	to the subscribed iPad-apps.
+//                   ipadapp.locals.subscriptions.forEach((subscriber) => {
+//                     subscriber.connection.write(`id: patient`);
+//                     subscriber.connection.write('\n');
+//                     subscriber.connection.write(`data: ${ JSON.stringify(patientData) }`);
+//                     subscriber.connection.write('\n\n');
+//                   });
+//               })
+//               .catch((error) => {
+//                 serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
+//               })
+//           })
+//           .catch((error) => {
+//             serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
+//           })
+//       } else {
+//           console.log("Patientdata ignored. App doesn't listen or patient is already in warteliste.");
+//       }
+//     })
+//       .catch((error) => {
+//         serverTrafficLogger.log('error', `db error: ${error}`, logMetaData);
+//       })
+//  });
+//
+//  ginaInformation.on('error', (error) => {
+//   // console.error("Error: " + error);
+//  	ginaErrorLogger.log('error', error, logMetaData);
+//  });
+//
+//  ginaInformation.on('procerror', (error) => {
+//   // console.error("ProcError: " + error);
+//  	ginaErrorLogger.log('fatal', error, logMetaData);
+//  });

@@ -92,7 +92,7 @@
               i.fa.fa-file-text-o.fa-4x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
             i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
             h3(style='text-align: left') #{patient.grund}
-            p #{patient.geschlecht} #{patient.anrede} #{patient.nachname} #{patient.vorname} (#{patient.alter} Jahre alt)
+            p #{patient.geschlecht == "M" ? "Hr." : "Fr."} #{patient.anrede} #{patient.nachname} #{patient.vorname} (#{patient.alter} Jahre alt)
          -->
       </ul>
     </div>

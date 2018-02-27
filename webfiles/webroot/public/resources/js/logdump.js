@@ -122,14 +122,6 @@ function logdump(logart) {
           });
           break;
         case "3": // Patienteneinschreibung
-          // Dataformat:
-          // {
-          //   sozialversicherungsnummer: 1234 010101,
-          //   vorname: max,
-          //   nachnamne: musterpatien,
-          //   grund: rezept
-          // }
-          // Load template into log
           logTableContent =
             "<table id='logtable' class='display' cellspacing='0' width='100%'>" +
               "<thead>" +
@@ -162,7 +154,7 @@ function logdump(logart) {
             logUnits.push({
               "ID": log.id,
               "Datum": log.timestamp,
-              "SVNR": payload.sozialversicherungsnummer,
+              "SVNR": payload.svnr,
               "Vorname": payload.vorname,
               "Nachname": payload.nachname,
               "Grund": payload.grund
@@ -219,11 +211,6 @@ function logdump(logart) {
           });
           break;
         case "5": // Webapplikationsanmeldung (Benutzer)
-          // Dataformat:
-          // {
-          //   username: muncan,
-          // }
-
           // Load template into log
           logTableContent =
             "<table id='logtable' class='display' cellspacing='0' width='100%'>" +
