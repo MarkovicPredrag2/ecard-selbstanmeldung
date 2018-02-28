@@ -33,7 +33,7 @@ html
           ul.nav.navbar-nav
             li
               p.navbar-text.fa.fa-user-md.fa-2x(style='color: orange', aria-hidden='true')
-                | &nbsp 
+                | &nbsp
                 span#user= user
             // Navigation
             li
@@ -54,10 +54,8 @@ html
     .container(style='width: 90%;')
       .tab(style='margin-top: 75px; margin-bottom: 25px')
         button.tablinks(onclick="openTab(event, '1')") Patientenanmeldungen
-        button.tablinks(onclick="openTab(event, '2')") Patientendatenänderungen
-        button.tablinks(onclick="openTab(event, '3')") Patienteneinschreibung
-        button.tablinks(onclick="openTab(event, '4')") Patienten Warteliste aufrufe
-        button.tablinks(onclick="openTab(event, '5')") Login-Aktiviäten
+        button.tablinks(onclick="openTab(event, '3')") Patienteneinschreibungen
+        button.tablinks(onclick="openTab(event, '5')") Login-Aktivitäten
       // Log Table
       #logtablecontainer
         table#logtable.display(cellspacing='0', width='100%')
@@ -72,10 +70,10 @@ html
         hr.featurette-divider
         footer
           p
-            | © 2018 Five4U, Diplomprojekt · 
+            | © 2018 Five4U, Diplomprojekt ·
             a(href='/public/impressum.html') Impressum
             span(style='float: right;')
-              | E-Card Selbstanmeldungs Tool · 
+              | E-Card Selbstanmeldungs Tool ·
               a(href='/public/info.html') Info
     // ======= JS Dependencies =======
     // jQuery library

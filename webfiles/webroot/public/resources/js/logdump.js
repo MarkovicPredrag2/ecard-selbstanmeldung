@@ -23,12 +23,6 @@ function logdump(logart) {
       // Choose the right table with the right method to load
       switch (logart) {
         case "1": // Neuer Patient
-          // Dataformat:
-          // {
-          //   sozialversicherungsnummer: 1234 010101,
-          //   vorname: max,
-          //   nachnamne: musterpatien
-          // }
           // Load template into log
           logTableContent =
             "<table id='logtable' class='display' cellspacing='0' width='100%'>" +
@@ -60,7 +54,7 @@ function logdump(logart) {
             logUnits.push({
               "ID": log.id,
               "Datum": log.timestamp,
-              "SVNR": payload.sozialversicherungsnummer,
+              "SVNR": payload.svnr,
               "Vorname": payload.vorname,
               "Nachname": payload.nachname
             });
