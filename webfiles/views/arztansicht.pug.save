@@ -1,0 +1,148 @@
+doctype html
+html
+  head
+    // ======= Meta Tags =======
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    title Arztansicht
+    // ======= CSS Dependencies =======
+    // Bootstrap v3.3.7
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    // W3schools CSS
+    link(rel='stylesheet', href='https://www.w3schools.com/w3css/4/w3.css')
+    // Font awesome v4.7.0
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+    // Wateliste CSS + sonstiges
+    link(rel='stylesheet', type='text/css', href='/public/resources/css/style.css', media='screen')
+  body(onload='startTime()')
+    // ======= Navbar =======
+    nav.navbar.navbar-inverse.navbar-static-top(style='position:fixed; width:100%;')
+      .container-fluid(style='font-size: 20px')
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#myNavbar')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          // Home Icon
+          a.navbar-brand.fa.fa-home.fa-2x(data-toggle='tooltip', title='Home', aria-hidden='true', href='/role/arzt/ansicht/homepage')
+        #myNavbar.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            // User
+            // Template: username p= user
+            li
+              p.navbar-text.fa.fa-user-md.fa-2x(style='color: orange', aria-hidden='true')
+                | &nbsp
+                span#user= user
+            // Navigation
+            li
+              a(href='/role/arzt/ansicht/warteraumansicht', style='margin-top: 5%') Warteraumansicht
+            li
+              a(href='/role/arzt/ansicht/arztansicht', style='margin-top: 7%') Arztansicht
+            li
+              a(href='/role/arzt/ansicht/logs', style='margin-top: 5%') Logging Historie
+          ul.nav.navbar-nav.navbar-right
+            // Time
+            li
+              p#clock.navbar-text(style='margin-top: 15.5%;')
+            // Logout button
+            li(data-toggle='tooltip', title='Logout')
+              a.fa.fa-power-off.fa-2x(style='color: red; margin-top: 17%;', href='/role/logout', aria-hidden='true')
+    // ======= Mid-Section =======
+    // Left Nav-Bar
+    .w3-sidebar.w3-bar-block.w3-black.w3-xxlarge(style='width:70px; margin-top:71px;')
+      a#callin.w3-bar-item.w3-button.w3-disabled(onclick='callInPatient()')
+        i.fa.fa-sign-in(style='color:#20c40d', title='Patient hereinholen')
+      a#dismiss.w3-bar-item.w3-button.w3-disabled(onclick='dismissPatient()')
+        i.fa.fa-check(style='color:#20c40d', title='Patient-Fertig')
+    // Patienten-Stammdaten
+    div(style='margin-left:100px; position:fixed; margin-top:72px; width: 55%')
+      .W3-container
+        h1
+          b#h_name Kein Patient in der Warteliste.
+        h2
+          b#h_svnr
+        h2
+          b#h_versicherung
+        h2
+          b#h_grund
+        h3#h_geburtsdatum(style='margin-top: 50px; margin-left:40px;')
+          h3
+            h3#h_adresse(style='margin-left:40px;')
+              h3
+                h3#h_mail(style='margin-left:40px;')
+                  h3
+                    h3#h_telefon(style='margin-left:40px;')
+                      h3
+    // Warteliste
+    div(align='right', style='padding-top:71px')
+      ul#patientlist.list.example
+        for patient in patients
+          li.list(onclick='focusPatientOnSelect(this)' id= patient.svnr class= patient.behandlung != null ? "behandlung" : "")
+            if patient.grundid == 2
+              i.fa.fa-stethoscope.fa-5x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+            else if patient.grundid == 3
+              i.fa.fa-briefcase.fa-4x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+            else if patient.grundid == 1
+              i.fa.fa-file-text-o.fa-4x(aria-hidden='true', style='float:left; margin: 0 15px 0 0;')
+            i.fa.fa-bars.fa-3x(aria-hidden='true', style='float:right; padding-top:27.5px')
+            h3(style='text-align: left') #{patient.grund}
+            p #{patient.geschlecht == "M" ? "Hr." : "Fr."} #{patient.anrede} #{patient.nachname} #{patient.vorname} (#{patient.alter} Jahre alt)
+    // ======= JS Dependencies =======
+    // jQuery library
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+    // Latest compiled JavaScript
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+    // Time Script
+    script(type='text/javascript', src='/public/resources/js/time.js')
+    // Sortable Library
+    script(src='/public/resources/js/jquery-sortable.js')
+    // Client to Server Response logic
+    script(src='/public/resources/js/arztansichtagent.js', charset='utf-8')
+    // OnDrop Eventhandler to send ranking requests
+    script.
+      // Rank patients after dropping a list-element
+      $(document).ready(function() {
+      $("ul.example").sortable({
+	ror: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen.
+Error: Versicherungsdaten wurden bereits von dieser Karte empfangen
+      onDrop: function ($item, container, _super) {
+      // Rank the patient for the patient
+      $.post("/role/arzt/rank", rankPatientBefore($item.attr("id")),
+      function(data, status) {
+      if (status == "success") {
+      // Refresh the patient list
+      focusPatientOnSelect($item.get(0));
+      } else {
+      console.error("Couldn't sort the list");
+      // Restore the list
+      resetPatientTable(data);
+      }
+      });
+      _super($item, container);
+      }
+      });
+      });

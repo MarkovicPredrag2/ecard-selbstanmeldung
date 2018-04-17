@@ -653,7 +653,7 @@ function loadTestPatients() {
         ]
       },
       "person": {
-        "svnr":"0987654328",
+        "svnr":"987654328",
         "titel":"",
         "geburtsdatum":"07.01.2003",
         "vorname":"Hans",

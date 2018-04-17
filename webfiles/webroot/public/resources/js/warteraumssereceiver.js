@@ -10,7 +10,7 @@ if( typeof(EventSource) !== "undefined" ) {
     $(".patientGreen")
 			.css('color', 'green')
 			.css('font-size', 80)
-			.html("&nbsp " + patient.titel + " " + patient.nachname + " " + patient.vorname)
+			.html("&nbsp " + patient.nachname + " " + patient.vorname)
 			.fadeIn(1000)
 			.delay(10000)
 			.fadeOut(1000);

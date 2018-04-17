@@ -31,7 +31,9 @@ html
           ul.nav.navbar-nav
             // Template: username p= user
             li
-              p#user.navbar-text.fa.fa-user-md.fa-2x(style='color: orange', aria-hidden='true')= user
+              p.navbar-text.fa.fa-user-md.fa-2x(style='color: orange', aria-hidden='true')
+                | &nbsp 
+                span#user= user
             // Navigation
             li
               a(href='/role/arzt/ansicht/warteraumansicht', style='margin-top: 5%') Warteraumansicht
@@ -56,7 +58,7 @@ html
         font(size='80')
           i.fa.fa-user-plus.fa-3x(style='margin-top: 10%')
       span#patientCall.patientGreen
-        font(size='80') &nbsp
+        font(size='60') &nbsp
       // Nachrichten-Feed
       div(style='margin-top:50px')
         script(type='text/javascript', src='https://feed.mikle.com/js/fw-loader.js', data-fw-param='66253/')

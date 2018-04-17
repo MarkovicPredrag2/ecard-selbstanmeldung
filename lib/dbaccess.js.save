@@ -39,18 +39,8 @@ class MySQLWrapper {
 						});
 				}
 			});
-
-			// To catch timeout exceptions and to reconnect
-			this.DB.on('error', (err) => {
-				console.error("Error at database connection: " + err);
-				if(err.code === 'PROTOCOL_CONNECTION_LOST') {
-					// Reconnect to the database again
-     					 this.connect();
-   				 } else {
-     					 throw err;
-   				 }
-			});
-		});
+			
+			// To catch timeout		});
 	}
 
 	SQLCommandFeeder(commands) {

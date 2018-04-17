@@ -25,7 +25,7 @@ if( typeof(EventSource) !== "undefined" ) {
 	  		"<i class='fa " + iconResolver(patient.grundid) + " fa-5x' aria-hidden='true' style='float:left; margin: 0 15px 0 0;'></i>" +
 	  		"<i class='fa fa-bars fa-3x' aria-hidden='true' style='float:right; padding-top:27.5px'></i>" +
 	  		"<h3 style='text-align: left;'>" + patient.grund + "</h3>" +
-	      "<p>".concat(patient.geschlecht == "M" ? "Hr." : "Fr.", " ", patient.titel, " ", patient.nachname, " ", patient.vorname, " (", patient.alter, " Jahre alt)","</p>") +
+	      "<p>".concat(patient.geschlecht == "M" ? "Hr." : "Fr.", " ", (patient.titel == null ? "" : patient.titel), " ", patient.nachname, " ", patient.vorname, " (", patient.alter, " Jahre alt)","</p>") +
 	  	"</li>";
 
     // If the patient is the first in the list,
@@ -196,7 +196,7 @@ function requestPatientData(dom) {
 				}
 
         // Load the data into the fields
-        $("#h_name").html(patient.titel.concat(" ", patient.vorname, " ", patient.nachname, " - ", (patient.geschlecht == 'M' ? 'Männlich' : 'Weiblich')));
+        $("#h_name").html((patient.titel == "n.A." ? "" : patient.titel).concat(" ", patient.vorname, " ", patient.nachname, " - ", (patient.geschlecht == 'M' ? 'Männlich' : 'Weiblich')));
 				$("#h_svnr").html(String(patient.svnr).concat(" - ", patient.verskuerzel));
 				$("#h_versicherung").html(patient.verslang);
         $("#h_grund").html("Grund: ".concat(patient.grund));

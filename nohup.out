@@ -1,0 +1,1387 @@
+Verbunden auf Port 80
+Verbunden auf Port 443
+Verbunden mit der DB ...
+Verbunden mit der GINA
+Verbunden auf Port 80
+Verbunden auf Port 443
+Verbunden mit der DB ...
+Verbunden mit der GINA
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+User removed from SSE ... (req)
+{"username":"drmuncan","password":"flieheimohr"}
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User removed from SSE ... (req)
+Ipadapps atm: 1
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'Wien',
+     telefonnummer: '+436641234567',
+     postleitzahl: '1030',
+     svnr: '1003250230',
+     strasse: 'Kleistgasse',
+     hausnummer: '20',
+     email: 'trappl@spengergasse.at',
+     staatscode: '',
+     grund: '1' },
+  signature: 'f099494983eb8b62407a96aa5d2158e005f9c82044dbf45645821f0e8f33cfa5' }
+Patientdata to aerzte: {"svnr":1003250230,"vorname":"aallk","nachname":"Soren-Test","geschlecht":"M","titel":"Dr.-Ing.","alter":30,"grundid":1,"grund":"Rezept"}
+Thu, 01 Mar 2018 10:45:38 GMT express deprecated res.send(status): Use res.sendStatus(status) instead at server.js:978:26
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+Ranking allowed!
+Ranking allowed!
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User removed from SSE ... (req)
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003280380","titel":"Mag.","geburtsdatum":"13.02.1937","vorname":"Max","geschlecht":"M","nachname":"Musterpatient"}}
+Ipadapps atm: 2
+Daten zur App: {"signature":"59b275906b1281362d8532c556000dfb5c9b57fd739974bee535f287b9577403","patient":{"svnr":1003280380,"anrede":"Mag.","geschlecht":"M","vorname":"Max","nachname":"Musterpatient","alter":"13.02.1937","hausnummer":"Aaa","ort":"Aaa","postleitzahl":"Aaa","postfachnummer":null,"postfachtext":null,"staatscode":null,"stock":null,"strasse":"Aaa","email":"","telefonnummer":"1245890","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"}]}}
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'Wien',
+     telefonnummer: '+43676342657',
+     postleitzahl: '1060',
+     svnr: '1003280380',
+     strasse: 'Mariahilferstraße',
+     hausnummer: '16',
+     email: 'zid@spengergasse.at',
+     staatscode: '',
+     grund: '1' },
+  signature: '59b275906b1281362d8532c556000dfb5c9b57fd739974bee535f287b9577403' }
+Patientdata to aerzte: {"svnr":1003280380,"vorname":"Max","nachname":"Musterpatient","geschlecht":"M","titel":"Mag.","alter":81,"grundid":1,"grund":"Rezept"}
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003250229","titel":"Dr.-Ing.","geburtsdatum":"16.02.1988","vorname":"Ake","geschlecht":"M","nachname":"Soren-Test"}}
+Ipadapps atm: 2
+Daten zur App: {"signature":"cfa86b457cb3acb037be1bed18e7b58263d33bd699722a2b57c2f143a03aa395","patient":{"svnr":1003250229,"anrede":"Dr.-Ing.","geschlecht":"M","vorname":"Ake","nachname":"Soren-Test","alter":"16.02.1988","hausnummer":"24","ort":"Wien","postleitzahl":"1050","postfachnummer":null,"postfachtext":null,"staatscode":null,"stock":null,"strasse":"Spenergasse","email":"marwin1998@gmail.com","telefonnummer":"43036097816","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"}]}}
+Ranking allowed!
+Ranking allowed!
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'Wien',
+     telefonnummer: '+43699875478',
+     postleitzahl: '1070',
+     svnr: '1003250229',
+     strasse: 'Neubaugasse',
+     hausnummer: '223',
+     email: 'neuberger@gmail.com',
+     staatscode: '',
+     grund: '2' },
+  signature: 'cfa86b457cb3acb037be1bed18e7b58263d33bd699722a2b57c2f143a03aa395' }
+Patientdata to aerzte: {"svnr":1003250229,"vorname":"Ake","nachname":"Soren-Test","geschlecht":"M","titel":"Dr.-Ing.","alter":30,"grundid":2,"grund":"Behandlung"}
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+User got SSE ...
+User got SSE ...
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003280380","titel":"Mag.","geburtsdatum":"13.02.1937","vorname":"Max","geschlecht":"M","nachname":"Musterpatient"}}
+Ipadapps atm: 2
+Daten zur App: {"signature":"59b275906b1281362d8532c556000dfb5c9b57fd739974bee535f287b9577403","patient":{"svnr":1003280380,"anrede":"Mag.","geschlecht":"M","vorname":"Max","nachname":"Musterpatient","alter":"13.02.1937","hausnummer":"16","ort":"Wien","postleitzahl":"1060","postfachnummer":null,"postfachtext":null,"staatscode":null,"stock":null,"strasse":"Mariahilferstraße","email":"zid@spengergasse.at","telefonnummer":"+43676342657","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"}]}}
+User removed from SSE ... (req)
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'Wien',
+     telefonnummer: '+43676342657',
+     postleitzahl: '1060',
+     svnr: '1003280380',
+     strasse: 'Mariahilferstraße',
+     hausnummer: '16',
+     email: 'zid@spengergasse.at',
+     staatscode: '',
+     grund: '1' },
+  signature: '59b275906b1281362d8532c556000dfb5c9b57fd739974bee535f287b9577403' }
+Patientdata to aerzte: {"svnr":1003280380,"vorname":"Max","nachname":"Musterpatient","geschlecht":"M","titel":"Mag.","alter":81,"grundid":1,"grund":"Rezept"}
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003250229","titel":"Dr.-Ing.","geburtsdatum":"16.02.1988","vorname":"Ake","geschlecht":"M","nachname":"Soren-Test"}}
+Ipadapps atm: 1
+Daten zur App: {"signature":"cfa86b457cb3acb037be1bed18e7b58263d33bd699722a2b57c2f143a03aa395","patient":{"svnr":1003250229,"anrede":"Dr.-Ing.","geschlecht":"M","vorname":"Ake","nachname":"Soren-Test","alter":"16.02.1988","hausnummer":"223","ort":"Wien","postleitzahl":"1070","postfachnummer":null,"postfachtext":null,"staatscode":null,"stock":null,"strasse":"Neubaugasse","email":"neuberger@gmail.com","telefonnummer":"+43699875478","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"}]}}
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'Wien',
+     telefonnummer: '+43699875478',
+     postleitzahl: '1070',
+     svnr: '1003250229',
+     strasse: 'Neubaugasse',
+     hausnummer: '223',
+     email: 'neuberger@gmail.com',
+     staatscode: '',
+     grund: '3' },
+  signature: 'cfa86b457cb3acb037be1bed18e7b58263d33bd699722a2b57c2f143a03aa395' }
+Patientdata to aerzte: {"svnr":1003250229,"vorname":"Ake","nachname":"Soren-Test","geschlecht":"M","titel":"Dr.-Ing.","alter":30,"grundid":3,"grund":"Arbeitsunfähigkeitsmeldung"}
+{"password":"saricc","username":"bernhard"}
+User removed from SSE ... (req)
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+{"signature":"997340a1ffa8d1aed8442092f91ac9c0920cb093f883f1c2ca6ad670bf285a07","patient":{"svnr":3048280984,"anrede":"Ing","geschlecht":"W","vorname":"Sarah","nachname":"Saric","alter":"28.09.1984","hausnummer":"20","ort":"Wien","postleitzahl":"1010","postfachnummer":null,"postfachtext":null,"staatscode":"AT","stock":"20","strasse":"Sonnbergplatz","email":"bushwookie@debil.com","telefonnummer":"43036093454","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"},{"versicherungsid":"25","kuerzel":"BKKVABS","versicherung":"Betriebskrankenkasse voestalpine Bahnsysteme"},{"versicherungsid":"40","kuerzel":"SVAGW","versicherung":"Sozialversicherungsanstalt der gewerblichen Wirtschaft"}]}}
+Patientdata sent ...
+User got SSE ...
+User removed from SSE ... (req)
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+{"signature":"997340a1ffa8d1aed8442092f91ac9c0920cb093f883f1c2ca6ad670bf285a07","patient":{"svnr":3048280984,"anrede":"Ing","geschlecht":"W","vorname":"Sarah","nachname":"Saric","alter":"28.09.1984","hausnummer":"20","ort":"Wien","postleitzahl":"1010","postfachnummer":null,"postfachtext":null,"staatscode":"AT","stock":"20","strasse":"Sonnbergplatz","email":"bushwookie@debil.com","telefonnummer":"43036093454","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"},{"versicherungsid":"25","kuerzel":"BKKVABS","versicherung":"Betriebskrankenkasse voestalpine Bahnsysteme"},{"versicherungsid":"40","kuerzel":"SVAGW","versicherung":"Sozialversicherungsanstalt der gewerblichen Wirtschaft"}]}}
+Patientdata sent ...
+User got SSE ...
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'Wien',
+     telefonnummer: '43036093454',
+     postleitzahl: '1010',
+     svnr: '3048280984',
+     strasse: 'Sonnbergplatz',
+     hausnummer: '20',
+     email: 'bushwookie@debil.com',
+     staatscode: 'AT',
+     grund: '2' },
+  signature: '997340a1ffa8d1aed8442092f91ac9c0920cb093f883f1c2ca6ad670bf285a07' }
+Patientdata to aerzte: {"svnr":3048280984,"vorname":"Sarah","nachname":"Saric","geschlecht":"W","titel":"Ing","alter":33,"grundid":2,"grund":"Behandlung"}
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'Wien',
+     telefonnummer: '43036093454',
+     postleitzahl: '1010',
+     svnr: '3048280984',
+     strasse: 'Sonnbergplatz',
+     hausnummer: '20',
+     email: 'bushwookie@debil.com',
+     staatscode: 'AT',
+     grund: '1' },
+  signature: '997340a1ffa8d1aed8442092f91ac9c0920cb093f883f1c2ca6ad670bf285a07' }
+Patient is already in warteliste
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User got SSE ...
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+{"signature":"997340a1ffa8d1aed8442092f91ac9c0920cb093f883f1c2ca6ad670bf285a07","patient":{"svnr":3048280984,"anrede":"Ing","geschlecht":"W","vorname":"Sarah","nachname":"Saric","alter":"28.09.1984","hausnummer":"20","ort":"Wien","postleitzahl":"1010","postfachnummer":null,"postfachtext":null,"staatscode":"AT","stock":"20","strasse":"Sonnbergplatz","email":"bushwookie@debil.com","telefonnummer":"43036093454","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"},{"versicherungsid":"25","kuerzel":"BKKVABS","versicherung":"Betriebskrankenkasse voestalpine Bahnsysteme"},{"versicherungsid":"40","kuerzel":"SVAGW","versicherung":"Sozialversicherungsanstalt der gewerblichen Wirtschaft"}]}}
+Patientdata sent ...
+Ranking allowed!
+Ranking allowed!
+User got SSE ...
+User got SSE ...
+Ranking allowed!
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+Verbunden auf Port 80
+Verbunden auf Port 443
+Verbunden mit der DB ...
+User got SSE ...
+Verbunden mit der GINA
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+{"signature":"997340a1ffa8d1aed8442092f91ac9c0920cb093f883f1c2ca6ad670bf285a07","patient":{"svnr":3048280984,"anrede":"Ing","geschlecht":"W","vorname":"Sarah","nachname":"Saric","alter":"28.09.1984","hausnummer":"20","ort":"Wien","postleitzahl":"1010","postfachnummer":null,"postfachtext":null,"staatscode":"AT","stock":"20","strasse":"Sonnbergplatz","email":"bushwookie@debil.com","telefonnummer":"43036093454","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"},{"versicherungsid":"25","kuerzel":"BKKVABS","versicherung":"Betriebskrankenkasse voestalpine Bahnsysteme"},{"versicherungsid":"40","kuerzel":"SVAGW","versicherung":"Sozialversicherungsanstalt der gewerblichen Wirtschaft"}]}}
+Patientdata sent ...
+User removed from SSE ... (req)
+Verbunden auf Port 80
+Verbunden auf Port 443
+Verbunden mit der DB ...
+User got SSE ...
+User got SSE ...
+User got SSE ...
+Verbunden mit der GINA
+Verbunden auf Port 80
+Verbunden auf Port 443
+Verbunden mit der DB ...
+User got SSE ...
+User got SSE ...
+User got SSE ...
+Verbunden mit der GINA
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+Ipadapps atm: 1
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User got SSE ...
+Verbunden auf Port 80
+Verbunden auf Port 443
+Verbunden mit der DB ...
+User got SSE ...
+Verbunden mit der GINA
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+User got SSE ...
+User got SSE ...
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User got SSE ...
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+User removed from SSE ... (req)
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003280380","titel":"Mag.","geburtsdatum":"13.02.1937","vorname":"Max","geschlecht":"M","nachname":"Musterpatient"}}
+Ipadapps atm: 1
+Daten zur App: {"signature":"59b275906b1281362d8532c556000dfb5c9b57fd739974bee535f287b9577403","patient":{"svnr":1003280380,"anrede":"Mag.","geschlecht":"M","vorname":"Max","nachname":"Musterpatient","alter":"13.02.1937","hausnummer":"16","ort":"Wien","postleitzahl":"1060","postfachnummer":null,"postfachtext":null,"staatscode":null,"stock":null,"strasse":"Mariahilferstraße","email":"zid@spengergasse.at","telefonnummer":"+43676342657","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"}]}}
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'Wien',
+     telefonnummer: '+43676342657',
+     postleitzahl: '1050',
+     svnr: '1003280380',
+     strasse: 'Spengergasse',
+     hausnummer: '20',
+     email: 'sar16334@spengergasse.at',
+     staatscode: '',
+     grund: '1' },
+  signature: '59b275906b1281362d8532c556000dfb5c9b57fd739974bee535f287b9577403' }
+Patientdata to aerzte: {"svnr":1003280380,"vorname":"Max","nachname":"Musterpatient","geschlecht":"M","titel":"Mag.","alter":81,"grundid":1,"grund":"Rezept"}
+Thu, 01 Mar 2018 15:41:42 GMT express deprecated res.send(status): Use res.sendStatus(status) instead at server.js:978:26
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003250229","titel":"Dr.-Ing.","geburtsdatum":"16.02.1988","vorname":"Ake","geschlecht":"M","nachname":"Soren-Test"}}
+Ipadapps atm: 1
+Daten zur App: {"signature":"cfa86b457cb3acb037be1bed18e7b58263d33bd699722a2b57c2f143a03aa395","patient":{"svnr":1003250229,"anrede":"Dr.-Ing.","geschlecht":"M","vorname":"Ake","nachname":"Soren-Test","alter":"16.02.1988","hausnummer":"12","ort":"ohrstadt","postleitzahl":"11245","postfachnummer":null,"postfachtext":null,"staatscode":null,"stock":null,"strasse":"Marktplatz","email":"marwin1998@gmail.com","telefonnummer":"43036097816","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"}]}}
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'ohrstadt',
+     telefonnummer: '43036097816',
+     postleitzahl: '11245',
+     svnr: '1003250229',
+     strasse: 'Marktplatz',
+     hausnummer: '12',
+     email: 'marwin1998@gmail.com',
+     staatscode: '',
+     grund: '2' },
+  signature: 'cfa86b457cb3acb037be1bed18e7b58263d33bd699722a2b57c2f143a03aa395' }
+Patientdata to aerzte: {"svnr":1003250229,"vorname":"Ake","nachname":"Soren-Test","geschlecht":"M","titel":"Dr.-Ing.","alter":30,"grundid":2,"grund":"Behandlung"}
+Ranking allowed!
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+Ranking allowed!
+Ranking allowed!
+User removed from SSE ... (req)
+Ranking allowed!
+Ranking allowed!
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+Ipadapps atm: 1
+Patient is already in warteliste or there ain't an ipadapp
+Ipadapps atm: 1
+Patient is already in warteliste or there ain't an ipadapp
+Ipadapps atm: 1
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+Ranking allowed!
+Ranking allowed!
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+Ipadapps atm: 0
+Ipadapps atm: 0
+Ipadapps atm: 0
+Ipadapps atm: 0
+Ipadapps atm: 0
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+User removed from SSE ... (req)
+Ipadapps atm: 0
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+User removed from SSE ... (req)
+{"signature":"997340a1ffa8d1aed8442092f91ac9c0920cb093f883f1c2ca6ad670bf285a07","patient":{"svnr":3048280984,"anrede":"Ing","geschlecht":"W","vorname":"Sarah","nachname":"Saric","alter":"28.09.1984","hausnummer":"20","ort":"Wien","postleitzahl":"1010","postfachnummer":null,"postfachtext":null,"staatscode":"AT","stock":"20","strasse":"Sonnbergplatz","email":"bushwookie@debil.com","telefonnummer":"43036093454","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"},{"versicherungsid":"25","kuerzel":"BKKVABS","versicherung":"Betriebskrankenkasse voestalpine Bahnsysteme"},{"versicherungsid":"40","kuerzel":"SVAGW","versicherung":"Sozialversicherungsanstalt der gewerblichen Wirtschaft"}]}}
+Patientdata sent ...
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+Patientdata received:
+{ patient: 
+   { versid: '25',
+     ort: 'Wien',
+     telefonnummer: '43036093454',
+     postleitzahl: '1010',
+     svnr: '3048280984',
+     strasse: 'Sonnbergplatz',
+     hausnummer: '20',
+     email: 'bushwookie@debil.com',
+     staatscode: 'AT',
+     grund: '2' },
+  signature: '997340a1ffa8d1aed8442092f91ac9c0920cb093f883f1c2ca6ad670bf285a07' }
+Patientdata to aerzte: {"svnr":3048280984,"vorname":"Sarah","nachname":"Saric","geschlecht":"W","titel":"Ing","alter":33,"grundid":2,"grund":"Behandlung"}
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+User got SSE ...
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User got SSE ...
+Ranking allowed!
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+User removed from SSE ... (req)
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+{"signature":"997340a1ffa8d1aed8442092f91ac9c0920cb093f883f1c2ca6ad670bf285a07","patient":{"svnr":3048280984,"anrede":"Ing","geschlecht":"W","vorname":"Sarah","nachname":"Saric","alter":"28.09.1984","hausnummer":"20","ort":"Wien","postleitzahl":"1010","postfachnummer":null,"postfachtext":null,"staatscode":"AT","stock":"20","strasse":"Sonnbergplatz","email":"bushwookie@debil.com","telefonnummer":"43036093454","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"},{"versicherungsid":"25","kuerzel":"BKKVABS","versicherung":"Betriebskrankenkasse voestalpine Bahnsysteme"},{"versicherungsid":"40","kuerzel":"SVAGW","versicherung":"Sozialversicherungsanstalt der gewerblichen Wirtschaft"}]}}
+Patientdata sent ...
+User got SSE ...
+User removed from SSE ... (req)
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+{"signature":"997340a1ffa8d1aed8442092f91ac9c0920cb093f883f1c2ca6ad670bf285a07","patient":{"svnr":3048280984,"anrede":"Ing","geschlecht":"W","vorname":"Sarah","nachname":"Saric","alter":"28.09.1984","hausnummer":"20","ort":"Wien","postleitzahl":"1010","postfachnummer":null,"postfachtext":null,"staatscode":"AT","stock":"20","strasse":"Sonnbergplatz","email":"bushwookie@debil.com","telefonnummer":"43036093454","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"},{"versicherungsid":"25","kuerzel":"BKKVABS","versicherung":"Betriebskrankenkasse voestalpine Bahnsysteme"},{"versicherungsid":"40","kuerzel":"SVAGW","versicherung":"Sozialversicherungsanstalt der gewerblichen Wirtschaft"}]}}
+Patientdata sent ...
+User removed from SSE ... (req)
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+{"signature":"997340a1ffa8d1aed8442092f91ac9c0920cb093f883f1c2ca6ad670bf285a07","patient":{"svnr":3048280984,"anrede":"Ing","geschlecht":"W","vorname":"Sarah","nachname":"Saric","alter":"28.09.1984","hausnummer":"20","ort":"Wien","postleitzahl":"1010","postfachnummer":null,"postfachtext":null,"staatscode":"AT","stock":"20","strasse":"Sonnbergplatz","email":"bushwookie@debil.com","telefonnummer":"43036093454","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"},{"versicherungsid":"25","kuerzel":"BKKVABS","versicherung":"Betriebskrankenkasse voestalpine Bahnsysteme"},{"versicherungsid":"40","kuerzel":"SVAGW","versicherung":"Sozialversicherungsanstalt der gewerblichen Wirtschaft"}]}}
+Patientdata sent ...
+User removed from SSE ... (req)
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+{"signature":"997340a1ffa8d1aed8442092f91ac9c0920cb093f883f1c2ca6ad670bf285a07","patient":{"svnr":3048280984,"anrede":"Ing","geschlecht":"W","vorname":"Sarah","nachname":"Saric","alter":"28.09.1984","hausnummer":"20","ort":"Wien","postleitzahl":"1010","postfachnummer":null,"postfachtext":null,"staatscode":"AT","stock":"20","strasse":"Sonnbergplatz","email":"bushwookie@debil.com","telefonnummer":"43036093454","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"},{"versicherungsid":"25","kuerzel":"BKKVABS","versicherung":"Betriebskrankenkasse voestalpine Bahnsysteme"},{"versicherungsid":"40","kuerzel":"SVAGW","versicherung":"Sozialversicherungsanstalt der gewerblichen Wirtschaft"}]}}
+Patientdata sent ...
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+{"signature":"997340a1ffa8d1aed8442092f91ac9c0920cb093f883f1c2ca6ad670bf285a07","patient":{"svnr":3048280984,"anrede":"Ing","geschlecht":"W","vorname":"Sarah","nachname":"Saric","alter":"28.09.1984","hausnummer":"20","ort":"Wien","postleitzahl":"1010","postfachnummer":null,"postfachtext":null,"staatscode":"AT","stock":"20","strasse":"Sonnbergplatz","email":"bushwookie@debil.com","telefonnummer":"43036093454","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"},{"versicherungsid":"25","kuerzel":"BKKVABS","versicherung":"Betriebskrankenkasse voestalpine Bahnsysteme"},{"versicherungsid":"40","kuerzel":"SVAGW","versicherung":"Sozialversicherungsanstalt der gewerblichen Wirtschaft"}]}}
+Patientdata sent ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+{"signature":"997340a1ffa8d1aed8442092f91ac9c0920cb093f883f1c2ca6ad670bf285a07","patient":{"svnr":3048280984,"anrede":"Ing","geschlecht":"W","vorname":"Sarah","nachname":"Saric","alter":"28.09.1984","hausnummer":"20","ort":"Wien","postleitzahl":"1010","postfachnummer":null,"postfachtext":null,"staatscode":"AT","stock":"20","strasse":"Sonnbergplatz","email":"bushwookie@debil.com","telefonnummer":"43036093454","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"},{"versicherungsid":"25","kuerzel":"BKKVABS","versicherung":"Betriebskrankenkasse voestalpine Bahnsysteme"},{"versicherungsid":"40","kuerzel":"SVAGW","versicherung":"Sozialversicherungsanstalt der gewerblichen Wirtschaft"}]}}
+Patientdata sent ...
+User removed from SSE ... (req)
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+{"signature":"997340a1ffa8d1aed8442092f91ac9c0920cb093f883f1c2ca6ad670bf285a07","patient":{"svnr":3048280984,"anrede":"Ing","geschlecht":"W","vorname":"Sarah","nachname":"Saric","alter":"28.09.1984","hausnummer":"20","ort":"Wien","postleitzahl":"1010","postfachnummer":null,"postfachtext":null,"staatscode":"AT","stock":"20","strasse":"Sonnbergplatz","email":"bushwookie@debil.com","telefonnummer":"43036093454","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"},{"versicherungsid":"25","kuerzel":"BKKVABS","versicherung":"Betriebskrankenkasse voestalpine Bahnsysteme"},{"versicherungsid":"40","kuerzel":"SVAGW","versicherung":"Sozialversicherungsanstalt der gewerblichen Wirtschaft"}]}}
+Patientdata sent ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+{"signature":"997340a1ffa8d1aed8442092f91ac9c0920cb093f883f1c2ca6ad670bf285a07","patient":{"svnr":3048280984,"anrede":"Ing","geschlecht":"W","vorname":"Sarah","nachname":"Saric","alter":"28.09.1984","hausnummer":"20","ort":"Wien","postleitzahl":"1010","postfachnummer":null,"postfachtext":null,"staatscode":"AT","stock":"20","strasse":"Sonnbergplatz","email":"bushwookie@debil.com","telefonnummer":"43036093454","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"},{"versicherungsid":"25","kuerzel":"BKKVABS","versicherung":"Betriebskrankenkasse voestalpine Bahnsysteme"},{"versicherungsid":"40","kuerzel":"SVAGW","versicherung":"Sozialversicherungsanstalt der gewerblichen Wirtschaft"}]}}
+Patientdata sent ...
+User removed from SSE ... (req)
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+{"username":"philipp","password":"STO16372"}
+Logged in: {"username":"philipp","role":"arzt"}
+{"signature":"997340a1ffa8d1aed8442092f91ac9c0920cb093f883f1c2ca6ad670bf285a07","patient":{"svnr":3048280984,"anrede":"Ing","geschlecht":"W","vorname":"Sarah","nachname":"Saric","alter":"28.09.1984","hausnummer":"20","ort":"Wien","postleitzahl":"1010","postfachnummer":null,"postfachtext":null,"staatscode":"AT","stock":"20","strasse":"Sonnbergplatz","email":"bushwookie@debil.com","telefonnummer":"43036093454","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"},{"versicherungsid":"25","kuerzel":"BKKVABS","versicherung":"Betriebskrankenkasse voestalpine Bahnsysteme"},{"versicherungsid":"40","kuerzel":"SVAGW","versicherung":"Sozialversicherungsanstalt der gewerblichen Wirtschaft"}]}}
+Patientdata sent ...
+User got SSE ...
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'Wien',
+     telefonnummer: '+43036093454',
+     postleitzahl: '1010',
+     svnr: '3048280984',
+     strasse: 'Sonnbergplatz',
+     hausnummer: '20',
+     email: 'bushwookie@debil.com',
+     staatscode: 'AT',
+     grund: '2' },
+  signature: '997340a1ffa8d1aed8442092f91ac9c0920cb093f883f1c2ca6ad670bf285a07' }
+Patientdata to aerzte: {"svnr":3048280984,"vorname":"Sarah","nachname":"Saric","geschlecht":"W","titel":"Ing","alter":33,"grundid":2,"grund":"Behandlung"}
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+Ipadapps atm: 1
+Ipadapps atm: 1
+Ipadapps atm: 1
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'Perchtoldsdorf',
+     telefonnummer: '43036097816',
+     postleitzahl: '2380',
+     svnr: '2469180576',
+     strasse: 'Marktplatz',
+     hausnummer: '15',
+     email: 'bushwookie@gmail.com',
+     staatscode: '',
+     grund: '1' },
+  signature: '5a7ea11be12e345e65ad474070d7b027f1975db5806e89a413b00f699b2e61e3' }
+Patientdata to aerzte: {"svnr":2469180576,"vorname":"manfred","nachname":"Reuchelt","geschlecht":"M","titel":"Mag.","alter":27,"grundid":1,"grund":"Rezept"}
+Patientdata received:
+{ patient: 
+   { versid: '12',
+     ort: 'aal',
+     telefonnummer: '43036097816',
+     postleitzahl: '2380',
+     svnr: '1234567890',
+     strasse: 'Marktplatz',
+     hausnummer: '15',
+     email: 'bushwookie@gmail.com',
+     staatscode: '',
+     grund: '3' },
+  signature: '5a7ea11be12e345e65ad474070d7b027f1975db5806e89a413b00f699b2e61e3' }
+Thu, 01 Mar 2018 21:24:03 GMT express deprecated res.send(status): Use res.sendStatus(status) instead at server.js:999:12
+Gefaelschtes Datenpaket
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'Wien',
+     telefonnummer: '+436641234567',
+     postleitzahl: '1030',
+     svnr: '1003250230',
+     strasse: 'Kleistgasse',
+     hausnummer: '20',
+     email: 'trappl@spengergasse.at',
+     staatscode: '',
+     grund: '1' },
+  signature: '5a7ea11be12e345e65ad474070d7b027f1975db5806e89a413b00f699b2e61e3' }
+Gefaelschtes Datenpaket
+Ipadapps atm: 1
+Patient is already in warteliste or there ain't an ipadapp
+Ipadapps atm: 1
+Ipadapps atm: 1
+Ipadapps atm: 1
+User removed from SSE ... (req)
+{"password":"sari ","username":"bernhard"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+Ipadapps atm: 1
+Patientdata received:
+{ patient: 
+   { versid: '25',
+     ort: 'Perchtoldsdorf',
+     telefonnummer: '43036097816',
+     postleitzahl: '2380',
+     svnr: '663782916',
+     strasse: 'Marktplatz',
+     hausnummer: '15',
+     email: 'neuberger@gmail.com',
+     staatscode: '',
+     grund: '3' },
+  signature: '8e216e870471600dbda5d6a9ecaa1fbd61194de9f3a04ef48ace4cc45269bc27' }
+Patientdata to aerzte: {"svnr":663782916,"vorname":"Lara","nachname":"Kraut","geschlecht":"W","titel":"","alter":57,"grundid":3,"grund":"Arbeitsunfähigkeitsmeldung"}
+Ipadapps atm: 1
+Patient is already in warteliste or there ain't an ipadapp
+Ipadapps atm: 1
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+{"username":"philipp","password":"STO16372"}
+Logged in: {"username":"philipp","role":"arzt"}
+User got SSE ...
+Ranking allowed!
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+Ipadapps atm: 1
+Ipadapps atm: 1
+Ipadapps atm: 1
+Patientdata received:
+{ patient: 
+   { versid: '07',
+     ort: 'Perchtoldsdorf',
+     telefonnummer: '43036097816',
+     postleitzahl: '2380',
+     svnr: '6523980167',
+     strasse: 'Marktplatz',
+     hausnummer: '12',
+     email: 'bushwookie@gmail.com',
+     staatscode: '',
+     grund: '1' },
+  signature: '5101b5a3a37f1b8e4889a9d4f6d00caa6e9a18f180330b1a204528e1b0fbcdac' }
+Patientdata to aerzte: {"svnr":6523980167,"vorname":"Uganda","nachname":"knuckls","geschlecht":"M","titel":"","alter":10,"grundid":1,"grund":"Rezept"}
+Patientdata received:
+{ patient: 
+   { versid: '8D',
+     ort: 'Perchtoldsdorf',
+     telefonnummer: '43036097816',
+     postleitzahl: '2380',
+     svnr: '987654328',
+     strasse: 'Marktplatz',
+     hausnummer: '15',
+     email: 'hhfsuiujnlil@gmail.com',
+     staatscode: '',
+     grund: '1' },
+  signature: '5101b5a3a37f1b8e4889a9d4f6d00caa6e9a18f180330b1a204528e1b0fbcdac' }
+Gefaelschtes Datenpaket
+Patientdata received:
+{ patient: 
+   { versid: '8D',
+     ort: 'Perchtoldsdorf',
+     telefonnummer: '43036097816',
+     postleitzahl: '2380',
+     svnr: '987654328',
+     strasse: 'Marktplatz',
+     hausnummer: '15',
+     email: 'hhfsuiujnlil@gmail.com',
+     staatscode: '',
+     grund: '2' },
+  signature: '5101b5a3a37f1b8e4889a9d4f6d00caa6e9a18f180330b1a204528e1b0fbcdac' }
+Gefaelschtes Datenpaket
+Patientdata received:
+{ patient: 
+   { versid: '8D',
+     ort: 'Perchtoldsdorf',
+     telefonnummer: '43036097816',
+     postleitzahl: '2380',
+     svnr: '987654328',
+     strasse: 'Marktplatz',
+     hausnummer: '15',
+     email: 'hhfsuiujnlil@gmail.com',
+     staatscode: '',
+     grund: '1' },
+  signature: '5101b5a3a37f1b8e4889a9d4f6d00caa6e9a18f180330b1a204528e1b0fbcdac' }
+Gefaelschtes Datenpaket
+Ipadapps atm: 1
+Patient is already in warteliste or there ain't an ipadapp
+Ipadapps atm: 1
+Patientdata received:
+{ patient: 
+   { versid: '8D',
+     ort: 'Perchtoldsdorf',
+     telefonnummer: '43036097816',
+     postleitzahl: '2380',
+     svnr: '987654328',
+     strasse: 'Marktplatz',
+     hausnummer: '15',
+     email: 'hhfsuiujnlil@gmail.com',
+     staatscode: '',
+     grund: '2' },
+  signature: '767e03aedc3c1e4fe4dac7a692631666b8039e64a796a6acfc74bf6d59f82376' }
+Patientdata to aerzte: {"svnr":987654328,"vorname":"Hans","nachname":"Schiff","geschlecht":"M","titel":"","alter":15,"grundid":2,"grund":"Behandlung"}
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+User removed from SSE ... (req)
+User logged out
+{"username":"philipp","password":"STO16372"}
+Logged in: {"username":"philipp","role":"arzt"}
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User logged out
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User got SSE ...
+Ranking allowed!
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+events.js:193
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: Connection lost: The server closed the connection.
+    at Protocol.end (/home/ecard/fiveforu/E Card Selbstanmeldung/node_modules/mysql/lib/protocol/Protocol.js:113:13)
+    at Socket.<anonymous> (/home/ecard/fiveforu/E Card Selbstanmeldung/node_modules/mysql/lib/Connection.js:109:28)
+    at emitNone (events.js:120:20)
+    at Socket.emit (events.js:218:7)
+    at endReadableNT (_stream_readable.js:1054:12)
+    at _combinedTickCallback (internal/process/next_tick.js:138:11)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+Verbunden auf Port 80
+Verbunden auf Port 443
+Verbunden mit der DB ...
+User got SSE ...
+Verbunden mit der GINA
+User got SSE ...
+{"password":"barrientos","username":"leonardo"}
+Logged in: {"username":"leonardo","role":"ipadapp"}
+{"password":"barrientos","username":"leonardo"}
+Logged in: {"username":"leonardo","role":"ipadapp"}
+User got SSE ...
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003210139","titel":null,"geburtsdatum":"01.01.1980","vorname":"Max","geschlecht":"M","nachname":"Musterpatient"}}
+Ipadapps atm: 1
+Daten zur App: {"signature":"0ddc09ceca017742c6a23056bfdde2b2e585375fbdf9ea7bf0febcb56699d8bc","patient":{"svnr":1003210139,"anrede":null,"geschlecht":"M","vorname":"Max","nachname":"Musterpatient","alter":"01.01.1980","hausnummer":null,"ort":null,"postleitzahl":null,"postfachnummer":null,"postfachtext":null,"staatscode":null,"stock":null,"strasse":null,"email":null,"telefonnummer":null,"versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"}]}}
+User removed from SSE ... (req)
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003250229","titel":"Dr.-Ing.","geburtsdatum":"16.02.1988","vorname":"Ake","geschlecht":"M","nachname":"Soren-Test"}}
+Ipadapps atm: 1
+Daten zur App: {"signature":"cfa86b457cb3acb037be1bed18e7b58263d33bd699722a2b57c2f143a03aa395","patient":{"svnr":1003250229,"anrede":"Dr.-Ing.","geschlecht":"M","vorname":"Ake","nachname":"Soren-Test","alter":"16.02.1988","hausnummer":"12","ort":"ohrstadt","postleitzahl":"11245","postfachnummer":null,"postfachtext":null,"staatscode":null,"stock":null,"strasse":"Marktplatz","email":"marwin1998@gmail.com","telefonnummer":"43036097816","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"}]}}
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003210139","titel":null,"geburtsdatum":"01.01.1980","vorname":"Max","geschlecht":"M","nachname":"Musterpatient"}}
+Ipadapps atm: 1
+Daten zur App: {"signature":"0ddc09ceca017742c6a23056bfdde2b2e585375fbdf9ea7bf0febcb56699d8bc","patient":{"svnr":1003210139,"anrede":null,"geschlecht":"M","vorname":"Max","nachname":"Musterpatient","alter":"01.01.1980","hausnummer":null,"ort":null,"postleitzahl":null,"postfachnummer":null,"postfachtext":null,"staatscode":null,"stock":null,"strasse":null,"email":null,"telefonnummer":null,"versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"}]}}
+User removed from SSE ... (req)
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+Verbunden auf Port 80
+Verbunden auf Port 443
+Verbunden mit der DB ...
+Verbunden mit der GINA
+Verbunden auf Port 80
+Verbunden auf Port 443
+Verbunden mit der DB ...
+Verbunden auf Port 80
+Verbunden auf Port 443
+Verbunden mit der DB ...
+Verbunden mit der GINA
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User got SSE ...
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+User logged out
+User removed from SSE ... (req)
+{"username":"philipp","password":"STO16372"}
+Logged in: {"username":"philipp","role":"arzt"}
+{"password":"barrientos","username":"leonardo"}
+Logged in: {"username":"leonardo","role":"ipadapp"}
+{"password":"barrientos","username":"leonardo"}
+Logged in: {"username":"leonardo","role":"ipadapp"}
+User got SSE ...
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003231124","titel":null,"geburtsdatum":"01.01.1980","vorname":"Max","geschlecht":"M","nachname":"Musterpatient"}}
+Ipadapps atm: 1
+Patientdata ignored. App doesn't listen or patient is already in warteliste.
+User got SSE ...
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User logged out
+{"password":"barrientos","username":"leonardo"}
+Logged in: {"username":"leonardo","role":"ipadapp"}
+{"password":"barrientos","username":"leonardo"}
+Logged in: {"username":"leonardo","role":"ipadapp"}
+User got SSE ...
+{"username":"philipp","password":"STO16372"}
+Logged in: {"username":"philipp","role":"arzt"}
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003250229","titel":"Dr.-Ing.","geburtsdatum":"16.02.1988","vorname":"Ake","geschlecht":"M","nachname":"Soren-Test"}}
+Ipadapps atm: 1
+Patientdata ignored. App doesn't listen or patient is already in warteliste.
+User got SSE ...
+User removed from SSE ... (req)
+User logged out
+{"username":"philipp","password":"STO16372"}
+Logged in: {"username":"philipp","role":"arzt"}
+User logged out
+{"username":"philipp","password":"STO16372"}
+Logged in: {"username":"philipp","role":"arzt"}
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003231124","titel":null,"geburtsdatum":"01.01.1980","vorname":"Max","geschlecht":"M","nachname":"Musterpatient"}}
+Ipadapps atm: 1
+Daten zur App: {"signature":"fa65c7fd9292ec4863bfaf54c39f799d3f8bd20cb4f57ce875dcb5b85a2740c9","patient":{"svnr":1003231124,"anrede":null,"geschlecht":"M","vorname":"Max","nachname":"Musterpatient","alter":"01.01.1980","hausnummer":"12","ort":"Wien","postleitzahl":"1090","postfachnummer":null,"postfachtext":null,"staatscode":null,"stock":null,"strasse":"Hausstraße","email":"","telefonnummer":"+4367612345678","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"}]}}
+User got SSE ...
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'Wien',
+     telefonnummer: '+4367612345678',
+     postleitzahl: '1090',
+     svnr: '1003231124',
+     strasse: 'Hausstraße',
+     hausnummer: '12',
+     email: '',
+     staatscode: '',
+     grund: '1' },
+  signature: 'fa65c7fd9292ec4863bfaf54c39f799d3f8bd20cb4f57ce875dcb5b85a2740c9' }
+Patientdata to aerzte: {"svnr":1003231124,"vorname":"Max","nachname":"Musterpatient","geschlecht":"M","titel":null,"alter":38,"grundid":1,"grund":"Rezept"}
+Fri, 02 Mar 2018 11:07:50 GMT express deprecated res.send(status): Use res.sendStatus(status) instead at server.js:978:26
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1002140968","titel":null,"geburtsdatum":"01.01.1980","vorname":"Max","geschlecht":"M","nachname":"Musterpatient"}}
+Ipadapps atm: 1
+Daten zur App: {"signature":"c1582590e2acb5b720521e68be71aec19125e6a5709e4e187b68f49e553e7d42","patient":{"svnr":1002140968,"anrede":null,"geschlecht":"M","vorname":"Max","nachname":"Musterpatient","alter":"01.01.1980","hausnummer":null,"ort":null,"postleitzahl":null,"postfachnummer":null,"postfachtext":null,"staatscode":null,"stock":null,"strasse":null,"email":null,"telefonnummer":null,"versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"}]}}
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'Wien',
+     telefonnummer: '06761234567',
+     postleitzahl: '1120',
+     svnr: '1002140968',
+     strasse: 'Trraisengasse',
+     hausnummer: '123',
+     email: 'Hallo@typ.at',
+     staatscode: '',
+     grund: '3' },
+  signature: 'c1582590e2acb5b720521e68be71aec19125e6a5709e4e187b68f49e553e7d42' }
+Patientdata to aerzte: {"svnr":1002140968,"vorname":"Max","nachname":"Musterpatient","geschlecht":"M","titel":null,"alter":38,"grundid":3,"grund":"Arbeitsunfähigkeitsmeldung"}
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003280380","titel":"Mag.","geburtsdatum":"13.02.1937","vorname":"Max","geschlecht":"M","nachname":"Musterpatient"}}
+Ipadapps atm: 1
+Daten zur App: {"signature":"59b275906b1281362d8532c556000dfb5c9b57fd739974bee535f287b9577403","patient":{"svnr":1003280380,"anrede":"Mag.","geschlecht":"M","vorname":"Max","nachname":"Musterpatient","alter":"13.02.1937","hausnummer":"20","ort":"Wien","postleitzahl":"1050","postfachnummer":null,"postfachtext":null,"staatscode":null,"stock":null,"strasse":"Spengergasse","email":"sar16334@spengergasse.at","telefonnummer":"+43676342657","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"}]}}
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'Wien',
+     telefonnummer: '+43676676733',
+     postleitzahl: '1050',
+     svnr: '1003280380',
+     strasse: 'Spengergasse',
+     hausnummer: '20',
+     email: 'sar16334@spengergasse.at',
+     staatscode: '',
+     grund: '2' },
+  signature: '59b275906b1281362d8532c556000dfb5c9b57fd739974bee535f287b9577403' }
+Patientdata to aerzte: {"svnr":1003280380,"vorname":"Max","nachname":"Musterpatient","geschlecht":"M","titel":"Mag.","alter":81,"grundid":2,"grund":"Behandlung"}
+Ranking allowed!
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003250229","titel":"Dr.-Ing.","geburtsdatum":"16.02.1988","vorname":"Ake","geschlecht":"M","nachname":"Soren-Test"}}
+Ipadapps atm: 1
+Daten zur App: {"signature":"cfa86b457cb3acb037be1bed18e7b58263d33bd699722a2b57c2f143a03aa395","patient":{"svnr":1003250229,"anrede":"Dr.-Ing.","geschlecht":"M","vorname":"Ake","nachname":"Soren-Test","alter":"16.02.1988","hausnummer":"120","ort":"Rohrau ","postleitzahl":"1040","postfachnummer":null,"postfachtext":null,"staatscode":null,"stock":null,"strasse":"Marktplatz","email":"marwin1998@gmail.at","telefonnummer":"+43036097816","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"}]}}
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'Rohrau ',
+     telefonnummer: '+43036097816',
+     postleitzahl: '1040',
+     svnr: '1003250229',
+     strasse: 'Marktplatz',
+     hausnummer: '120',
+     email: 'marwin1998@gmail.at',
+     staatscode: '',
+     grund: '1' },
+  signature: 'cfa86b457cb3acb037be1bed18e7b58263d33bd699722a2b57c2f143a03aa395' }
+Patientdata to aerzte: {"svnr":1003250229,"vorname":"Ake","nachname":"Soren-Test","geschlecht":"M","titel":"Dr.-Ing.","alter":30,"grundid":1,"grund":"Rezept"}
+Ranking allowed!
+User got SSE ...
+User removed from SSE ... (req)
+User logged out
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+User removed from SSE ... (req)
+User logged out
+{"username":"philipp","password":"STO16372"}
+Logged in: {"username":"philipp","role":"arzt"}
+User got SSE ...
+User removed from SSE ... (req)
+User logged out
+{"username":"philipp","password":"STO16372"}
+Logged in: {"username":"philipp","role":"arzt"}
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User got SSE ...
+User logged out
+Verbunden auf Port 80
+Verbunden auf Port 443
+Verbunden mit der DB ...
+Verbunden mit der GINA
+{"username":"philipp","password":"STO16372"}
+Logged in: {"username":"philipp","role":"arzt"}
+User logged out
+User got SSE ...
+User got SSE ...
+{"username":"philipp","password":"STO16372"}
+Logged in: {"username":"philipp","role":"arzt"}
+User got SSE ...
+User got SSE ...
+User got SSE ...
+User removed from SSE ... (req)
+Ranking allowed!
+User removed from SSE ... (req)
+User got SSE ...
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+User got SSE ...
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+User removed from SSE ... (req)
+User got SSE ...
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+User removed from SSE ... (req)
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+Ranking allowed!
+Ranking allowed!
+User removed from SSE ... (req)
+User got SSE ...
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User logged out
+{"password":"d,d,","username":"gkfk"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+{"username":"asda","password":"adsada"}
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User logged out
+{"username":"raphael","password":"seifert"}
+Logged in: {"username":"raphael","role":"arzt"}
+User got SSE ...
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003231124","titel":null,"geburtsdatum":"01.01.1980","vorname":"Max","geschlecht":"M","nachname":"Musterpatient"}}
+Ipadapps atm: 1
+Daten zur App: {"signature":"fa65c7fd9292ec4863bfaf54c39f799d3f8bd20cb4f57ce875dcb5b85a2740c9","patient":{"svnr":1003231124,"anrede":null,"geschlecht":"M","vorname":"Max","nachname":"Musterpatient","alter":"01.01.1980","hausnummer":"12","ort":"Wien","postleitzahl":"1090","postfachnummer":null,"postfachtext":null,"staatscode":null,"stock":null,"strasse":"Hausstraße","email":"","telefonnummer":"+4367612345678","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"}]}}
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'Wien',
+     telefonnummer: '+4367612345678',
+     postleitzahl: '1090',
+     svnr: '1003231124',
+     strasse: 'Hausstraße',
+     hausnummer: '12',
+     email: '',
+     staatscode: '',
+     grund: '2' },
+  signature: 'fa65c7fd9292ec4863bfaf54c39f799d3f8bd20cb4f57ce875dcb5b85a2740c9' }
+Patientdata to aerzte: {"svnr":1003231124,"vorname":"Max","nachname":"Musterpatient","geschlecht":"M","titel":null,"alter":38,"grundid":2,"grund":"Behandlung"}
+Fri, 02 Mar 2018 12:10:37 GMT express deprecated res.send(status): Use res.sendStatus(status) instead at server.js:978:26
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003271089","titel":null,"geburtsdatum":"01.01.1980","vorname":"Max","geschlecht":"M","nachname":"Musterpatient"}}
+Ipadapps atm: 1
+Daten zur App: {"signature":"b33f86ffa8b988bddb7dd02202d0b75aec881dd9050df76f23a080b626b8afbf","patient":{"svnr":1003271089,"anrede":null,"geschlecht":"M","vorname":"Max","nachname":"Musterpatient","alter":"01.01.1980","hausnummer":null,"ort":null,"postleitzahl":null,"postfachnummer":null,"postfachtext":null,"staatscode":null,"stock":null,"strasse":null,"email":null,"telefonnummer":null,"versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"}]}}
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'Michelhausen',
+     telefonnummer: '444444',
+     postleitzahl: '3451',
+     svnr: '1003271089',
+     strasse: 'Feldhase',
+     hausnummer: '20',
+     email: '',
+     staatscode: 'Aut',
+     grund: '3' },
+  signature: 'b33f86ffa8b988bddb7dd02202d0b75aec881dd9050df76f23a080b626b8afbf' }
+Patientdata to aerzte: {"svnr":1003271089,"vorname":"Max","nachname":"Musterpatient","geschlecht":"M","titel":null,"alter":38,"grundid":3,"grund":"Arbeitsunfähigkeitsmeldung"}
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003231124","titel":null,"geburtsdatum":"01.01.1980","vorname":"Max","geschlecht":"M","nachname":"Musterpatient"}}
+Ipadapps atm: 1
+Patientdata ignored. App doesn't listen or patient is already in warteliste.
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003271089","titel":null,"geburtsdatum":"01.01.1980","vorname":"Max","geschlecht":"M","nachname":"Musterpatient"}}
+Ipadapps atm: 1
+Patientdata ignored. App doesn't listen or patient is already in warteliste.
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003210139","titel":null,"geburtsdatum":"01.01.1980","vorname":"Max","geschlecht":"M","nachname":"Musterpatient"}}
+Ipadapps atm: 1
+Daten zur App: {"signature":"0ddc09ceca017742c6a23056bfdde2b2e585375fbdf9ea7bf0febcb56699d8bc","patient":{"svnr":1003210139,"anrede":null,"geschlecht":"M","vorname":"Max","nachname":"Musterpatient","alter":"01.01.1980","hausnummer":null,"ort":null,"postleitzahl":null,"postfachnummer":null,"postfachtext":null,"staatscode":null,"stock":null,"strasse":null,"email":null,"telefonnummer":null,"versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"}]}}
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003280380","titel":"Mag.","geburtsdatum":"13.02.1937","vorname":"Max","geschlecht":"M","nachname":"Musterpatient"}}
+Ipadapps atm: 1
+Daten zur App: {"signature":"59b275906b1281362d8532c556000dfb5c9b57fd739974bee535f287b9577403","patient":{"svnr":1003280380,"anrede":"Mag.","geschlecht":"M","vorname":"Max","nachname":"Musterpatient","alter":"13.02.1937","hausnummer":"20","ort":"Wien","postleitzahl":"1050","postfachnummer":null,"postfachtext":null,"staatscode":null,"stock":null,"strasse":"Spengergasse","email":"sar16334@spengergasse.at","telefonnummer":"+43676676733","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"}]}}
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'Wien',
+     telefonnummer: '+43676676722',
+     postleitzahl: '1050',
+     svnr: '1003280380',
+     strasse: 'Spengergasse',
+     hausnummer: '201',
+     email: 'sar16334@spengergasse.at',
+     staatscode: '',
+     grund: '1' },
+  signature: '59b275906b1281362d8532c556000dfb5c9b57fd739974bee535f287b9577403' }
+Patientdata to aerzte: {"svnr":1003280380,"vorname":"Max","nachname":"Musterpatient","geschlecht":"M","titel":"Mag.","alter":81,"grundid":1,"grund":"Rezept"}
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003250229","titel":"Dr.-Ing.","geburtsdatum":"16.02.1988","vorname":"Ake","geschlecht":"M","nachname":"Soren-Test"}}
+Ipadapps atm: 1
+Daten zur App: {"signature":"cfa86b457cb3acb037be1bed18e7b58263d33bd699722a2b57c2f143a03aa395","patient":{"svnr":1003250229,"anrede":"Dr.-Ing.","geschlecht":"M","vorname":"Ake","nachname":"Soren-Test","alter":"16.02.1988","hausnummer":"12","ort":"ohrstadt","postleitzahl":"11245","postfachnummer":null,"postfachtext":null,"staatscode":null,"stock":null,"strasse":"Marktplatz","email":"marwin1998@gmail.com","telefonnummer":"43036097816","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"}]}}
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'ohrstadt',
+     telefonnummer: '43036097816',
+     postleitzahl: '11245',
+     svnr: '1003250229',
+     strasse: 'Marktplatz',
+     hausnummer: '12',
+     email: 'marwin1998@gmail.com',
+     staatscode: '',
+     grund: '2' },
+  signature: 'cfa86b457cb3acb037be1bed18e7b58263d33bd699722a2b57c2f143a03aa395' }
+Patientdata to aerzte: {"svnr":1003250229,"vorname":"Ake","nachname":"Soren-Test","geschlecht":"M","titel":"Dr.-Ing.","alter":30,"grundid":2,"grund":"Behandlung"}
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003210139","titel":null,"geburtsdatum":"01.01.1980","vorname":"Max","geschlecht":"M","nachname":"Musterpatient"}}
+Ipadapps atm: 1
+Daten zur App: {"signature":"0ddc09ceca017742c6a23056bfdde2b2e585375fbdf9ea7bf0febcb56699d8bc","patient":{"svnr":1003210139,"anrede":null,"geschlecht":"M","vorname":"Max","nachname":"Musterpatient","alter":"01.01.1980","hausnummer":null,"ort":null,"postleitzahl":null,"postfachnummer":null,"postfachtext":null,"staatscode":null,"stock":null,"strasse":null,"email":null,"telefonnummer":null,"versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"}]}}
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'Wien',
+     telefonnummer: '4545 555',
+     postleitzahl: '1210',
+     svnr: '1003210139',
+     strasse: 'Hugostr.',
+     hausnummer: '12',
+     email: '',
+     staatscode: '',
+     grund: '3' },
+  signature: '0ddc09ceca017742c6a23056bfdde2b2e585375fbdf9ea7bf0febcb56699d8bc' }
+Patientdata to aerzte: {"svnr":1003210139,"vorname":"Max","nachname":"Musterpatient","geschlecht":"M","titel":null,"alter":38,"grundid":3,"grund":"Arbeitsunfähigkeitsmeldung"}
+{"versicherung":{"anspruchsdaten":[{"kostenteilbefreit":false,"anspruchsart":"S","rezeptbefreit":false,"svtCode":"11","versichertenArtCode":null}]},"person":{"svnr":"1003231124","titel":null,"geburtsdatum":"01.01.1980","vorname":"Max","geschlecht":"M","nachname":"Musterpatient"}}
+Ipadapps atm: 1
+Daten zur App: {"signature":"fa65c7fd9292ec4863bfaf54c39f799d3f8bd20cb4f57ce875dcb5b85a2740c9","patient":{"svnr":1003231124,"anrede":null,"geschlecht":"M","vorname":"Max","nachname":"Musterpatient","alter":"01.01.1980","hausnummer":"12","ort":"Wien","postleitzahl":"1090","postfachnummer":null,"postfachtext":null,"staatscode":null,"stock":null,"strasse":"Hausstraße","email":"","telefonnummer":"+4367612345678","versicherungen":[{"versicherungsid":"11","kuerzel":"WGKK","versicherung":"Gebietskrankenkasse Wien"}]}}
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'Wien',
+     telefonnummer: '+4367612345678',
+     postleitzahl: '1090',
+     svnr: '1003231124',
+     strasse: 'Hausstraße',
+     hausnummer: '12',
+     email: '',
+     staatscode: '',
+     grund: '2' },
+  signature: 'fa65c7fd9292ec4863bfaf54c39f799d3f8bd20cb4f57ce875dcb5b85a2740c9' }
+Patientdata to aerzte: {"svnr":1003231124,"vorname":"Max","nachname":"Musterpatient","geschlecht":"M","titel":null,"alter":38,"grundid":2,"grund":"Behandlung"}
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User got SSE ...
+Ipadapps atm: 1
+Patientdata received:
+{ patient: 
+   { versid: '11',
+     ort: 'Wien',
+     telefonnummer: '+436641234567',
+     postleitzahl: '1030',
+     svnr: '1003250230',
+     strasse: 'Kleistgasse',
+     hausnummer: '20',
+     email: 'trappl@spengergasse.at',
+     staatscode: '',
+     grund: '1' },
+  signature: 'f099494983eb8b62407a96aa5d2158e005f9c82044dbf45645821f0e8f33cfa5' }
+Patientdata to aerzte: {"svnr":1003250230,"vorname":"aallk","nachname":"Soren-Test","geschlecht":"M","titel":"Dr.-Ing.","alter":30,"grundid":1,"grund":"Rezept"}
+Ipadapps atm: 1
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+Couldn't find patient with svnr: 1003250229
+Fri, 02 Mar 2018 12:31:27 GMT express deprecated res.send(status): Use res.sendStatus(status) instead at server.js:373:13
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+Ipadapps atm: 1
+Patient is already in warteliste or there ain't an ipadapp
+Ipadapps atm: 1
+Patient is already in warteliste or there ain't an ipadapp
+Ipadapps atm: 1
+User removed from SSE ... (req)
+User got SSE ...
+User logged out
+User got SSE ...
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User got SSE ...
+Ranking allowed!
+User logged out
+User removed from SSE ... (req)
+User got SSE ...
+events.js:193
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: Connection lost: The server closed the connection.
+    at Protocol.end (/home/ecard/fiveforu/E Card Selbstanmeldung/node_modules/mysql/lib/protocol/Protocol.js:113:13)
+    at Socket.<anonymous> (/home/ecard/fiveforu/E Card Selbstanmeldung/node_modules/mysql/lib/Connection.js:109:28)
+    at emitNone (events.js:120:20)
+    at Socket.emit (events.js:218:7)
+    at endReadableNT (_stream_readable.js:1054:12)
+    at _combinedTickCallback (internal/process/next_tick.js:138:11)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+Verbunden auf Port 80
+Verbunden auf Port 443
+Verbunden mit der DB ...
+Verbunden mit der GINA
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User got SSE ...
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User logged out
+Error at database connection: Error: Connection lost: The server closed the connection.
+/home/ecard/fiveforu/E Card Selbstanmeldung/lib/dbaccess.js:48
+     					 connect();
+     					 ^
+
+ReferenceError: connect is not defined
+    at Connection.DB.on (/home/ecard/fiveforu/E Card Selbstanmeldung/lib/dbaccess.js:48:12)
+    at emitOne (events.js:125:13)
+    at Connection.emit (events.js:221:7)
+    at Connection._handleProtocolError (/home/ecard/fiveforu/E Card Selbstanmeldung/node_modules/mysql/lib/Connection.js:433:8)
+    at emitOne (events.js:125:13)
+    at Protocol.emit (events.js:221:7)
+    at Protocol._delegateError (/home/ecard/fiveforu/E Card Selbstanmeldung/node_modules/mysql/lib/protocol/Protocol.js:392:10)
+    at Protocol.end (/home/ecard/fiveforu/E Card Selbstanmeldung/node_modules/mysql/lib/protocol/Protocol.js:117:8)
+    at Socket.<anonymous> (/home/ecard/fiveforu/E Card Selbstanmeldung/node_modules/mysql/lib/Connection.js:109:28)
+    at emitNone (events.js:120:20)
+Verbunden auf Port 80
+Verbunden auf Port 443
+Verbunden mit der DB ...
+Verbunden mit der GINA
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User logged out
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User got SSE ...
+User removed from SSE ... (req)
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+{"username":"drmuncan","password":"fleigeimohr"}
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User logged out
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+{"username":"drmuncan","password":"flie"}
+{"username":"raphael","password":"seifert"}
+Logged in: {"username":"raphael","role":"arzt"}
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+Ranking allowed!
+User removed from SSE ... (req)
+User got SSE ...
+Ranking allowed!
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User logged out
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+{"username":"raphael","password":"seifert"}
+Logged in: {"username":"raphael","role":"arzt"}
+User logged out
+{"username":"raphael","password":"seifert"}
+Logged in: {"username":"raphael","role":"arzt"}
+Error at database connection: Error: Connection lost: The server closed the connection.
+{"username":"philipp","password":"STO16372"}
+Logged in: {"username":"philipp","role":"arzt"}
+User got SSE ...
+User removed from SSE ... (req)
+User logged out
+Error at database connection: Error: Connection lost: The server closed the connection.
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User got SSE ...
+User removed from SSE ... (req)
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User got SSE ...
+Ranking allowed!
+User removed from SSE ... (req)
+Ranking allowed!
+Ranking allowed!
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User logged out
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+{"username":"drmuncan","password":"fliegeimoha"}
+{}
+{"username":"dad","password":"dadw"}
+{"username":"dad","password":"dadw"}
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User logged out
+{"username":"ada","password":"dada"}
+{"username":"ada","password":"dada"}
+{"username":"philipp","password":"STO16372"}
+Logged in: {"username":"philipp","role":"arzt"}
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User got SSE ...
+User removed from SSE ... (req)
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User got SSE ...
+User removed from SSE ... (req)
+User logged out
+{"username":"where 1 = 1","password":"ada"}
+{"username":"test' or 1 = 1 --","password":"dadad"}
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User logged out
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
