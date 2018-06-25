@@ -502,9 +502,9 @@ function loadTestPatients() {
         "svnr":"1003250230",
         "titel":"Dr.-Ing.",
         "geburtsdatum":"16.02.1988",
-        "vorname":"aallk",
+        "vorname":"Max",
         "geschlecht":"M",
-        "nachname":"Soren-Test"
+        "nachname":"Müller"
       }
     },
     {
@@ -521,11 +521,11 @@ function loadTestPatients() {
       },
       "person": {
         "svnr":"1234567890",
-        "titel":"",
+        "titel":"Mag.",
         "geburtsdatum":"11.11.2011",
-        "vorname":"kevin",
-        "geschlecht":"M",
-        "nachname":"Askan"
+        "vorname":"Simone",
+        "geschlecht":"W",
+        "nachname":"Neubauer"
       }
     },
     {
@@ -544,9 +544,9 @@ function loadTestPatients() {
         "svnr":"2469180576",
         "titel":"Mag.",
         "geburtsdatum":"01.05.1990",
-        "vorname":"manfred",
+        "vorname":"Manfred",
         "geschlecht":"M",
-        "nachname":"Reuchelt"
+        "nachname":"Leitner"
       }
     },
     {
@@ -607,9 +607,9 @@ function loadTestPatients() {
         "svnr":"663782916",
         "titel":"",
         "geburtsdatum":"01.09.1960",
-        "vorname":"Lara",
+        "vorname":"Lara-Sophie",
         "geschlecht":"W",
-        "nachname":"Kraut"
+        "nachname":"Langenfeld"
       }
     },
     {
@@ -635,9 +635,9 @@ function loadTestPatients() {
         "svnr":"7724091276",
         "titel":"Ing.",
         "geburtsdatum":"01.04.1987",
-        "vorname":"Olga",
+        "vorname":"Sarah",
         "geschlecht":"W",
-        "nachname":"Babushka"
+        "nachname":"Stangel"
       }
     },
     {
@@ -658,7 +658,7 @@ function loadTestPatients() {
         "geburtsdatum":"07.01.2003",
         "vorname":"Hans",
         "geschlecht":"M",
-        "nachname":"Schiff"
+        "nachname":"Maier"
       }
     },
     {
@@ -691,9 +691,9 @@ function loadTestPatients() {
         "svnr":"6523980167",
         "titel":"",
         "geburtsdatum":"22.03.2007",
-        "vorname":"Uganda",
+        "vorname":"Dieter",
         "geschlecht":"M",
-        "nachname":"knuckls"
+        "nachname":"Sachsen"
       }
     }
   ];

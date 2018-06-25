@@ -1385,3 +1385,434 @@ Logged in: {"username":"drmuncan","role":"arzt"}
 User logged out
 Error at database connection: Error: Connection lost: The server closed the connection.
 Error at database connection: Error: Connection lost: The server closed the connection.
+Verbunden auf Port 80
+Verbunden auf Port 443
+Verbunden mit der DB ...
+Verbunden auf Port 80
+Verbunden auf Port 443
+Verbunden mit der DB ...
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User logged out
+{"username":"philipp","password":"stoeckl"}
+{"username":"stoeckl","password":"STO16372"}
+{"username":"philipp","password":"sto16372"}
+{"username":"philipp","password":"stoeckl"}
+{"username":"STO16372","password":"Pst090599,"}
+{"username":"philipp","password":"STO16372"}
+Logged in: {"username":"philipp","role":"arzt"}
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+{"password":"saric","username":"bernhard"}
+Logged in: {"username":"bernhard","role":"ipadapp"}
+User got SSE ...
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User got SSE ...
+User got SSE ...
+User removed from SSE ... (req)
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User got SSE ...
+User logged out
+User removed from SSE ... (req)
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User got SSE ...
+Couldn't find patient with svnr: 6529837019
+Fri, 27 Apr 2018 07:28:09 GMT express deprecated res.send(status): Use res.sendStatus(status) instead at server.js:373:13
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+Ipadapps atm: 1
+Patientdata received:
+{ patient: 
+   { versid: '05',
+     ort: 'Perchtoldsdorf',
+     telefonnummer: '43036097816',
+     postleitzahl: '2380',
+     svnr: '6529837019',
+     strasse: 'Marktplatz',
+     hausnummer: '15',
+     email: 'bushwookie@gmail.com',
+     staatscode: '',
+     grund: '1' },
+  signature: 'bdae6ae25223daade20b48cc4c65d73d59641dfad0541fbc333185a12b81685c' }
+Patientdata to aerzte: {"svnr":6529837019,"vorname":"Eugen","nachname":"Klein","geschlecht":"M","titel":"Ing.","alter":17,"grundid":1,"grund":"Rezept"}
+Fri, 27 Apr 2018 07:29:16 GMT express deprecated res.send(status): Use res.sendStatus(status) instead at server.js:978:26
+Ipadapps atm: 1
+Patient is already in warteliste or there ain't an ipadapp
+Ipadapps atm: 1
+Patientdata received:
+{ patient: 
+   { versid: '8D',
+     ort: 'Perchtoldsdorf',
+     telefonnummer: '+43036097816',
+     postleitzahl: '2380',
+     svnr: '987654328',
+     strasse: 'Marktplatz',
+     hausnummer: '15',
+     email: 'hansmaier@gmail.com',
+     staatscode: '',
+     grund: '3' },
+  signature: '767e03aedc3c1e4fe4dac7a692631666b8039e64a796a6acfc74bf6d59f82376' }
+Patientdata to aerzte: {"svnr":987654328,"vorname":"Hans","nachname":"Schiff","geschlecht":"M","titel":"","alter":15,"grundid":3,"grund":"Arbeitsunfähigkeitsmeldung"}
+Ranking allowed!
+User logged out
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+User removed from SSE ... (req)
+User logged out
+{"username":"philipp","password":"stoeckl"}
+{"username":"philipp","password":"stöckl"}
+User removed from SSE ... (req)
+{"username":"philipp","password":"sto16317"}
+{"username":"philipp","password":"sto16372"}
+{"username":"philipp","password":"STO16372"}
+Logged in: {"username":"philipp","role":"arzt"}
+User got SSE ...
+User removed from SSE ... (req)
+User logged out
+{"username":"philipp","password":"STO16372"}
+Logged in: {"username":"philipp","role":"arzt"}
+User logged out
+Ipadapps atm: 1
+{"username":"philipp","password":"STO16372"}
+Logged in: {"username":"philipp","role":"arzt"}
+User got SSE ...
+Patientdata received:
+{ patient: 
+   { versid: '05',
+     ort: 'Perchtolds',
+     telefonnummer: '43036097816',
+     postleitzahl: '2380',
+     svnr: '6529837019',
+     strasse: 'Marktplatz',
+     hausnummer: '15',
+     email: 'bushwookie@gmail.com',
+     staatscode: '',
+     grund: '1' },
+  signature: 'bdae6ae25223daade20b48cc4c65d73d59641dfad0541fbc333185a12b81685c' }
+Patientdata to aerzte: {"svnr":6529837019,"vorname":"Eugen","nachname":"Klein","geschlecht":"M","titel":"Ing.","alter":17,"grundid":1,"grund":"Rezept"}
+Ipadapps atm: 1
+Patientdata received:
+{ patient: 
+   { versid: '25',
+     ort: 'Perchtoldsdorf',
+     telefonnummer: '43036097816',
+     postleitzahl: '2380',
+     svnr: '663782916',
+     strasse: 'Marktplatz',
+     hausnummer: '15',
+     email: 'neuberger@gmail.com',
+     staatscode: '',
+     grund: '1' },
+  signature: '8e216e870471600dbda5d6a9ecaa1fbd61194de9f3a04ef48ace4cc45269bc27' }
+Patientdata to aerzte: {"svnr":663782916,"vorname":"Lara","nachname":"Kraut","geschlecht":"W","titel":"","alter":57,"grundid":1,"grund":"Rezept"}
+Ipadapps atm: 1
+Patientdata received:
+{ patient: 
+   { versid: '8D',
+     ort: 'Perchtoldsdorf',
+     telefonnummer: '+43036097816',
+     postleitzahl: '2380',
+     svnr: '987654328',
+     strasse: 'Marktplatz',
+     hausnummer: '15',
+     email: 'hansmaier@gmail.com',
+     staatscode: '',
+     grund: '3' },
+  signature: '767e03aedc3c1e4fe4dac7a692631666b8039e64a796a6acfc74bf6d59f82376' }
+Patientdata to aerzte: {"svnr":987654328,"vorname":"Hans","nachname":"Schiff","geschlecht":"M","titel":"","alter":15,"grundid":3,"grund":"Arbeitsunfähigkeitsmeldung"}
+Ranking allowed!
+Ranking allowed!
+User removed from SSE ... (req)
+User got SSE ...
+Ipadapps atm: 1
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+{"username":"STO16372","password":"Pst090599,"}
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+{"username":"philipp","password":"STO16372"}
+Logged in: {"username":"philipp","role":"arzt"}
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+User got SSE ...
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+Ipadapps atm: 0
+User removed from SSE ... (req)
+User got SSE ...
+User got SSE ...
+User removed from SSE ... (req)
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+User got SSE ...
+User got SSE ...
+{"username":"drmuncan","password":"fliegeimphr"}
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User got SSE ...
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+User got SSE ...
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+User removed from SSE ... (req)
+User got SSE ...
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+{"username":"philipp","password":"STO16372"}
+Logged in: {"username":"philipp","role":"arzt"}
+User got SSE ...
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+Ranking allowed!
+Ranking allowed!
+User removed from SSE ... (req)
+User got SSE ...
+{"username":"drmunacn","password":"fliegeimohr"}
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User got SSE ...
+Ranking allowed!
+Ranking allowed!
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+User got SSE ...
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User got SSE ...
+User removed from SSE ... (req)
+User logged out
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User got SSE ...
+User logged out
+User removed from SSE ... (req)
+{"username":"drmucan","password":"fliegeimohr"}
+{"username":"drmuncan","password":"fliegeimohr"}
+Logged in: {"username":"drmuncan","role":"arzt"}
+User got SSE ...
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+Ranking allowed!
+User removed from SSE ... (req)
+User got SSE ...
+User removed from SSE ... (req)
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+User removed from SSE ... (req)
+User removed from SSE ... (req)
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
+Error at database connection: Error: Connection lost: The server closed the connection.
